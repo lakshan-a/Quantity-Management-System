@@ -1,17 +1,14 @@
-
-    <div class="py-5 mainPosBg">
-        <div class="container my-5">
-            <div class="row">
-                <div class="col-md-12 py-5 text-center">
-
-                    <h1 class="mt-3">Pos System</h1>
-
-                    <?php if(!isset($_SESSION['loggedIn'])) : ?>
-                    <a href="/qty-management/dashboard/index.php" class="btn btn-primary mt-4">Login</a>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </div>
-    </div>
-
- 
+<?php
+// ============================================
+// File: index.php - Main Landing Page
+// Description: Redirects to dashboard or login
+// ============================================
+session_start();
+if(isset($_SESSION['user_id'])) {
+    header("Location: dashboard/index.php");
+    exit();
+} else {
+    header("Location: dashboard/index.php");
+    exit();
+}
+?>
