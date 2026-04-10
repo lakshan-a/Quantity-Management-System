@@ -10,6 +10,8 @@ $pageTitle = 'Business Settings | Qty Management';
 ob_start();
 ?>
 
+<script src="../../assets/js/translations.js"></script>
+
 <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 md:py-10">
     <div class="space-y-6">
         <!-- Header: search, filter, add button -->
@@ -492,4 +494,8 @@ ob_start();
     else document.documentElement.classList.remove('dark');
 </script>
 
-<?php $content = ob_get_clean(); include '../../includes/header.php'; include '../../includes/sidebar.php'; echo '<div class="main-content min-h-screen">'; echo $content; include '../../includes/footer.php'; ?>
+<?php $content = ob_get_clean(); 
+include '../../includes/header.php'; 
+include '../../includes/sidebar.php'; 
+echo '<div class="main-content min-h-screen">'; 
+echo $content; include '../../includes/footer.php'; ?>
