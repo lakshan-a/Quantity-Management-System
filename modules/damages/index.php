@@ -8,7 +8,7 @@ $pageTitle = 'Damages | Qty Management';
 ob_start();
 ?>
 
-<script src="../../assets/js/translations.js"></script>
+<script src="../../assets/script/translations.js"></script>
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6" id="damagesApp">
 
@@ -46,30 +46,43 @@ ob_start();
     </div>
 
     <!-- search + report button + filters -->
-    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-      <div class="relative w-full sm:w-96">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-        <input type="text" id="searchInput" data-i18n-placeholder="search_placeholder" placeholder="Search by item, reason, or reporter..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
-      </div>
-      <div class="flex gap-2">
-        <select id="filterItemSelect" class="px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
-          <option value="" data-i18n="all_items">All Items</option>
-          <option value="1">Wireless Headphones</option>
-          <option value="2">Cotton T-Shirt</option>
-          <option value="3">Smart Watch</option>
-          <option value="5">Yoga Mat</option>
-        </select>
-        <select id="sortSelect" class="px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
-          <option value="newest" data-i18n="newest_first">Newest First</option>
-          <option value="oldest" data-i18n="oldest_first">Oldest First</option>
-          <option value="quantity_high" data-i18n="highest_quantity">Highest Quantity</option>
-          <option value="quantity_low" data-i18n="lowest_quantity">Lowest Quantity</option>
-        </select>
-        <button id="openModalBtn" class="inline-flex items-center justify-center px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2"><path d="M12 5v14M5 12h14"/></svg>
-          <span data-i18n="report_damage">Report Damage</span>
-        </button>
-      </div>
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <!-- Search bar -->
+        <div class="relative w-full">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="m21 21-4.3-4.3"/>
+            </svg>
+            <input type="text" id="searchInput" data-i18n-placeholder="search_placeholder" placeholder="Search by item, reason, or reporter..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
+        </div>
+        
+        <!-- Filters and button group - improved stacking behavior: better tablet+ handling, preserve original lg:flex-row but add responsive tweaks -->
+        <div class="flex flex-col lg:flex-row gap-3">
+            <!-- Filter selects: original classes kept, but add better shrink/wrapping and ensure consistent width on all screens -->
+            <div class="flex flex-col sm:flex-row gap-2 flex-1">
+                <select id="filterItemSelect" class="w-full sm:flex-1 px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                    <option value="" data-i18n="all_items">All Items</option>
+                    <option value="1">Wireless Headphones</option>
+                    <option value="2">Cotton T-Shirt</option>
+                    <option value="3">Smart Watch</option>
+                    <option value="5">Yoga Mat</option>
+                </select>
+                <select id="sortSelect" class="w-full sm:flex-1 px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                    <option value="newest" data-i18n="newest_first">Newest First</option>
+                    <option value="oldest" data-i18n="oldest_first">Oldest First</option>
+                    <option value="quantity_high" data-i18n="highest_quantity">Highest Quantity</option>
+                    <option value="quantity_low" data-i18n="lowest_quantity">Lowest Quantity</option>
+                </select>
+            </div>
+            
+            <!-- Report button: improved full width on small, natural shrink on large, no original classes removed -->
+            <button id="openModalBtn" class="w-full lg:w-auto inline-flex items-center justify-center px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2">
+                    <path d="M12 5v14M5 12h14"/>
+                </svg>
+                <span data-i18n="report_damage">Report Damage</span>
+            </button>
+        </div>
     </div>
 
     <!-- damages table + mobile card view -->
