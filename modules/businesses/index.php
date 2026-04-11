@@ -497,5 +497,4 @@ ob_start();
 <?php $content = ob_get_clean(); 
 include '../../includes/header.php'; 
 include '../../includes/sidebar.php'; 
-echo '<div class="main-content min-h-screen">'; 
-echo $content; include '../../includes/footer.php'; ?>
+echo '<div class="main-content min-h-screen">'; echo $content; include '../../includes/footer.php'; ?>
