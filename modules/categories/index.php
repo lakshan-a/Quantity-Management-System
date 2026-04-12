@@ -8,12 +8,18 @@ $pageTitle = 'Categories | Qty Management';
 ob_start();
 ?>
 
-<script src="../../assets/js/translations.js"></script>
+<script src="../../assets/js/categories/translations.js"></script>
 
 <!-- main app wrapper -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-10">
     <!-- header & category controls -->
     <div class="space-y-6">
+
+    <div>
+    <h1 class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 dark:from-gray-200 dark:to-gray-400 bg-clip-text text-transparent" data-i18n="categories_title">Category Management</h1>
+    <p class="text-gray-500 dark:text-gray-400 text-sm mt-1" data-i18n="categories_subtitle">Manage your categories, organize products, and track performance.</p>
+</div>
+
         <!-- top bar: search + add button -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div class="relative w-full sm:w-72">
