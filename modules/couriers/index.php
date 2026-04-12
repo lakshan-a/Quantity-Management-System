@@ -8,17 +8,23 @@ $pageTitle = 'Couriers | Qty Management';
 ob_start();
 ?>
 
-<script src="../../assets/js/translations.js"></script>
+<script src="../../assets/js/couriers/translations.js"></script>
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-10">
     <div class="space-y-6">
+
+    <div>
+        <h1 class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 dark:from-gray-200 dark:to-gray-400 bg-clip-text text-transparent" data-i18n="couriers_title">Couriers Management</h1>
+        <p class="text-gray-500 dark:text-gray-400 text-sm mt-1" data-i18n="couriers_subtitle">Manage your couriers, organize deliveries, and track performance.</p>
+    </div>
+
         <!-- Header: Search + Add Button -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div class="relative w-full sm:w-80">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400">
                     <circle cx="10" cy="10" r="8"/><path d="m21 21-4.3-4.3"/>
                 </svg>
-                <input type="text" id="searchInput" placeholder="Search couriers by name or ID..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                <input type="text" id="searchInput" data-i18n-placeholder="search_placeholder" placeholder="Search couriers by name or ID..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
             </div>
             <div class="flex gap-3">
                 <!-- Filter Dropdown -->
@@ -35,10 +41,10 @@ ob_start();
                     <div id="filterMenu" class="absolute right-0 mt-2 w-64 bg-white dark:bg-slate-800 rounded-lg shadow-lg border border-slate-200 dark:border-slate-700 z-20 hidden">
                         <div class="p-4 space-y-4">
                             <div>
-                                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Delivery Fee Range</label>
+                                <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1" data-i18n="delivery_fee_range">Delivery Fee Range</label>
                                 <div class="grid grid-cols-2 gap-2">
-                                    <input type="number" id="minPrice" placeholder="Min $" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-sm">
-                                    <input type="number" id="maxPrice" placeholder="Max $" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-sm">
+                                    <input type="number" id="minPrice" data-i18n-placeholder="min_placeholder" placeholder="Min $" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-sm">
+                                    <input type="number" id="maxPrice" data-i18n-placeholder="max_placeholder" placeholder="Max $" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-sm">
                                 </div>
                             </div>
                             <button id="resetFiltersBtn" class="w-full px-3 py-2 text-sm text-blue-600 dark:text-blue-400 border border-blue-300 dark:border-blue-600 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors">
@@ -49,7 +55,7 @@ ob_start();
                 </div>
                 <button id="openAddCourierBtn" class="inline-flex items-center justify-center px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors shadow-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 mr-2"><path d="M12 5v14M5 12h14"/></svg>
-                    Add Courier
+                    <span data-i18n="add_courier_btn">Add Courier</span>
                 </button>
             </div>
         </div>
@@ -67,19 +73,19 @@ ob_start();
                 <table class="w-full">
                     <thead class="bg-slate-50 dark:bg-slate-900/40">
                         <tr class="border-b border-slate-200 dark:border-slate-700">
-                            <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Courier ID</th>
-                            <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Courier Name</th>
-                            <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Delivery Fee</th>
-                            <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Contact</th>
-                            <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Address</th>
-                            <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Actions</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="col_courier_id">Courier ID</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="col_courier_name">Courier Name</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="col_delivery_fee">Delivery Fee</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="col_contact">Contact</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="col_address">Address</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="col_actions">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="tableBody" class="divide-y divide-slate-200 dark:divide-slate-700"></tbody>
                 </table>
             </div>
             <!-- Empty state -->
-            <div id="emptyMessage" class="hidden py-12 text-center text-slate-500 dark:text-slate-400 text-sm">No couriers found</div>
+            <div id="emptyMessage" class="hidden py-12 text-center text-slate-500 dark:text-slate-400 text-sm" data-i18n="no_couriers_found">No couriers found</div>
         </div>
     </div>
 </div>
@@ -91,35 +97,35 @@ ob_start();
         <div class="flex-1 sm:hidden"></div>
         <div class="relative w-full bg-white dark:bg-slate-800 shadow-xl rounded-t-2xl sm:rounded-xl sm:max-w-lg overflow-hidden">
             <div class="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700">
-                <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Courier Details</h2>
+                <h2 class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="courier_details_title">Courier Details</h2>
                 <button id="closeViewModalBtn" class="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
                 </button>
             </div>
             <div class="p-4 space-y-4">
                 <div class="bg-slate-50 dark:bg-slate-900/30 rounded-lg p-3">
-                    <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Courier ID</label>
+                    <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1" data-i18n="col_courier_id">Courier ID</label>
                     <p id="viewCourierId" class="text-slate-900 dark:text-white font-mono"></p>
                 </div>
                 <div class="bg-slate-50 dark:bg-slate-900/30 rounded-lg p-3">
-                    <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Courier Name</label>
+                    <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1" data-i18n="col_courier_name">Courier Name</label>
                     <p id="viewCourierName" class="text-slate-900 dark:text-white font-medium"></p>
                 </div>
                 <div class="bg-slate-50 dark:bg-slate-900/30 rounded-lg p-3">
-                    <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Delivery Fee</label>
+                    <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1" data-i18n="col_delivery_fee">Delivery Fee</label>
                     <p id="viewPrice" class="text-slate-900 dark:text-white"></p>
                 </div>
                 <div class="bg-slate-50 dark:bg-slate-900/30 rounded-lg p-3">
-                    <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Contact Number</label>
+                    <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1" data-i18n="col_contact">Contact Number</label>
                     <p id="viewContact" class="text-slate-900 dark:text-white"></p>
                 </div>
                 <div class="bg-slate-50 dark:bg-slate-900/30 rounded-lg p-3">
-                    <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Address</label>
+                    <label class="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1" data-i18n="col_address">Address</label>
                     <p id="viewAddress" class="text-slate-900 dark:text-white"></p>
                 </div>
             </div>
             <div class="p-4 border-t border-slate-200 dark:border-slate-700">
-                <button id="closeViewModalFooterBtn" class="w-full px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors">Close</button>
+                <button id="closeViewModalFooterBtn" class="w-full px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors" data-i18n="close_btn">Close</button>
             </div>
         </div>
     </div>
@@ -133,37 +139,37 @@ ob_start();
         <div class="relative w-full bg-white dark:bg-slate-800 shadow-xl rounded-t-2xl sm:rounded-xl sm:max-w-lg max-h-[90vh] overflow-y-auto modal-content">
             <div class="sticky top-0 bg-white dark:bg-slate-800 z-10 flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700">
                 <div class="absolute top-2 left-1/2 -translate-x-1/2 w-10 h-1 bg-slate-300 dark:bg-slate-600 rounded-full sm:hidden"></div>
-                <h2 id="modalTitle" class="text-lg font-semibold text-slate-900 dark:text-white pt-2 sm:pt-0">Add Courier</h2>
+                <h2 id="modalTitle" class="text-lg font-semibold text-slate-900 dark:text-white pt-2 sm:pt-0" data-i18n="add_courier_title">Add Courier</h2>
                 <button id="closeModalBtn" class="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
                 </button>
             </div>
             <div class="p-4 space-y-4">
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Courier ID</label>
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="col_courier_id">Courier ID</label>
                     <input type="text" id="courierIdInput" disabled class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-60 disabled:cursor-not-allowed font-mono">
-                    <p class="text-xs text-slate-500 mt-1">Auto-generated</p>
+                    <p class="text-xs text-slate-500 mt-1" data-i18n="auto_generated_hint">Auto-generated</p>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Courier Name</label>
-                    <input type="text" id="courierNameInput" placeholder="e.g., FedEx, UPS, DHL" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_courier_name">Courier Name</label>
+                    <input type="text" id="courierNameInput" data-i18n-placeholder="courier_name_placeholder" placeholder="e.g., FedEx, UPS, DHL" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Delivery Fee ($)</label>
-                    <input type="number" step="0.01" id="priceInput" placeholder="0.00" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_delivery_fee">Delivery Fee ($)</label>
+                    <input type="number" step="0.01" id="priceInput" data-i18n-placeholder="fee_placeholder" placeholder="0.00" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Contact Number</label>
-                    <input type="text" id="contactInput" placeholder="+1 234 567 8900" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_contact">Contact Number</label>
+                    <input type="text" id="contactInput" data-i18n-placeholder="contact_placeholder" placeholder="+1 234 567 8900" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Address</label>
-                    <input type="text" id="addressInput" placeholder="123 Shipping Lane, City" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_address">Address</label>
+                    <input type="text" id="addressInput" data-i18n-placeholder="address_placeholder" placeholder="123 Shipping Lane, City" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
             </div>
             <div class="sticky bottom-0 bg-white dark:bg-slate-800 flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-3 p-4 border-t border-slate-200 dark:border-slate-700">
-                <button id="modalCancelBtn" class="px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">Cancel</button>
-                <button id="modalSaveBtn" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors">Save</button>
+                <button id="modalCancelBtn" class="px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors" data-i18n="cancel_btn">Cancel</button>
+                <button id="modalSaveBtn" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors" data-i18n="save_btn">Save</button>
             </div>
         </div>
     </div>
@@ -183,11 +189,11 @@ ob_start();
                         </svg>
                     </div>
                 </div>
-                <h3 class="text-lg font-semibold text-center text-slate-900 dark:text-white mb-2">Delete Courier</h3>
-                <p class="text-center text-slate-500 dark:text-slate-400 mb-6">Are you sure you want to delete this courier? This action cannot be undone.</p>
+                <h3 class="text-lg font-semibold text-center text-slate-900 dark:text-white mb-2" data-i18n="delete_title">Delete Courier</h3>
+                <p class="text-center text-slate-500 dark:text-slate-400 mb-6" data-i18n="delete_confirmation_msg">Are you sure you want to delete this courier? This action cannot be undone.</p>
                 <div class="flex gap-3">
-                    <button id="cancelDeleteBtn" class="flex-1 px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">Cancel</button>
-                    <button id="confirmDeleteBtn" class="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors shadow-sm">Delete</button>
+                    <button id="cancelDeleteBtn" class="flex-1 px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors" data-i18n="cancel_btn">Cancel</button>
+                    <button id="confirmDeleteBtn" class="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors shadow-sm" data-i18n="delete_btn">Delete</button>
                 </div>
             </div>
         </div>

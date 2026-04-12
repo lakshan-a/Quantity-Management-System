@@ -10,10 +10,17 @@ $pageTitle = 'Business Settings | Qty Management';
 ob_start();
 ?>
 
-<script src="../../assets/js/translations.js"></script>
+<script src="../../assets/js/businesses/translations.js"></script>
+
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 md:py-10">
     <div class="space-y-6">
+
+    <div>
+    <h1 class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 dark:from-gray-200 dark:to-gray-400 bg-clip-text text-transparent" data-i18n="businesses_title">Businesses Management</h1>
+    <p class="text-gray-500 dark:text-gray-400 text-sm mt-1" data-i18n="businesses_subtitle">Manage your Businesses, organize products, and track performance.</p>
+</div>
+
         <!-- Header: search, filter, add button -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div class="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
@@ -44,20 +51,20 @@ ob_start();
                 <table class="min-w-full">
                     <thead class="bg-slate-50 dark:bg-slate-900/40">
                         <tr class="border-b border-slate-200 dark:border-slate-700">
-                            <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Business ID</th>
-                            <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Business</th>
-                            <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Email</th>
-                            <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Phone</th>
-                            <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
-                            <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Expires</th>
-                            <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Actions</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="th_business_id">Business ID</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="th_business">Business</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="th_email">Email</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="th_phone">Phone</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="th_status">Status</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="th_expires">Expires</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="th_actions">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="desktopTableBody" class="divide-y divide-slate-200 dark:divide-slate-700"></tbody>
                 </table>
             </div>
             <!-- Empty state -->
-            <div id="emptyMessage" class="hidden py-12 text-center text-slate-500 dark:text-slate-400 text-sm">No businesses found</div>
+            <div id="emptyMessage" class="hidden py-12 text-center text-slate-500 dark:text-slate-400 text-sm" data-i18n="empty_message">No businesses found</div>
         </div>
     </div>
 </div>
@@ -70,52 +77,52 @@ ob_start();
         <div class="relative w-full bg-white dark:bg-slate-800 shadow-xl rounded-t-2xl sm:rounded-xl sm:max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
             <div class="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700">
                 <div class="absolute top-2 left-1/2 -translate-x-1/2 w-10 h-1 bg-slate-300 dark:bg-slate-600 rounded-full sm:hidden"></div>
-                <h2 id="modalTitle" class="text-lg font-semibold text-slate-900 dark:text-white pt-2 sm:pt-0">Add Business</h2>
+                <h2 id="modalTitle" class="text-lg font-semibold text-slate-900 dark:text-white pt-2 sm:pt-0" data-i18n="modal_add_title">Add Business</h2>
                 <button id="closeModalBtn" class="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
             </div>
             <div class="p-4 overflow-y-auto custom-scroll space-y-4">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Business Name *</label>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="label_business_name">Business Name *</label>
                         <input type="text" id="businessName" placeholder="Tech Store Pro" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Owner Name *</label>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="label_owner_name">Owner Name *</label>
                         <input type="text" id="ownerName" placeholder="John Smith" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Email *</label>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="label_email">Email *</label>
                         <input type="email" id="emailInput" placeholder="contact@business.com" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Phone *</label>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="label_phone">Phone *</label>
                         <input type="text" id="phoneInput" placeholder="+1 234 567 8900" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
                     </div>
                     <div class="md:col-span-2">
-                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Address</label>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="label_address">Address</label>
                         <input type="text" id="addressInput" placeholder="123 Business Street, City" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Subscription Status</label>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="label_status">Subscription Status</label>
                         <select id="statusSelect" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
-                            <option value="active">Active</option>
-                            <option value="expired">Expired</option>
-                            <option value="suspended">Suspended</option>
+                            <option value="active" data-i18n="status_active">Active</option>
+                            <option value="expired" data-i18n="status_expired">Expired</option>
+                            <option value="suspended" data-i18n="status_suspended">Suspended</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Subscription Start</label>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="label_start_date">Subscription Start</label>
                         <input type="date" id="startDate" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Subscription End</label>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="label_end_date">Subscription End</label>
                         <input type="date" id="endDate" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
                     </div>
                 </div>
             </div>
             <div class="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-3 p-4 border-t border-slate-200 dark:border-slate-700">
-                <button id="modalCancelBtn" class="px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">Cancel</button>
-                <button id="modalSaveBtn" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors">Save Business</button>
+                <button id="modalCancelBtn" class="px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors" data-i18n="btn_cancel">Cancel</button>
+                <button id="modalSaveBtn" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors" data-i18n="btn_save">Save Business</button>
             </div>
         </div>
     </div>
@@ -128,7 +135,7 @@ ob_start();
         <div class="flex-1 sm:hidden"></div>
         <div class="relative w-full bg-white dark:bg-slate-800 shadow-xl rounded-t-2xl sm:rounded-xl sm:max-w-2xl max-h-[90vh] overflow-hidden flex flex-col">
             <div class="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700">
-                <h2 class="text-lg font-semibold text-slate-900 dark:text-white">Business Details</h2>
+                <h2 class="text-lg font-semibold text-slate-900 dark:text-white" data-i18n="modal_view_title">Business Details</h2>
                 <button id="closeViewModalBtn" class="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg></button>
             </div>
             <div class="p-4 overflow-y-auto custom-scroll space-y-6">
@@ -145,20 +152,20 @@ ob_start();
                     <span id="viewBusinessIdBadge" class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300 font-mono">ID: --</span>
                 </div>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div><p class="text-sm text-slate-500">Email</p><p id="viewEmail" class="font-medium break-all">-</p></div>
-                    <div><p class="text-sm text-slate-500">Phone</p><p id="viewPhone" class="font-medium">-</p></div>
-                    <div class="col-span-2"><p class="text-sm text-slate-500">Address</p><p id="viewAddress" class="font-medium">-</p></div>
-                    <div><p class="text-sm text-slate-500">Subscription Start</p><p id="viewStart" class="font-medium">-</p></div>
-                    <div><p class="text-sm text-slate-500">Subscription End</p><p id="viewEnd" class="font-medium">-</p></div>
-                    <div><p class="text-sm text-slate-500 mb-1">Status</p><span id="viewStatusBadge" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-sm font-medium"></span></div>
+                    <div><p class="text-sm text-slate-500" data-i18n="view_email">Email</p><p id="viewEmail" class="font-medium break-all">-</p></div>
+                    <div><p class="text-sm text-slate-500" data-i18n="view_phone">Phone</p><p id="viewPhone" class="font-medium">-</p></div>
+                    <div class="col-span-2"><p class="text-sm text-slate-500" data-i18n="view_address">Address</p><p id="viewAddress" class="font-medium">-</p></div>
+                    <div><p class="text-sm text-slate-500" data-i18n="view_start">Subscription Start</p><p id="viewStart" class="font-medium">-</p></div>
+                    <div><p class="text-sm text-slate-500" data-i18n="view_end">Subscription End</p><p id="viewEnd" class="font-medium">-</p></div>
+                    <div><p class="text-sm text-slate-500 mb-1" data-i18n="view_status">Status</p><span id="viewStatusBadge" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-sm font-medium"></span></div>
                 </div>
                 <div class="pt-4 border-t border-slate-200 dark:border-slate-700">
-                    <p class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3">Quick Actions</p>
+                    <p class="text-sm font-medium text-slate-700 dark:text-slate-300 mb-3" data-i18n="quick_actions">Quick Actions</p>
                     <div class="flex flex-wrap gap-3" id="quickActionsContainer"></div>
                 </div>
             </div>
             <div class="p-4 border-t border-slate-200 dark:border-slate-700">
-                <button id="closeViewModalFooter" class="w-full px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600">Close</button>
+                <button id="closeViewModalFooter" class="w-full px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600" data-i18n="btn_close">Close</button>
             </div>
         </div>
     </div>
@@ -178,11 +185,11 @@ ob_start();
                         </svg>
                     </div>
                 </div>
-                <h3 class="text-lg font-semibold text-center text-slate-900 dark:text-white mb-2">Delete Business</h3>
-                <p class="text-center text-slate-500 dark:text-slate-400 mb-6">Are you sure you want to delete <span id="deleteBusinessName" class="font-medium text-slate-700 dark:text-slate-300"></span>? This action cannot be undone.</p>
+                <h3 class="text-lg font-semibold text-center text-slate-900 dark:text-white mb-2" data-i18n="delete_title">Delete Business</h3>
+                <p class="text-center text-slate-500 dark:text-slate-400 mb-6" data-i18n="delete_confirmation">Are you sure you want to delete <span id="deleteBusinessName" class="font-medium text-slate-700 dark:text-slate-300"></span>? This action cannot be undone.</p>
                 <div class="flex flex-col-reverse sm:flex-row gap-3">
-                    <button id="cancelDeleteBtn" class="flex-1 px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors">Cancel</button>
-                    <button id="confirmDeleteBtn" class="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors shadow-sm">Delete</button>
+                    <button id="cancelDeleteBtn" class="flex-1 px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors" data-i18n="btn_cancel">Cancel</button>
+                    <button id="confirmDeleteBtn" class="flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-lg transition-colors shadow-sm" data-i18n="btn_delete">Delete</button>
                 </div>
             </div>
         </div>
