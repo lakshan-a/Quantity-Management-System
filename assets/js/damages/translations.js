@@ -117,7 +117,31 @@ const translations = {
         // View Modal
         damage_details: "Damage Details",
         damaged_item: "Damaged Item",
-        close: "Close"
+        close: "Close",
+
+        total_revenue: "Total Revenue",
+        pending_amount: "Pending Amount",
+        cod_payments: "COD Payments",
+        bank_transfers: "Bank Transfers",
+        search_placeholder: "Search by Order ID or Payment ID...",
+        all_status: "All Status",
+        pending: "Pending",
+        verified: "Verified",
+        payment_id: "Payment ID",
+        order_number: "Order Number",
+        amount: "Amount",
+        method: "Method",
+        status: "Status",
+        date: "Date",
+        actions: "Actions",
+        no_payments_found: "No payments found.",
+        payment_details: "Payment Details",
+        order_number_label: "Order Number",
+        payment_method: "Payment Method",
+        payment_date: "Payment Date",
+        verified_by: "Verified By",
+        verify_payment: "Verify Payment",
+        admin_user: "Admin User",
     },
     si: {
 
