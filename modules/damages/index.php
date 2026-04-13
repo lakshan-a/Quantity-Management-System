@@ -8,7 +8,7 @@ $pageTitle = 'Damages | Qty Management';
 ob_start();
 ?>
 
-<script src="../../assets/script/translations.js"></script>
+<script src="../../assets/js/damages/translations.js"></script>
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8 space-y-6" id="damagesApp">
 

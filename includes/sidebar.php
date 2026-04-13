@@ -7,26 +7,33 @@
 // Get language from cookie (will be used by JS translations)
 $lang = isset($_COOKIE['user_lang']) ? $_COOKIE['user_lang'] : 'en';
 
-// Define nav groups with data-i18n attributes instead of hardcoded text
+// Define nav groups with fallback text and data-i18n attributes
 $navGroups = [
     'sidebar.main' => [
-        ['href'=>'../dashboard/index.php',        'icon'=>'dashboard',          'i18n'=>'sidebar.dashboard'],
-        ['href'=>'../modules/orders/index.php',   'icon'=>'shopping_cart',      'i18n'=>'sidebar.orders'],
-        ['href'=>'../modules/customer/index.php', 'icon'=>'people',             'i18n'=>'sidebar.customers'],
+        ['href'=>'../dashboard/index.php',        'icon'=>'dashboard',          'i18n'=>'sidebar.dashboard', 'text'=>'Dashboard'],
+        ['href'=>'../modules/orders/index.php',   'icon'=>'shopping_cart',      'i18n'=>'sidebar.orders', 'text'=>'Orders'],
+        ['href'=>'../modules/customer/index.php', 'icon'=>'people',             'i18n'=>'sidebar.customers', 'text'=>'Customers'],
     ],
     'sidebar.operations' => [
-        ['href'=>'../modules/payments/index.php', 'icon'=>'payments',           'i18n'=>'sidebar.payments'],
-        ['href'=>'../modules/returns/index.php',  'icon'=>'assignment_return',  'i18n'=>'sidebar.returns'],
-        ['href'=>'../modules/damages/index.php',  'icon'=>'report_problem',     'i18n'=>'sidebar.damages'],
+        ['href'=>'../modules/payments/index.php', 'icon'=>'payments',           'i18n'=>'sidebar.payments', 'text'=>'Payments'],
+        ['href'=>'../modules/returns/index.php',  'icon'=>'assignment_return',  'i18n'=>'sidebar.returns', 'text'=>'Returns'],
+        ['href'=>'../modules/damages/index.php',  'icon'=>'report_problem',     'i18n'=>'sidebar.damages', 'text'=>'Damages'],
     ],
     'sidebar.management' => [
-        ['href'=>'../modules/items/index.php',        'icon'=>'inventory_2',        'i18n'=>'sidebar.items'],
-        ['href'=>'../modules/categories/index.php',   'icon'=>'category',           'i18n'=>'sidebar.categories'],
-        ['href'=>'../modules/wholesalers/index.php',  'icon'=>'store',              'i18n'=>'sidebar.wholesalers'],
-        ['href'=>'../modules/couriers/index.php',     'icon'=>'local_shipping',     'i18n'=>'sidebar.couriers'],
-        ['href'=>'../modules/businesses/index.php',   'icon'=>'business',           'i18n'=>'sidebar.businesses'],
-        ['href'=>'../modules/users/index.php',        'icon'=>'admin_panel_settings','i18n'=>'sidebar.users'],
+        ['href'=>'../modules/items/index.php',        'icon'=>'inventory_2',        'i18n'=>'sidebar.items', 'text'=>'Items'],
+        ['href'=>'../modules/categories/index.php',   'icon'=>'category',           'i18n'=>'sidebar.categories', 'text'=>'Categories'],
+        ['href'=>'../modules/wholesalers/index.php',  'icon'=>'store',              'i18n'=>'sidebar.wholesalers', 'text'=>'Wholesalers'],
+        ['href'=>'../modules/couriers/index.php',     'icon'=>'local_shipping',     'i18n'=>'sidebar.couriers', 'text'=>'Couriers'],
+        ['href'=>'../modules/businesses/index.php',   'icon'=>'business',           'i18n'=>'sidebar.businesses', 'text'=>'Businesses'],
+        ['href'=>'../modules/users/index.php',        'icon'=>'admin_panel_settings','i18n'=>'sidebar.users', 'text'=>'Users'],
     ],
+];
+
+// Section labels with fallback text
+$sectionLabels = [
+    'sidebar.main' => 'Main',
+    'sidebar.operations' => 'Operations',
+    'sidebar.management' => 'Management',
 ];
 
 $currentPath = $_SERVER['REQUEST_URI'] ?? '';
@@ -287,7 +294,7 @@ $currentPath = $_SERVER['REQUEST_URI'] ?? '';
     <nav style="padding: 8px 0 24px;">
         <?php foreach ($navGroups as $groupI18n => $items): ?>
             <div class="sidebar-section-label" data-i18n="<?php echo htmlspecialchars($groupI18n); ?>">
-                <?php echo htmlspecialchars($groupI18n); ?>
+                <?php echo htmlspecialchars($sectionLabels[$groupI18n] ?? $groupI18n); ?>
             </div>
 
             <?php foreach ($items as $item): ?>
@@ -298,7 +305,7 @@ $currentPath = $_SERVER['REQUEST_URI'] ?? '';
                    class="sidebar-item <?php echo $isActive ? 'active' : ''; ?>">
                     <span class="material-icons-round mi"><?php echo htmlspecialchars($item['icon']); ?></span>
                     <span data-i18n="<?php echo htmlspecialchars($item['i18n']); ?>">
-                        <?php echo htmlspecialchars($item['i18n']); ?>
+                        <?php echo htmlspecialchars($item['text']); ?>
                     </span>
                 </a>
             <?php endforeach; ?>
@@ -309,7 +316,7 @@ $currentPath = $_SERVER['REQUEST_URI'] ?? '';
     <div class="sidebar-bottom">
         <a href="../auth/logout.php" class="sidebar-logout">
             <span class="material-icons-round" style="font-size:20px;">logout</span>
-            <span data-i18n="sidebar.logout">sidebar.logout</span>
+            <span data-i18n="sidebar.logout">Logout</span>
         </a>
     </div>
 
