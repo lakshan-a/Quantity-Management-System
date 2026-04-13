@@ -7,25 +7,25 @@
 // Get language from cookie (will be used by JS translations)
 $lang = isset($_COOKIE['user_lang']) ? $_COOKIE['user_lang'] : 'en';
 
-// Define nav groups with fallback text and data-i18n attributes
+// Define nav groups with corrected paths (removed duplicate modules)
 $navGroups = [
     'sidebar.main' => [
         ['href'=>'../dashboard/index.php',        'icon'=>'dashboard',          'i18n'=>'sidebar.dashboard', 'text'=>'Dashboard'],
-        ['href'=>'../modules/orders/index.php',   'icon'=>'shopping_cart',      'i18n'=>'sidebar.orders', 'text'=>'Orders'],
-        ['href'=>'../modules/customer/index.php', 'icon'=>'people',             'i18n'=>'sidebar.customers', 'text'=>'Customers'],
+        ['href'=>'../orders/index.php',            'icon'=>'shopping_cart',      'i18n'=>'sidebar.orders', 'text'=>'Orders'],
+        ['href'=>'../customer/index.php',          'icon'=>'people',             'i18n'=>'sidebar.customers', 'text'=>'Customers'],
     ],
     'sidebar.operations' => [
-        ['href'=>'../modules/payments/index.php', 'icon'=>'payments',           'i18n'=>'sidebar.payments', 'text'=>'Payments'],
-        ['href'=>'../modules/returns/index.php',  'icon'=>'assignment_return',  'i18n'=>'sidebar.returns', 'text'=>'Returns'],
-        ['href'=>'../modules/damages/index.php',  'icon'=>'report_problem',     'i18n'=>'sidebar.damages', 'text'=>'Damages'],
+        ['href'=>'../payments/index.php',          'icon'=>'payments',           'i18n'=>'sidebar.payments', 'text'=>'Payments'],
+        ['href'=>'../returns/index.php',           'icon'=>'assignment_return',  'i18n'=>'sidebar.returns', 'text'=>'Returns'],
+        ['href'=>'../damages/index.php',           'icon'=>'report_problem',     'i18n'=>'sidebar.damages', 'text'=>'Damages'],
     ],
     'sidebar.management' => [
-        ['href'=>'../modules/items/index.php',        'icon'=>'inventory_2',        'i18n'=>'sidebar.items', 'text'=>'Items'],
-        ['href'=>'../modules/categories/index.php',   'icon'=>'category',           'i18n'=>'sidebar.categories', 'text'=>'Categories'],
-        ['href'=>'../modules/wholesalers/index.php',  'icon'=>'store',              'i18n'=>'sidebar.wholesalers', 'text'=>'Wholesalers'],
-        ['href'=>'../modules/couriers/index.php',     'icon'=>'local_shipping',     'i18n'=>'sidebar.couriers', 'text'=>'Couriers'],
-        ['href'=>'../modules/businesses/index.php',   'icon'=>'business',           'i18n'=>'sidebar.businesses', 'text'=>'Businesses'],
-        ['href'=>'../modules/users/index.php',        'icon'=>'admin_panel_settings','i18n'=>'sidebar.users', 'text'=>'Users'],
+        ['href'=>'../items/index.php',             'icon'=>'inventory_2',        'i18n'=>'sidebar.items', 'text'=>'Items'],
+        ['href'=>'../categories/index.php',        'icon'=>'category',           'i18n'=>'sidebar.categories', 'text'=>'Categories'],
+        ['href'=>'../wholesalers/index.php',       'icon'=>'store',              'i18n'=>'sidebar.wholesalers', 'text'=>'Wholesalers'],
+        ['href'=>'../couriers/index.php',          'icon'=>'local_shipping',     'i18n'=>'sidebar.couriers', 'text'=>'Couriers'],
+        ['href'=>'../businesses/index.php',        'icon'=>'business',           'i18n'=>'sidebar.businesses', 'text'=>'Businesses'],
+        ['href'=>'../users/index.php',             'icon'=>'admin_panel_settings','i18n'=>'sidebar.users', 'text'=>'Users'],
     ],
 ];
 
@@ -36,7 +36,22 @@ $sectionLabels = [
     'sidebar.management' => 'Management',
 ];
 
+// Fix: Get current path properly and detect active module
 $currentPath = $_SERVER['REQUEST_URI'] ?? '';
+$currentScript = basename($_SERVER['SCRIPT_NAME']);
+
+// Improved active detection - matches the module directory name
+$isActiveItem = function($href) use ($currentPath, $currentScript) {
+    // Extract the module name from href (e.g., 'damages' from '../damages/index.php')
+    if (preg_match('/\.\.\/([^\/]+)\/index\.php/', $href, $matches)) {
+        $moduleName = $matches[1];
+        // Check if current URL contains the module name
+        return strpos($currentPath, '/' . $moduleName . '/') !== false || 
+               strpos($currentPath, $moduleName . '/index.php') !== false ||
+               (basename(dirname($currentPath)) === $moduleName);
+    }
+    return false;
+};
 ?>
 
 <aside id="sidebar" class="sidebar">
@@ -299,7 +314,7 @@ $currentPath = $_SERVER['REQUEST_URI'] ?? '';
 
             <?php foreach ($items as $item): ?>
                 <?php 
-                $isActive = strpos($currentPath, basename(dirname($item['href']))) !== false;
+                $isActive = $isActiveItem($item['href']);
                 ?>
                 <a href="<?php echo htmlspecialchars($item['href']); ?>"
                    class="sidebar-item <?php echo $isActive ? 'active' : ''; ?>">
@@ -320,4 +335,21 @@ $currentPath = $_SERVER['REQUEST_URI'] ?? '';
         </a>
     </div>
 
+    <script>
+    // Mobile sidebar close function
+    function closeSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar) {
+            sidebar.classList.add('-translate-x-full');
+        }
+    }
+    
+    // Optional: Handle responsive sidebar toggle
+    if (window.innerWidth < 768) {
+        const sidebar = document.getElementById('sidebar');
+        if (sidebar) {
+            sidebar.classList.add('-translate-x-full');
+        }
+    }
+    </script>
 </aside>

@@ -8,10 +8,16 @@ $pageTitle = 'Items | Qty Management';
 ob_start();
 ?>
 
-<script src="../../assets/js/translations.js"></script>
+<script src="../../assets/js/items/translations.js"></script>
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-10">
     <div id="app" class="space-y-6">
+
+    <div>
+    <h1 class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 dark:from-gray-200 dark:to-gray-400 bg-clip-text text-transparent" data-i18n="items_title">Items Management</h1>
+    <p class="text-gray-500 dark:text-gray-400 text-sm mt-1" data-i18n="items_subtitle">Manage your Items, organize products, and track performance.</p>
+</div>
+
         <!-- Header with search, filter, and add button -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div class="relative w-full sm:w-80">
@@ -484,7 +490,7 @@ ob_start();
     function showViewModal(item) {
         const movements = getStockMovements(item.item_id);
         const colorsHtml = item.colors && item.colors.length ? item.colors.map(c => `<span class="inline-flex px-2 py-0.5 rounded-full text-xs bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300">${escapeHtml(c)}</span>`).join('') : '<span class="text-slate-500 text-sm">—</span>';
-        const movementsHtml = movements.length === 0 ? '<p class="text-sm text-slate-500 text-center py-4">No stock movements recorded</p>' : movements.map(m => `
+        const movementsHtml = movements.length === 0 ? `<p class="text-sm text-slate-500 text-center py-4">${t('no_stock_movements')}</p>` : movements.map(m => `
             <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
                 <div class="flex items-center gap-3">
                     <div class="w-8 h-8 rounded-full flex items-center justify-center ${m.type === 'in' ? 'bg-emerald-100 dark:bg-emerald-900/30' : 'bg-red-100 dark:bg-red-900/30'}">
@@ -507,21 +513,21 @@ ob_start();
                 ${item.item_image ? `<img src="${item.item_image}" class="w-full h-full object-cover">` : `<svg class="w-16 h-16 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>`}
             </div>
             <div class="grid grid-cols-2 gap-4">
-                <div class="col-span-2 sm:col-span-1"><p class="text-sm text-slate-500">Item Code</p><p class="font-medium font-mono text-slate-900 dark:text-white">${item.item_code}</p></div>
-                <div class="col-span-2 sm:col-span-1"><p class="text-sm text-slate-500">Item Name</p><p class="font-medium text-slate-900 dark:text-white">${escapeHtml(item.item_name)}</p></div>
-                <div><p class="text-sm text-slate-500">Cost Price</p><p class="font-medium text-slate-900 dark:text-white">$${item.cost_price.toFixed(2)}</p></div>
-                <div><p class="text-sm text-slate-500">Selling Price</p><p class="font-medium text-slate-900 dark:text-white">$${item.selling_price.toFixed(2)}</p></div>
-                <div><p class="text-sm text-slate-500">Stock Quantity</p><p class="font-medium ${item.stock_quantity < 10 ? 'text-red-500' : 'text-slate-900 dark:text-white'}">${item.stock_quantity}</p></div>
-                <div><p class="text-sm text-slate-500">Status</p><span class="inline-flex px-2 py-0.5 rounded-full text-xs ${item.status === 'active' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' : 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300'}">${item.status}</span></div>
-                <div class="col-span-2"><p class="text-sm text-slate-500 mb-1">Colors</p><div class="flex flex-wrap gap-2">${colorsHtml}</div></div>
-                <div class="col-span-2"><p class="text-sm text-slate-500">Size</p><p class="text-slate-900 dark:text-white">${item.size || '—'}</p></div>
-                ${item.category_id ? `<div><p class="text-sm text-slate-500">Category ID</p><p class="text-slate-900 dark:text-white">${item.category_id}</p></div>` : ''}
-                ${item.wholesale_id ? `<div><p class="text-sm text-slate-500">Wholesale ID</p><p class="text-slate-900 dark:text-white">${item.wholesale_id}</p></div>` : ''}
+                <div class="col-span-2 sm:col-span-1"><p class="text-sm text-slate-500">${t('item_code_label')}</p><p class="font-medium font-mono text-slate-900 dark:text-white">${item.item_code}</p></div>
+                <div class="col-span-2 sm:col-span-1"><p class="text-sm text-slate-500">${t('item_name_label')}</p><p class="font-medium text-slate-900 dark:text-white">${escapeHtml(item.item_name)}</p></div>
+                <div><p class="text-sm text-slate-500">${t('cost_price_label')}</p><p class="font-medium text-slate-900 dark:text-white">$${item.cost_price.toFixed(2)}</p></div>
+                <div><p class="text-sm text-slate-500">${t('selling_price_label')}</p><p class="font-medium text-slate-900 dark:text-white">$${item.selling_price.toFixed(2)}</p></div>
+                <div><p class="text-sm text-slate-500">${t('stock_quantity_label')}</p><p class="font-medium ${item.stock_quantity < 10 ? 'text-red-500' : 'text-slate-900 dark:text-white'}">${item.stock_quantity}</p></div>
+                <div><p class="text-sm text-slate-500">${t('status_label')}</p><span class="inline-flex px-2 py-0.5 rounded-full text-xs ${item.status === 'active' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' : 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300'}">${item.status === 'active' ? t('active_option') : t('inactive_option')}</span></div>
+                <div class="col-span-2"><p class="text-sm text-slate-500 mb-1">${t('colors_label')}</p><div class="flex flex-wrap gap-2">${colorsHtml}</div></div>
+                <div class="col-span-2"><p class="text-sm text-slate-500">${t('size_label')}</p><p class="text-slate-900 dark:text-white">${item.size || '—'}</p></div>
+                ${item.category_id ? `<div><p class="text-sm text-slate-500">${t('category_id_label')}</p><p class="text-slate-900 dark:text-white">${item.category_id}</p></div>` : ''}
+                ${item.wholesale_id ? `<div><p class="text-sm text-slate-500">${t('wholesale_id_label')}</p><p class="text-slate-900 dark:text-white">${item.wholesale_id}</p></div>` : ''}
             </div>
             <div class="border-t border-slate-200 dark:border-slate-700 pt-4">
                 <div class="flex items-center gap-2 mb-3">
                     <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <h3 class="font-semibold text-slate-900 dark:text-white">Stock Movement History</h3>
+                    <h3 class="font-semibold text-slate-900 dark:text-white">${t('stock_movement_history')}</h3>
                 </div>
                 <div class="space-y-2">${movementsHtml}</div>
             </div>

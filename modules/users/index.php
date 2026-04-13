@@ -298,8 +298,8 @@ ob_start();
 
     // View user details
     function handleView(user) {
-        const roleHtml = `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${roleColors[user.role]}">${user.role === 'admin' ? 'Admin' : 'Staff'}</span>`;
-        const statusHtml = `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${statusColors[user.status]}">${user.status === 'active' ? 'Active' : 'Inactive'}</span>`;
+        const roleHtml = `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${roleColors[user.role]}">${user.role === 'admin' ? t('admin') : t('staff')}</span>`;
+        const statusHtml = `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${statusColors[user.status]}">${user.status === 'active' ? t('active') : t('inactive')}</span>`;
         const imageHtml = user.user_image && user.user_image !== '' 
             ? `<img src="${user.user_image}" alt="${escapeHtml(user.full_name)}" class="w-24 h-24 rounded-full object-cover border-2 border-slate-200 dark:border-slate-700 mx-auto">`
             : `<div class="w-24 h-24 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center mx-auto border-2 border-slate-200 dark:border-slate-700">
@@ -312,31 +312,31 @@ ob_start();
             </div>
             <div class="space-y-3">
                 <div>
-                    <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">User ID</label>
+                    <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">${t('user_id_label')}</label>
                     <p class="text-sm font-mono text-slate-900 dark:text-white mt-1">${escapeHtml(user.user_id)}</p>
                 </div>
                 <div>
-                    <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Full Name</label>
+                    <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">${t('full_name_label')}</label>
                     <p class="text-sm text-slate-900 dark:text-white mt-1">${escapeHtml(user.full_name)}</p>
                 </div>
                 <div>
-                    <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Email</label>
+                    <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">${t('email_label')}</label>
                     <p class="text-sm text-slate-900 dark:text-white mt-1">${escapeHtml(user.email)}</p>
                 </div>
                 <div>
-                    <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Phone</label>
+                    <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">${t('phone_label')}</label>
                     <p class="text-sm text-slate-900 dark:text-white mt-1">${escapeHtml(user.phone)}</p>
                 </div>
                 <div>
-                    <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Role</label>
+                    <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">${t('role_label')}</label>
                     <p class="text-sm mt-1">${roleHtml}</p>
                 </div>
                 <div>
-                    <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Status</label>
+                    <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">${t('status_label')}</label>
                     <p class="text-sm mt-1">${statusHtml}</p>
                 </div>
                 <div>
-                    <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">Created At</label>
+                    <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">${t('created_at_label')}</label>
                     <p class="text-sm text-slate-900 dark:text-white mt-1">${formatDate(user.createdAt)}</p>
                 </div>
             </div>
