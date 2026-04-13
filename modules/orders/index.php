@@ -68,7 +68,7 @@ ob_start();
   </div>
 </div>
 
-<!-- NEW ORDER MODAL (create) -->
+<!-- ADD / EDIT MODAL (create) -->
 <div id="orderModal" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-modal="true" role="dialog">
   <div class="fixed inset-0 bg-black/50" id="orderModalBackdrop"></div>
   <div class="fixed inset-0 flex flex-col sm:items-center sm:justify-center sm:p-4">
@@ -88,7 +88,7 @@ ob_start();
             <!-- Customer select -->
             <div>
               <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-1.5">Customer <span class="text-red-500">*</span></label>
-              <select id="customer_id" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+              <select id="customer_id" required class="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
                 <option value="">Select customer</option>
                 <option value="1">John Smith</option>
                 <option value="2">Sarah Johnson</option>
@@ -99,7 +99,7 @@ ob_start();
             <!-- Courier select -->
             <div>
               <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-1.5">Courier <span class="text-red-500">*</span></label>
-              <select id="courier_id" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500">
+              <select id="courier_id" required class="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500">
                 <option value="">Select courier</option>
                 <option value="1" data-fee="15.99">FedEx - $15.99</option>
                 <option value="2" data-fee="12.99">UPS - $12.99</option>
@@ -122,7 +122,7 @@ ob_start();
               <!-- dynamic rows will be injected here -->
               <div class="item-row flex flex-wrap sm:flex-nowrap gap-3 items-center">
                 <div class="flex-1 min-w-[180px]">
-                  <select class="itemSelect w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-sm">
+                  <select class="itemSelect w-full px-3 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-sm">
                     <option value="">Select product</option>
                     <option value="1" data-price="89.99">Wireless Headphones - $89.99</option>
                     <option value="2" data-price="29.99">Cotton T-Shirt - $29.99</option>
@@ -131,7 +131,7 @@ ob_start();
                   </select>
                 </div>
                 <div class="w-28">
-                  <input type="number" class="itemQty w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-sm" value="1" min="1" step="1">
+                  <input type="number" class="itemQty w-full px-3 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-sm" value="1" min="1" step="1">
                 </div>
                 <button type="button" class="removeItemBtn text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-50 dark:hover:bg-red-900/20 transition" style="display: none;">✕</button>
               </div>
@@ -143,21 +143,21 @@ ob_start();
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
             <div>
               <label class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">Payment Method</label>
-              <select id="payment_method" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
+              <select id="payment_method" class="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
                 <option value="cod">Cash on Delivery (COD)</option>
                 <option value="bank_transfer">Bank Transfer</option>
               </select>
             </div>
             <div>
               <label class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">Payment Status</label>
-              <select id="payment_status" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
+              <select id="payment_status" class="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
                 <option value="pending">Pending</option>
                 <option value="paid">Paid</option>
               </select>
             </div>
             <div>
               <label class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1">Delivery Type</label>
-              <select id="delivery_type" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
+              <select id="delivery_type" class="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
                 <option value="pay">Paid Delivery</option>
                 <option value="free">Free Delivery</option>
               </select>
