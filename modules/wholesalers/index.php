@@ -368,14 +368,14 @@ ob_start();
       const wholesale = wholesales.find(w => w.wholesale_id === id);
       if (!wholesale) return;
       viewContent.innerHTML = `
-        <div class="grid grid-cols-2 gap-4">
-          <div><p class="text-sm text-slate-500">Wholesale ID</p><p class="font-medium text-slate-900 dark:text-white font-mono">${escapeHtml(wholesale.wholesale_id)}</p></div>
-          <div><p class="text-sm text-slate-500">Name</p><p class="font-medium text-slate-900 dark:text-white">${escapeHtml(wholesale.wholesale_name)}</p></div>
-          <div><p class="text-sm text-slate-500">Phone</p><p class="font-medium text-slate-900 dark:text-white">${escapeHtml(wholesale.phone)}</p></div>
-          <div><p class="text-sm text-slate-500">Email</p><p class="font-medium text-slate-900 dark:text-white">${escapeHtml(wholesale.email)}</p></div>
-          <div class="col-span-2"><p class="text-sm text-slate-500">Address</p><p class="font-medium text-slate-900 dark:text-white">${escapeHtml(wholesale.address)}</p></div>
-          <div class="col-span-2"><p class="text-sm text-slate-500">Category</p><p class="font-medium text-slate-900 dark:text-white">${categoryMap[wholesale.category_id] || 'Uncategorized'}</p></div>
-        </div>
+         <div class="grid grid-cols-2 gap-4">
+                <div><p class="text-sm text-slate-500">${t('wholesale_id_label')}</p><p class="font-medium text-slate-900 dark:text-white font-mono">${escapeHtml(wholesale.wholesale_id)}</p></div>
+                <div><p class="text-sm text-slate-500">${t('name_label')}</p><p class="font-medium text-slate-900 dark:text-white">${escapeHtml(wholesale.wholesale_name)}</p></div>
+                <div><p class="text-sm text-slate-500">${t('phone_label')}</p><p class="font-medium text-slate-900 dark:text-white">${escapeHtml(wholesale.phone)}</p></div>
+                <div><p class="text-sm text-slate-500">${t('email_label')}</p><p class="font-medium text-slate-900 dark:text-white">${escapeHtml(wholesale.email)}</p></div>
+                <div class="col-span-2"><p class="text-sm text-slate-500">${t('address_label')}</p><p class="font-medium text-slate-900 dark:text-white">${escapeHtml(wholesale.address)}</p></div>
+                <div class="col-span-2"><p class="text-sm text-slate-500">${t('category_label')}</p><p class="font-medium text-slate-900 dark:text-white">${categoryMap[wholesale.category_id] || t('uncategorized')}</p></div>
+            </div>
       `;
       viewModal.classList.remove('hidden');
       document.body.style.overflow = 'hidden';

@@ -526,14 +526,14 @@ ob_start();
         const contentDiv = document.getElementById('viewModalContent');
         const actionsDiv = document.getElementById('viewModalActions');
         contentDiv.innerHTML = `
-            <div class="grid grid-cols-2 gap-4">
-                <div><p class="text-sm text-slate-500">Return ID</p><p class="font-medium text-slate-900 dark:text-white font-mono">${escapeHtml(returnObj.return_id)}</p></div>
-                <div><p class="text-sm text-slate-500">Order Number</p><p class="font-medium text-slate-900 dark:text-white">${escapeHtml(returnObj.order_number)}</p></div>
-                <div><p class="text-sm text-slate-500 mb-1">Status</p><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${statusBadgeClass(returnObj.return_status)}">${returnObj.return_status}</span></div>
-                <div><p class="text-sm text-slate-500 mb-1">Refund</p><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${refundBadgeClass(returnObj.refund_status)}">${returnObj.refund_status}</span></div>
-                <div class="col-span-2"><p class="text-sm text-slate-500">Reason</p><p class="font-medium text-slate-900 dark:text-white">${escapeHtml(returnObj.reason)}</p></div>
-                ${returnObj.returned_date ? `<div><p class="text-sm text-slate-500">Returned Date</p><p class="font-medium">${formatDate(returnObj.returned_date)}</p></div>` : ''}
-                ${returnObj.order_lost ? `<div class="col-span-2"><p class="text-sm text-slate-500">Order lost notes</p><p class="font-medium">${escapeHtml(returnObj.order_lost)}</p></div>` : ''}
+           <div class="grid grid-cols-2 gap-4">
+                <div><p class="text-sm text-slate-500">${t('return_id_label')}</p><p class="font-medium text-slate-900 dark:text-white font-mono">${escapeHtml(returnObj.return_id)}</p></div>
+                <div><p class="text-sm text-slate-500">${t('order_number_label')}</p><p class="font-medium text-slate-900 dark:text-white">${escapeHtml(returnObj.order_number)}</p></div>
+                <div><p class="text-sm text-slate-500 mb-1">${t('status')}</p><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${statusBadgeClass(returnObj.return_status)}">${t(returnObj.return_status)}</span></div>
+                <div><p class="text-sm text-slate-500 mb-1">${t('refund')}</p><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${refundBadgeClass(returnObj.refund_status)}">${t(returnObj.refund_status)}</span></div>
+                <div class="col-span-2"><p class="text-sm text-slate-500">${t('reason')}</p><p class="font-medium text-slate-900 dark:text-white">${escapeHtml(returnObj.reason)}</p></div>
+                ${returnObj.returned_date ? `<div><p class="text-sm text-slate-500">${t('returned_date')}</p><p class="font-medium">${formatDate(returnObj.returned_date)}</p></div>` : ''}
+                ${returnObj.order_lost ? `<div class="col-span-2"><p class="text-sm text-slate-500">${t('order_lost_notes_label')}</p><p class="font-medium">${escapeHtml(returnObj.order_lost)}</p></div>` : ''}
             </div>
         `;
         actionsDiv.innerHTML = '';
