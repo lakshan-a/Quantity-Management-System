@@ -7,51 +7,29 @@
 // Get language from cookie (will be used by JS translations)
 $lang = isset($_COOKIE['user_lang']) ? $_COOKIE['user_lang'] : 'en';
 
-// Define nav groups with corrected paths (removed duplicate modules)
+// Define nav groups with data-i18n attributes instead of hardcoded text
 $navGroups = [
     'sidebar.main' => [
-        ['href'=>'../dashboard/index.php',        'icon'=>'dashboard',          'i18n'=>'sidebar.dashboard', 'text'=>'Dashboard'],
-        ['href'=>'../orders/index.php',            'icon'=>'shopping_cart',      'i18n'=>'sidebar.orders', 'text'=>'Orders'],
-        ['href'=>'../customer/index.php',          'icon'=>'people',             'i18n'=>'sidebar.customers', 'text'=>'Customers'],
+        ['href'=>'../dashboard/index.php',        'icon'=>'dashboard',          'i18n'=>'sidebar.dashboard'],
+        ['href'=>'../modules/orders/index.php',   'icon'=>'shopping_cart',      'i18n'=>'sidebar.orders'],
+        ['href'=>'../modules/customer/index.php', 'icon'=>'people',             'i18n'=>'sidebar.customers'],
     ],
     'sidebar.operations' => [
-        ['href'=>'../payments/index.php',          'icon'=>'payments',           'i18n'=>'sidebar.payments', 'text'=>'Payments'],
-        ['href'=>'../returns/index.php',           'icon'=>'assignment_return',  'i18n'=>'sidebar.returns', 'text'=>'Returns'],
-        ['href'=>'../damages/index.php',           'icon'=>'report_problem',     'i18n'=>'sidebar.damages', 'text'=>'Damages'],
+        ['href'=>'../modules/payments/index.php', 'icon'=>'payments',           'i18n'=>'sidebar.payments'],
+        ['href'=>'../modules/returns/index.php',  'icon'=>'assignment_return',  'i18n'=>'sidebar.returns'],
+        ['href'=>'../modules/damages/index.php',  'icon'=>'report_problem',     'i18n'=>'sidebar.damages'],
     ],
     'sidebar.management' => [
-        ['href'=>'../items/index.php',             'icon'=>'inventory_2',        'i18n'=>'sidebar.items', 'text'=>'Items'],
-        ['href'=>'../categories/index.php',        'icon'=>'category',           'i18n'=>'sidebar.categories', 'text'=>'Categories'],
-        ['href'=>'../wholesalers/index.php',       'icon'=>'store',              'i18n'=>'sidebar.wholesalers', 'text'=>'Wholesalers'],
-        ['href'=>'../couriers/index.php',          'icon'=>'local_shipping',     'i18n'=>'sidebar.couriers', 'text'=>'Couriers'],
-        ['href'=>'../businesses/index.php',        'icon'=>'business',           'i18n'=>'sidebar.businesses', 'text'=>'Businesses'],
-        ['href'=>'../users/index.php',             'icon'=>'admin_panel_settings','i18n'=>'sidebar.users', 'text'=>'Users'],
+        ['href'=>'../modules/items/index.php',        'icon'=>'inventory_2',        'i18n'=>'sidebar.items'],
+        ['href'=>'../modules/categories/index.php',   'icon'=>'category',           'i18n'=>'sidebar.categories'],
+        ['href'=>'../modules/wholesalers/index.php',  'icon'=>'store',              'i18n'=>'sidebar.wholesalers'],
+        ['href'=>'../modules/couriers/index.php',     'icon'=>'local_shipping',     'i18n'=>'sidebar.couriers'],
+        ['href'=>'../modules/businesses/index.php',   'icon'=>'business',           'i18n'=>'sidebar.businesses'],
+        ['href'=>'../modules/users/index.php',        'icon'=>'admin_panel_settings','i18n'=>'sidebar.users'],
     ],
 ];
 
-// Section labels with fallback text
-$sectionLabels = [
-    'sidebar.main' => 'Main',
-    'sidebar.operations' => 'Operations',
-    'sidebar.management' => 'Management',
-];
-
-// Fix: Get current path properly and detect active module
 $currentPath = $_SERVER['REQUEST_URI'] ?? '';
-$currentScript = basename($_SERVER['SCRIPT_NAME']);
-
-// Improved active detection - matches the module directory name
-$isActiveItem = function($href) use ($currentPath, $currentScript) {
-    // Extract the module name from href (e.g., 'damages' from '../damages/index.php')
-    if (preg_match('/\.\.\/([^\/]+)\/index\.php/', $href, $matches)) {
-        $moduleName = $matches[1];
-        // Check if current URL contains the module name
-        return strpos($currentPath, '/' . $moduleName . '/') !== false || 
-               strpos($currentPath, $moduleName . '/index.php') !== false ||
-               (basename(dirname($currentPath)) === $moduleName);
-    }
-    return false;
-};
 ?>
 
 <aside id="sidebar" class="sidebar">
@@ -309,18 +287,18 @@ $isActiveItem = function($href) use ($currentPath, $currentScript) {
     <nav style="padding: 8px 0 24px;">
         <?php foreach ($navGroups as $groupI18n => $items): ?>
             <div class="sidebar-section-label" data-i18n="<?php echo htmlspecialchars($groupI18n); ?>">
-                <?php echo htmlspecialchars($sectionLabels[$groupI18n] ?? $groupI18n); ?>
+                <?php echo htmlspecialchars($groupI18n); ?>
             </div>
 
             <?php foreach ($items as $item): ?>
                 <?php 
-                $isActive = $isActiveItem($item['href']);
+                $isActive = strpos($currentPath, basename(dirname($item['href']))) !== false;
                 ?>
                 <a href="<?php echo htmlspecialchars($item['href']); ?>"
                    class="sidebar-item <?php echo $isActive ? 'active' : ''; ?>">
                     <span class="material-icons-round mi"><?php echo htmlspecialchars($item['icon']); ?></span>
                     <span data-i18n="<?php echo htmlspecialchars($item['i18n']); ?>">
-                        <?php echo htmlspecialchars($item['text']); ?>
+                        <?php echo htmlspecialchars($item['i18n']); ?>
                     </span>
                 </a>
             <?php endforeach; ?>
@@ -331,25 +309,9 @@ $isActiveItem = function($href) use ($currentPath, $currentScript) {
     <div class="sidebar-bottom">
         <a href="../auth/logout.php" class="sidebar-logout">
             <span class="material-icons-round" style="font-size:20px;">logout</span>
-            <span data-i18n="sidebar.logout">Logout</span>
+            <span data-i18n="sidebar.logout">sidebar.logout</span>
         </a>
     </div>
 
-    <script>
-    // Mobile sidebar close function
-    function closeSidebar() {
-        const sidebar = document.getElementById('sidebar');
-        if (sidebar) {
-            sidebar.classList.add('-translate-x-full');
-        }
-    }
-    
-    // Optional: Handle responsive sidebar toggle
-    if (window.innerWidth < 768) {
-        const sidebar = document.getElementById('sidebar');
-        if (sidebar) {
-            sidebar.classList.add('-translate-x-full');
-        }
-    }
-    </script>
 </aside>
+

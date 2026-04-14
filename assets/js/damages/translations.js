@@ -73,6 +73,8 @@ const translations = {
         'header.logout': 'Logout',
 
         // Damages Page
+        'damages_title': "Damages Management",
+        'damages_subtitle':"Manage damages efficiently, keep products organized, and track performance at a glance.",
         total_damaged_items: "Total damaged items",
         total_records: "Total Records",
         this_month: "This Month",
@@ -213,6 +215,8 @@ const translations = {
         'header.logout': 'ඉවත් වන්න',
 
         // Damages Page
+        damages_title: "හානි කළමනාකරණය",
+        damages_subtitle: "හානි වූ භාණ්ඩ කාර්යක්ෂමව කළමනාකරණය කරන්න, නිෂ්පාදන පිළිවෙලට තබා ගන්න, සහ කාර්ය සාධනය එක බැල්මකින් නිරීක්ෂණය කරන්න.",
         total_damaged_items: "මුළු හානි වූ අයිතම",
         total_records: "මුළු වාර්තා",
         this_month: "මෙම මාසය",
@@ -261,6 +265,8 @@ const translations = {
     },
     ta: {
         // Damages Page
+        damages_title: "சேத மேலாண்மை",
+        damages_subtitle:"சேதமடைந்த பொருட்களை திறமையாக மேலாண்மை செய்யுங்கள், பொருட்களை ஒழுங்குபடுத்துங்கள், மற்றும் செயல்திறனை ஒரு பார்வையில் கண்காணியுங்கள்.",
         total_damaged_items: "மொத்த சேதமடைந்த பொருட்கள்",
         total_records: "மொத்த பதிவுகள்",
         this_month: "இந்த மாதம்",

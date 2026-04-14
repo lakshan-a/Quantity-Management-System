@@ -12,6 +12,11 @@ ob_start();
 
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8 space-y-6">
+
+<div>
+    <h1 class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 dark:from-gray-200 dark:to-gray-400 bg-clip-text text-transparent" data-i18n="payments_title">Payments Management</h1>
+    <p class="text-gray-500 dark:text-gray-400 text-sm mt-1" data-i18n="damages_subtitle">Manage damages efficiently, keep products organized, and track performance at a glance.</p>
+</div>
     
     <!-- Stats Cards Grid -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

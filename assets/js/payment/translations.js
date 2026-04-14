@@ -74,6 +74,7 @@ const translations = {
 
         // ==================== PAYMENT  ====================
 
+        
         'total_revenue': 'Total Revenue',
         'pending_amount': 'Pending Amount',
         'cod_payments': 'COD Payments',
