@@ -10,12 +10,13 @@ ob_start();
 
 <script src="../assets/js/translations/dashboards/translations.js"></script>
 
-
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
     <!-- Page header -->
     <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
       <div>
-        <h1 class="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white tracking-tight" data-i18n="welcome_back">Welcome back, <?php echo htmlspecialchars($_SESSION['user_name']); ?>!</h1>
+        <h1 class="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white tracking-tight">
+          <span data-i18n="welcome_back">Welcome back, </span><?php echo htmlspecialchars($_SESSION['user_name']); ?>!
+        </h1>
         <p class="text-slate-500 dark:text-slate-400 text-sm mt-1" data-i18n="dashboard_subtitle">Here's what's happening with your business today.</p>
       </div>
     </div>
@@ -44,12 +45,12 @@ ob_start();
                 <th class="px-5 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="col_customer">Customer</th>
                 <th class="px-5 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="col_amount">Amount</th>
                 <th class="px-5 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="col_status">Status</th>
-               </tr>
+              </tr>
             </thead>
             <tbody id="recentOrdersTableBody" class="divide-y divide-slate-200 dark:divide-slate-700">
               <!-- dynamic content from JS -->
             </tbody>
-           </table>
+          </table>
         </div>
       </div>
 
@@ -69,6 +70,7 @@ ob_start();
 
   <!-- Toast Notification -->
   <div id="toastMsg" class="fixed bottom-5 right-5 bg-slate-800 dark:bg-slate-700 text-white px-4 py-2 rounded-lg shadow-lg text-sm z-50 transition-all duration-300 opacity-0 pointer-events-none"></div>
+  
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
@@ -94,11 +96,10 @@ ob_start();
       { order_id: '5', order_number: 'ORD-2024-005', customer_name: 'Chris Wilson', total_amount: 449.0, status: 'pending' },
     ];
 
-    // Order status distribution data for pie chart - improved with better colors and data
+    // Order status distribution data for pie chart
     const orderStatusData = {
-      labels: ['Pending', 'Processing', 'Shipped', 'Delivered', 'Returned'],
+      labels: ['pending', 'processing', 'shipped', 'delivered', 'returned'],
       values: [45, 38, 62, 1156, 46],
-      // Modern, softer color palette for better visual appeal
       colors: ['#f59e0b', '#3b82f6', '#06b6d4', '#10b981', '#ef4444']
     };
 
@@ -116,7 +117,7 @@ ob_start();
       }, 2500);
     }
 
-    // SVG Icon Helper (returns SVG string)
+    // SVG Icon Helper
     function getSvgIcon(iconName, colorClass = 'blue') {
       const icons = {
         'shopping-cart': '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-1.5 6M17 13l1.5 6M9 21h6M12 15v6"></path></svg>',
@@ -132,8 +133,8 @@ ob_start();
       return icons[iconName] || icons['shopping-cart'];
     }
 
-    // StatCard renderer with SVG icons
-    function createStatCard(title, value, iconName, colorClass, trend = null) {
+    // StatCard renderer with translation support
+    function createStatCard(titleKey, value, iconName, colorClass, trend = null) {
       const colorBgMap = {
         blue: 'bg-blue-500',
         green: 'bg-emerald-500',
@@ -143,19 +144,25 @@ ob_start();
         cyan: 'bg-cyan-500',
       };
       const bgColor = colorBgMap[colorClass] || 'bg-blue-500';
+      
+      // Get translated title
+      const translatedTitle = typeof window.t === 'function' ? window.t(titleKey) : titleKey;
+      
       let trendHtml = '';
       if (trend) {
         const trendIcon = trend.isPositive ? 
           '<svg class="w-3 h-3 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path></svg>' : 
           '<svg class="w-3 h-3 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path></svg>';
         const trendColor = trend.isPositive ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-400';
-        trendHtml = `<p class="mt-1 text-sm flex items-center gap-1 ${trendColor}">${trendIcon} ${Math.abs(trend.value)}% <span class="text-slate-500 dark:text-slate-400 ml-1">vs last month</span></p>`;
+        const vsLastMonth = typeof window.t === 'function' ? window.t('vs_last_month') : 'vs last month';
+        trendHtml = `<p class="mt-1 text-sm flex items-center gap-1 ${trendColor}">${trendIcon} ${Math.abs(trend.value)}% <span class="text-slate-500 dark:text-slate-400 ml-1">${vsLastMonth}</span></p>`;
       }
+      
       return `
         <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-5 shadow-sm hover:shadow-md transition-all duration-200">
           <div class="flex items-start justify-between">
             <div class="flex-1">
-              <p class="text-sm font-medium text-slate-500 dark:text-slate-400">${title}</p>
+              <p class="text-sm font-medium text-slate-500 dark:text-slate-400">${translatedTitle}</p>
               <p class="mt-2 text-2xl font-bold text-slate-900 dark:text-white">${value}</p>
               ${trendHtml}
             </div>
@@ -167,21 +174,21 @@ ob_start();
       `;
     }
 
-    // Render all stats
+    // Render all stats with translation keys
     function renderStats(showRevenue = true) {
       const row1Cards = [
-        createStatCard('Total Orders', formatNumber(mockStats.totalOrders), 'shopping-cart', 'blue', { value: 12, isPositive: true }),
-        createStatCard("Today's Orders", mockStats.todayOrders, 'clock', 'cyan'),
-        createStatCard('Pending Orders', mockStats.pendingOrders, 'box', 'yellow'),
-        createStatCard('Delivered Orders', formatNumber(mockStats.deliveredOrders), 'check-circle', 'green')
+        createStatCard('total_orders', formatNumber(mockStats.totalOrders), 'shopping-cart', 'blue', { value: 12, isPositive: true }),
+        createStatCard('todays_orders', mockStats.todayOrders, 'clock', 'cyan'),
+        createStatCard('pending_orders', mockStats.pendingOrders, 'box', 'yellow'),
+        createStatCard('delivered_orders', formatNumber(mockStats.deliveredOrders), 'check-circle', 'green')
       ];
       document.getElementById('statsGrid1').innerHTML = row1Cards.join('');
 
       const row2Cards = [
-        createStatCard('Returned Orders', mockStats.returnedOrders, 'undo', 'red'),
-        createStatCard('Total Customers', formatNumber(mockStats.totalCustomers), 'users', 'purple', { value: 8, isPositive: true }),
-        createStatCard('Low Stock Items', mockStats.lowStockItems, 'cubes', 'yellow'),
-        createStatCard('Damaged Items', mockStats.damagedItems, 'alert-triangle', 'red')
+        createStatCard('returned_orders', mockStats.returnedOrders, 'undo', 'red'),
+        createStatCard('total_customers', formatNumber(mockStats.totalCustomers), 'users', 'purple', { value: 8, isPositive: true }),
+        createStatCard('low_stock_items', mockStats.lowStockItems, 'cubes', 'yellow'),
+        createStatCard('damaged_items', mockStats.damagedItems, 'alert-triangle', 'red')
       ];
       document.getElementById('statsGrid2').innerHTML = row2Cards.join('');
 
@@ -189,7 +196,7 @@ ob_start();
       if (showRevenue) {
         revenueContainer.innerHTML = `
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-5">
-            ${createStatCard('Total Revenue', `$${formatNumber(mockStats.totalRevenue)}`, 'dollar-sign', 'green', { value: 15, isPositive: true })}
+            ${createStatCard('total_revenue', `$${formatNumber(mockStats.totalRevenue)}`, 'dollar-sign', 'green', { value: 15, isPositive: true })}
           </div>
         `;
       } else {
@@ -197,10 +204,11 @@ ob_start();
       }
     }
 
-    // Render recent orders table
+    // Render recent orders table with translated statuses
     function renderRecentOrders() {
       const tbody = document.getElementById('recentOrdersTableBody');
       if (!tbody) return;
+      
       const statusColors = {
         pending: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
         processing: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
@@ -208,22 +216,26 @@ ob_start();
         delivered: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400',
         returned: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
       };
+      
       let rowsHtml = '';
       recentOrders.forEach(order => {
         const statusClass = statusColors[order.status] || statusColors.pending;
+        // Get translated status
+        const translatedStatus = typeof window.t === 'function' ? window.t(order.status) : order.status;
+        
         rowsHtml += `
           <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/40 transition">
             <td class="px-5 py-3 text-sm font-medium text-slate-900 dark:text-white">${order.order_number}</td>
             <td class="px-5 py-3 text-sm text-slate-600 dark:text-slate-300">${order.customer_name}</td>
             <td class="px-5 py-3 text-sm font-mono text-slate-700 dark:text-slate-200">$${order.total_amount.toFixed(2)}</td>
-            <td class="px-5 py-3"><span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${statusClass}">${order.status}</span></td>
-          </tr>
+            <td class="px-5 py-3"><span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${statusClass}">${translatedStatus}</span></td>
+           </tr>
         `;
       });
       tbody.innerHTML = rowsHtml;
     }
 
-    // Initialize improved pie chart
+    // Initialize pie chart
     let orderStatusChartInstance = null;
 
     function initCharts() {
@@ -232,13 +244,17 @@ ob_start();
       if (orderCtx) {
         if (orderStatusChartInstance) orderStatusChartInstance.destroy();
         
-        // Calculate total for percentage display
+        // Get translated labels
+        const translatedLabels = orderStatusData.labels.map(label => 
+          typeof window.t === 'function' ? window.t(label) : label
+        );
+        
         const total = orderStatusData.values.reduce((a, b) => a + b, 0);
         
         orderStatusChartInstance = new Chart(orderCtx, {
           type: 'pie',
           data: {
-            labels: orderStatusData.labels,
+            labels: translatedLabels,
             datasets: [{
               data: orderStatusData.values,
               backgroundColor: orderStatusData.colors,
@@ -259,7 +275,8 @@ ob_start();
                   label: (ctx) => {
                     const value = ctx.raw;
                     const percentage = ((value / total) * 100).toFixed(1);
-                    return `${ctx.label}: ${value.toLocaleString()} orders (${percentage}%)`;
+                    const ordersText = typeof window.t === 'function' ? window.t('orders') : 'orders';
+                    return `${ctx.label}: ${value.toLocaleString()} ${ordersText} (${percentage}%)`;
                   }
                 },
                 backgroundColor: 'rgba(0,0,0,0.8)',
@@ -294,15 +311,21 @@ ob_start();
         });
       }
 
-      // Generate custom legend with better styling and percentages
+      // Generate custom legend with translations
       generateLegend('orderStatusLegend', orderStatusData.labels, orderStatusData.colors, orderStatusData.values);
     }
 
     function generateLegend(containerId, labels, colors, values) {
       const container = document.getElementById(containerId);
       if (!container) return;
+      
       const total = values.reduce((a,b) => a + b, 0);
-      container.innerHTML = labels.map((label, i) => {
+      // Get translated labels
+      const translatedLabels = labels.map(label => 
+        typeof window.t === 'function' ? window.t(label) : label
+      );
+      
+      container.innerHTML = translatedLabels.map((label, i) => {
         const percentage = ((values[i] / total) * 100).toFixed(1);
         return `
           <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-700/50 rounded-full px-3 py-1.5 shadow-sm">
@@ -314,33 +337,54 @@ ob_start();
       }).join('');
     }
 
-    // Dark mode toggle with localStorage persistence
-    // function initDarkMode() {
-    //   if (localStorage.getItem('darkMode') === 'true' || (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-    //     document.documentElement.classList.add('dark');
-    //   } else {
-    //     document.documentElement.classList.remove('dark');
-    //   }
-    //   const toggleBtn = document.getElementById('darkModeToggle');
-    //   toggleBtn?.addEventListener('click', () => {
-    //     if (document.documentElement.classList.contains('dark')) {
-    //       document.documentElement.classList.remove('dark');
-    //       localStorage.setItem('darkMode', 'false');
-    //     } else {
-    //       document.documentElement.classList.add('dark');
-    //       localStorage.setItem('darkMode', 'true');
-    //     }
-    //   });
-    // }
+    // Dark mode initialization
+    function initDarkMode() {
+      if (localStorage.getItem('darkMode') === 'true' || (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+      
+      // Optional: Add a dark mode toggle button if needed
+      // You can add this to your header
+    }
 
-    // Revenue is always shown (no toggle)
+    // Refresh all translatable content
+    function refreshTranslations() {
+      renderStats(true);
+      renderRecentOrders();
+      initCharts();
+    }
+
+    // Listen for language changes
+    function initTranslationListener() {
+      window.addEventListener('languageChanged', function() {
+        refreshTranslations();
+      });
+      
+      // Also listen for translations updated event
+      window.addEventListener('translationsUpdated', function() {
+        refreshTranslations();
+      });
+    }
+
+    // Initialize everything
     function init() {
       renderStats(true);
       renderRecentOrders();
       initCharts();
       initDarkMode();
+      initTranslationListener();
+      
+      // Initial translation update after a short delay to ensure translations are loaded
+      setTimeout(() => {
+        if (typeof window.updatePageTranslations === 'function') {
+          window.updatePageTranslations();
+        }
+      }, 100);
     }
 
+    // Start the app
     init();
   </script>
 

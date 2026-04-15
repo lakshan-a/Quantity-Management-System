@@ -99,7 +99,8 @@ const translations = {
         'shipped': 'Shipped',
         'delivered': 'Delivered',
         'returned': 'Returned',
-        'orders': 'orders'
+        'orders': 'orders',
+
     },
     si: {
 
