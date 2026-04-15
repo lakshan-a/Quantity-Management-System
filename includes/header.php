@@ -435,7 +435,7 @@ $userInitials = strtoupper(implode('', array_map(fn($w) => $w[0], array_slice(ex
             <div class="profile-header">
                 <div class="profile-avatar-lg"><?php echo htmlspecialchars($userInitials); ?></div>
                 <div style="min-width:0;">
-                    <p style="font-size:14px;font-weight:600;margin:0 0 2px;color:#111827;" class="text-gray-700 dark:text-gray-200 truncate">
+                    <p style="font-size:14px;font-weight:600;margin:0 0 2px;" class="text-gray-700 dark:text-gray-200 truncate">
                         <?php echo htmlspecialchars($userName); ?></p>
                     <p style="font-size:12px;color:#6b7280;margin:0 0 5px;" class="truncate">
                         <?php echo htmlspecialchars($userEmail); ?></p>
