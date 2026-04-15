@@ -165,6 +165,7 @@ $userInitials = strtoupper(implode('', array_map(fn($w) => $w[0], array_slice(ex
             border: 1px solid rgba(0,0,0,.07);
             box-shadow: 0 20px 40px -8px rgba(0,0,0,.14);
             display: none; z-index: 60; overflow: hidden;
+            min-width: 180px;
         }
         .dark .hdr-dropdown { background: #1e1b4b; border-color: rgba(255,255,255,.1); }
         .hdr-dropdown.open { display: block; animation: fadeSlide .15s ease; }
@@ -250,12 +251,29 @@ $userInitials = strtoupper(implode('', array_map(fn($w) => $w[0], array_slice(ex
         /* ── Lang / Theme ── */
         .lang-dropdown, .theme-dropdown { width: 180px; }
 
-        /* ── Mobile ── */
+        /* ── Mobile responsive fixes ── */
         @media (max-width: 768px) {
             .sidebar { transform: translateX(calc(-1 * var(--sidebar-w))); }
             .sidebar.open { transform: translateX(0); box-shadow: 8px 0 32px rgba(0,0,0,.3); }
-            .top-header { left: 0; }
+            .top-header { left: 0; padding: 0 12px; gap: 8px; }
             .main-content { margin-left: 0; }
+            .search-wrap { max-width: none; flex: 1; }
+            .hdr-icon-btn { width: 34px; height: 34px; }
+            .hdr-icon-btn .mi { font-size: 18px; }
+            .avatar { width: 32px; height: 32px; font-size: 12px; }
+            .profile-dropdown { position: fixed; right: 12px; width: calc(100% - 24px); max-width: 320px; }
+            .hdr-dropdown { position: fixed; right: 12px; left: auto; min-width: 200px; }
+            .lang-dropdown, .theme-dropdown { position: fixed; right: 12px; left: auto; }
+        }
+
+        /* Extra small devices */
+        @media (max-width: 480px) {
+            .top-header { padding: 0 8px; gap: 6px; }
+            .search-input { font-size: 13px; height: 34px; padding-left: 36px; }
+            .search-icon { font-size: 16px; left: 10px; }
+            .hdr-icon-btn { width: 32px; height: 32px; }
+            .hdr-icon-btn .mi { font-size: 18px; }
+            .avatar { width: 30px; height: 30px; font-size: 11px; }
         }
 
         /* ── Overlay ── */
@@ -263,6 +281,7 @@ $userInitials = strtoupper(implode('', array_map(fn($w) => $w[0], array_slice(ex
             position: fixed; inset: 0; background: rgba(0,0,0,.45);
             z-index: 39; display: none; backdrop-filter: blur(2px);
         }
+        #sidebarOverlay.active { display: block; }
 
         /* ── Animation ── */
         @keyframes fadeSlide {
@@ -279,44 +298,46 @@ $userInitials = strtoupper(implode('', array_map(fn($w) => $w[0], array_slice(ex
         .dd-divider { height: 1px; background: rgba(0,0,0,.06); margin: 4px 0; }
         .dark .dd-divider { background: rgba(255,255,255,.07); }
 
-        /* ── Theme toggle icon fix ── */
-        html.dark #themeIcon::before { content: 'light_mode'; }
-
         /* Additional theme transition styles */
-.sidebar,
-.sidebar-item,
-.sidebar-section-label,
-.sidebar-logo,
-.sidebar-logout,
-.sidebar-close-btn {
-    transition: background .3s ease, color .3s ease, border-color .3s ease, transform .18s ease;
-}
+        .sidebar,
+        .sidebar-item,
+        .sidebar-section-label,
+        .sidebar-logo,
+        .sidebar-logout,
+        .sidebar-close-btn {
+            transition: background .3s ease, color .3s ease, border-color .3s ease, transform .18s ease;
+        }
 
-/* Optional: Add a subtle gradient overlay for better readability in dark mode */
-html.dark .sidebar::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: radial-gradient(circle at top right, rgba(99,102,241,.1), transparent);
-    pointer-events: none;
-}
+        /* Optional: Add a subtle gradient overlay for better readability in dark mode */
+        html.dark .sidebar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at top right, rgba(99,102,241,.1), transparent);
+            pointer-events: none;
+        }
 
-/* Improve active state in light mode */
-.sidebar-item.active .mi {
-    color: #4f46e5;
-}
+        /* Improve active state in light mode */
+        .sidebar-item.active .mi {
+            color: #4f46e5;
+        }
 
-html.dark .sidebar-item.active .mi {
-    color: #a78bfa;
-}
+        html.dark .sidebar-item.active .mi {
+            color: #a78bfa;
+        }
 
-/* Hover effect for better UX */
-.sidebar-item:active {
-    transform: translateX(5px);
-}
+        /* Hover effect for better UX */
+        .sidebar-item:active {
+            transform: translateX(5px);
+        }
+
+        /* Prevent body scroll when sidebar open on mobile */
+        body.sidebar-open {
+            overflow: hidden;
+        }
     </style>
 </head>
 <body>
@@ -341,7 +362,7 @@ html.dark .sidebar-item.active .mi {
         <span class="material-icons-round search-icon">search</span>
         <input id="globalSearch" type="text" class="search-input"
                data-i18n="header.search_placeholder"
-               placeholder="header.search_placeholder"
+               placeholder="Search..."
                autocomplete="off"
                onfocus="openSearchDropdown()"
                oninput="handleSearch(this.value)">
@@ -356,9 +377,6 @@ html.dark .sidebar-item.active .mi {
     <!-- Spacer -->
     <div style="flex:1"></div>
 
-    <!-- ── Right controls ── -->
-
-
     <!-- Language -->
     <div class="relative">
         <button class="hdr-icon-btn" onclick="toggleDropdown('langDropdown')" title="Language">
@@ -366,15 +384,15 @@ html.dark .sidebar-item.active .mi {
         </button>
         <div id="langDropdown" class="hdr-dropdown lang-dropdown">
             <a href="#" onclick="changeLanguage('en'); return false;" class="hdr-dropdown-item <?php echo $lang=='en'?'font-semibold':''; ?>">
-                <span style="font-size:18px;">🇬🇧</span> <span data-i18n="header.english">header.english</span>
+                <span style="font-size:18px;">🇬🇧</span> <span data-i18n="header.english">English</span>
                 <?php if($lang=='en'): ?><span class="material-icons-round" style="font-size:16px;color:#6366f1;margin-left:auto;">check</span><?php endif; ?>
             </a>
             <a href="#" onclick="changeLanguage('si'); return false;" class="hdr-dropdown-item <?php echo $lang=='si'?'font-semibold':''; ?>">
-                <span style="font-size:18px;">🇱🇰</span> <span data-i18n="header.sinhala">header.sinhala</span>
+                <span style="font-size:18px;">🇱🇰</span> <span data-i18n="header.sinhala">Sinhala</span>
                 <?php if($lang=='si'): ?><span class="material-icons-round" style="font-size:16px;color:#6366f1;margin-left:auto;">check</span><?php endif; ?>
             </a>
             <a href="#" onclick="changeLanguage('ta'); return false;" class="hdr-dropdown-item <?php echo $lang=='ta'?'font-semibold':''; ?>">
-                <span style="font-size:18px;">🇱🇰</span> <span data-i18n="header.tamil">header.tamil</span>
+                <span style="font-size:18px;">🇱🇰</span> <span data-i18n="header.tamil">Tamil</span>
                 <?php if($lang=='ta'): ?><span class="material-icons-round" style="font-size:16px;color:#6366f1;margin-left:auto;">check</span><?php endif; ?>
             </a>
         </div>
@@ -387,28 +405,30 @@ html.dark .sidebar-item.active .mi {
         </button>
         <div id="themeDropdown" class="hdr-dropdown theme-dropdown">
             <button class="hdr-dropdown-item" onclick="setTheme('light')">
-                <span class="material-icons-round mi">light_mode</span> <span data-i18n="header.light">header.light</span>
+                <span class="material-icons-round mi">light_mode</span> <span data-i18n="header.light">Light</span>
             </button>
             <button class="hdr-dropdown-item" onclick="setTheme('dark')">
-                <span class="material-icons-round mi">dark_mode</span> <span data-i18n="header.dark">header.dark</span>
+                <span class="material-icons-round mi">dark_mode</span> <span data-i18n="header.dark">Dark</span>
             </button>
+            <!-- <button class="hdr-dropdown-item" onclick="setTheme('system')">
+                <span class="material-icons-round mi">settings</span> <span data-i18n="header.system">System</span>
+            </button> -->
         </div>
     </div>
 
     <!-- Divider -->
-    <div style="width:1px;height:28px;background:rgba(0,0,0,.1);margin:0 4px;" class="dark:bg-white/10"></div>
+    <div style="width:1px;height:28px;background:rgba(0,0,0,.1);margin:0 4px;" class="dark:bg-white/10 hidden sm:block"></div>
 
     <!-- Profile -->
     <div class="relative">
-        <button class="flex items-center gap-2 rounded-xl px-2 py-1.5 transition "
-                onclick="toggleDropdown('profileDropdown')">
+        <button class="flex items-center gap-2 rounded-xl px-2 py-1.5 transition" onclick="toggleDropdown('profileDropdown')">
             <div class="avatar" id="avatarBtn"><?php echo htmlspecialchars($userInitials); ?></div>
-            <div class="hidden md:block text-left">
+            <div class="hidden sm:block text-left">
                 <p style="font-size:13px;font-weight:600;line-height:1.2;"
-                   class=" text-gray-700 dark:text-gray-200"><?php echo htmlspecialchars($userName); ?></p>
+                   class="text-gray-700 dark:text-gray-200"><?php echo htmlspecialchars($userName); ?></p>
                 <p style="font-size:11px;color:#6b7280;line-height:1.2;"><?php echo ucfirst(htmlspecialchars($userRole)); ?></p>
             </div>
-            <span class="material-icons-round hidden md:block" style="font-size:18px;color:#9ca3af;">expand_more</span>
+            <span class="material-icons-round hidden sm:block" style="font-size:18px;color:#9ca3af;">expand_more</span>
         </button>
 
         <div id="profileDropdown" class="hdr-dropdown profile-dropdown">
@@ -427,26 +447,18 @@ html.dark .sidebar-item.active .mi {
             <div style="padding:6px 0;">
                 <a href="../modules/users/profile.php" class="hdr-dropdown-item">
                     <span class="material-icons-round mi">person</span>
-                    <span data-i18n="header.my_profile">header.my_profile</span>
+                    <span data-i18n="header.my_profile">My Profile</span>
                 </a>
                 <a href="../modules/users/settings.php" class="hdr-dropdown-item">
                     <span class="material-icons-round mi">manage_accounts</span>
-                    <span data-i18n="header.account_settings">header.account_settings</span>
-                </a>
-                <a href="../modules/users/change-password.php" class="hdr-dropdown-item">
-                    <span class="material-icons-round mi">lock_reset</span>
-                    <span data-i18n="header.change_password">header.change_password</span>
-                </a>
-                <a href="#" class="hdr-dropdown-item">
-                    <span class="material-icons-round mi">help_outline</span>
-                    <span data-i18n="header.help">header.help</span>
+                    <span data-i18n="header.account_settings">Account Settings</span>
                 </a>
             </div>
             <div class="dd-divider"></div>
             <div style="padding:6px 0 8px;">
                 <a href="../auth/logout.php" class="hdr-dropdown-item" style="color:#ef4444;">
                     <span class="material-icons-round mi" style="color:#ef4444;">logout</span>
-                    <span data-i18n="header.logout">header.logout</span>
+                    <span data-i18n="header.logout">Logout</span>
                 </a>
             </div>
         </div>
@@ -462,40 +474,93 @@ html.dark .sidebar-item.active .mi {
 function setTheme(t) {
     const html = document.documentElement;
     const icon = document.getElementById('themeIcon');
+    
     if (t === 'dark') {
         html.classList.add('dark');
         if (icon) icon.textContent = 'light_mode';
+        localStorage.setItem('qty_theme', 'dark');
     } else if (t === 'light') {
         html.classList.remove('dark');
         if (icon) icon.textContent = 'dark_mode';
-    } else {
+        localStorage.setItem('qty_theme', 'light');
+    } else if (t === 'system') {
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        html.classList.toggle('dark', prefersDark);
-        if (icon) icon.textContent = prefersDark ? 'light_mode' : 'dark_mode';
+        if (prefersDark) {
+            html.classList.add('dark');
+            if (icon) icon.textContent = 'light_mode';
+        } else {
+            html.classList.remove('dark');
+            if (icon) icon.textContent = 'dark_mode';
+        }
+        localStorage.setItem('qty_theme', 'system');
     }
-    localStorage.setItem('qty_theme', t);
+    
     closeAllDropdowns();
 }
 
 function loadTheme() {
-    const saved = localStorage.getItem('qty_theme') || 'system';
-    setTheme(saved);
+    const saved = localStorage.getItem('qty_theme');
+    if (saved && saved !== 'system') {
+        setTheme(saved);
+    } else if (saved === 'system') {
+        setTheme('system');
+    } else {
+        // Default to system preference
+        setTheme('system');
+    }
 }
+
+// Listen for system theme changes
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    const saved = localStorage.getItem('qty_theme');
+    if (saved === 'system') {
+        const html = document.documentElement;
+        const icon = document.getElementById('themeIcon');
+        if (e.matches) {
+            html.classList.add('dark');
+            if (icon) icon.textContent = 'light_mode';
+        } else {
+            html.classList.remove('dark');
+            if (icon) icon.textContent = 'dark_mode';
+        }
+    }
+});
 
 // ── Dropdowns ──────────────────────────────
 function toggleDropdown(id) {
     const target = document.getElementById(id);
+    if (!target) return;
+    
     const wasOpen = target.classList.contains('open');
     closeAllDropdowns();
-    if (!wasOpen) target.classList.add('open');
+    if (!wasOpen) {
+        target.classList.add('open');
+        // Close when clicking outside (handled by global click)
+    }
 }
 
 function closeAllDropdowns() {
     document.querySelectorAll('.hdr-dropdown, .search-dropdown').forEach(el => el.classList.remove('open'));
 }
 
-document.addEventListener('click', e => {
-    if (!e.target.closest('.relative') && !e.target.closest('.search-wrap')) closeAllDropdowns();
+// Global click handler for dropdowns
+document.addEventListener('click', function(e) {
+    // Check if click is inside any dropdown trigger or dropdown itself
+    const isInsideTrigger = e.target.closest('.relative') !== null;
+    const isInsideSearch = e.target.closest('.search-wrap') !== null;
+    const isInsideDropdown = e.target.closest('.hdr-dropdown') !== null;
+    const isInsideSearchDropdown = e.target.closest('.search-dropdown') !== null;
+    
+    if (!isInsideTrigger && !isInsideSearch && !isInsideDropdown && !isInsideSearchDropdown) {
+        closeAllDropdowns();
+    }
+});
+
+// Prevent dropdown from closing when clicking inside it
+document.querySelectorAll('.hdr-dropdown, .search-dropdown').forEach(dropdown => {
+    dropdown.addEventListener('click', function(e) {
+        e.stopPropagation();
+    });
 });
 
 // ── Search ────────────────────────────────
@@ -508,8 +573,14 @@ const searchData = [
 ];
 
 function openSearchDropdown() {
-    renderSearch('');
-    document.getElementById('searchDropdown').classList.add('open');
+    const input = document.getElementById('globalSearch');
+    if (input) {
+        renderSearch(input.value);
+    } else {
+        renderSearch('');
+    }
+    const dropdown = document.getElementById('searchDropdown');
+    if (dropdown) dropdown.classList.add('open');
 }
 
 let _searchTimer;
@@ -520,55 +591,139 @@ function handleSearch(val) {
 
 function renderSearch(val) {
     const q = val.toLowerCase().trim();
-    const list = q ? searchData.filter(d => d.label.toLowerCase().includes(q) || d.sub.toLowerCase().includes(q)) : searchData;
+    let list = q ? searchData.filter(d => d.label.toLowerCase().includes(q) || d.sub.toLowerCase().includes(q)) : searchData;
+    // Limit results for better UX
+    if (list.length > 8) list = list.slice(0, 8);
+    
     const el = document.getElementById('searchResults');
+    if (!el) return;
+    
     if (!list.length) {
         el.innerHTML = '<div style="padding:20px 16px;text-align:center;color:#9ca3af;font-size:14px;">No results found</div>';
         return;
     }
     el.innerHTML = list.map(d => `
-        <a href="${d.href}" class="search-result-item" style="text-decoration:none;color:inherit;">
+        <a href="${d.href}" class="search-result-item" style="text-decoration:none;color:inherit;display:flex;">
             <div class="search-result-icon"><span class="material-icons-round mi">${d.icon}</span></div>
-            <div>
-                <p style="font-size:14px;font-weight:500;margin:0 0 2px;">${d.label}</p>
-                <p style="font-size:12px;color:#6b7280;margin:0;">${d.sub}</p>
+            <div style="flex:1;min-width:0;">
+                <p style="font-size:14px;font-weight:500;margin:0 0 2px;">${escapeHtml(d.label)}</p>
+                <p style="font-size:12px;color:#6b7280;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${escapeHtml(d.sub)}</p>
             </div>
         </a>`).join('');
-    document.getElementById('searchDropdown').classList.add('open');
+    
+    const dropdown = document.getElementById('searchDropdown');
+    if (dropdown) dropdown.classList.add('open');
 }
+
+// Simple escape function to prevent XSS
+function escapeHtml(str) {
+    return str.replace(/[&<>]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        return m;
+    });
+}
+
+// Close search dropdown on escape key
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeAllDropdowns();
+        document.getElementById('globalSearch')?.blur();
+    }
+});
 
 // ── Sidebar ───────────────────────────────
 function toggleSidebar() {
-    document.getElementById('sidebar').classList.toggle('open');
-    document.getElementById('sidebarOverlay').style.display =
-        document.getElementById('sidebar').classList.contains('open') ? 'block' : 'none';
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const body = document.body;
+    
+    if (sidebar && overlay) {
+        sidebar.classList.toggle('open');
+        if (sidebar.classList.contains('open')) {
+            overlay.classList.add('active');
+            body.classList.add('sidebar-open');
+        } else {
+            overlay.classList.remove('active');
+            body.classList.remove('sidebar-open');
+        }
+    }
 }
+
 function closeSidebar() {
-    document.getElementById('sidebar').classList.remove('open');
-    document.getElementById('sidebarOverlay').style.display = 'none';
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const body = document.body;
+    
+    if (sidebar) sidebar.classList.remove('open');
+    if (overlay) overlay.classList.remove('active');
+    body.classList.remove('sidebar-open');
 }
+
+// Close sidebar on window resize (if screen becomes larger)
+window.addEventListener('resize', function() {
+    if (window.innerWidth > 768) {
+        closeSidebar();
+    }
+});
 
 // ── Highlight active sidebar item ─────────
 function highlightActive() {
     const path = location.pathname;
     document.querySelectorAll('.sidebar-item').forEach(a => {
-        a.classList.toggle('active', a.getAttribute('href') && path.includes(a.getAttribute('href').replace('..', '')));
+        const href = a.getAttribute('href');
+        if (href && href !== '#' && href !== '') {
+            // Clean up paths for comparison
+            const cleanHref = href.replace(/^\.\./, '');
+            if (path.includes(cleanHref) || (cleanHref !== '/' && path === cleanHref)) {
+                a.classList.add('active');
+            } else {
+                a.classList.remove('active');
+            }
+        }
     });
 }
 
 // ── Notification helper ───────────────────
 function markAllNotificationsRead() {
-    // Implementation for marking notifications as read
     console.log('Mark all notifications as read');
+}
+
+// ── Language helper (placeholder) ─────────
+function changeLanguage(lang) {
+    // Set cookie
+    document.cookie = `user_lang=${lang}; path=/; max-age=${60*60*24*365}`;
+    // Reload page to apply language
+    location.reload();
 }
 
 // Initialize everything
 document.addEventListener('DOMContentLoaded', () => { 
     loadTheme(); 
     highlightActive();
+    
+    // Close sidebar when clicking on a sidebar link (mobile)
+    document.querySelectorAll('.sidebar-item').forEach(link => {
+        link.addEventListener('click', function(e) {
+            if (window.innerWidth <= 768 && this.getAttribute('href') && this.getAttribute('href') !== '#') {
+                closeSidebar();
+            }
+        });
+    });
+    
     // Update translations after DOM is ready
     if (typeof updatePageTranslations === 'function') {
         updatePageTranslations();
+    }
+    
+    // Set placeholder text for search input
+    const searchInput = document.getElementById('globalSearch');
+    if (searchInput) {
+        // Placeholder will be set by translations if available
+        if (typeof getTranslation === 'function') {
+            searchInput.placeholder = getTranslation('header.search_placeholder') || 'Search...';
+        }
     }
 });
 </script>
