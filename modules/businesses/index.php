@@ -10,7 +10,7 @@ $pageTitle = 'Business Settings | Qty Management';
 ob_start();
 ?>
 
-<script src="../../assets/js/businesses/translations.js"></script>
+<script src="../../assets/js/translations/businesses/translations.js"></script>
 
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 py-6 md:py-10">

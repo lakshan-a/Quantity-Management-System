@@ -74,17 +74,17 @@ const translations = {
         'header.logout': 'Logout',
         
         // ==================== DASHBOARD ====================
-        'dashboard.welcome': 'Welcome back',
-        'dashboard.total_orders': 'Total Orders',
-        'dashboard.revenue': 'Revenue',
-        'dashboard.customers': 'Customers',
-        'dashboard.low_stock': 'Low Stock Items',
-        'dashboard.recent_orders': 'Recent Orders',
-        'dashboard.view_all': 'View All',
-        'dashboard.order_number': 'Order #',
-        'dashboard.customer': 'Customer',
-        'dashboard.date': 'Date',
-        'dashboard.total': 'Total',
+        // 'dashboard.welcome': 'Welcome back',
+        // 'dashboard.total_orders': 'Total Orders',
+        // 'dashboard.revenue': 'Revenue',
+        // 'dashboard.customers': 'Customers',
+        // 'dashboard.low_stock': 'Low Stock Items',
+        // 'dashboard.recent_orders': 'Recent Orders',
+        // 'dashboard.view_all': 'View All',
+        // 'dashboard.order_number': 'Order #',
+        // 'dashboard.customer': 'Customer',
+        // 'dashboard.date': 'Date',
+        // 'dashboard.total': 'Total',
         
         
         // ==================== MODALS ====================
@@ -168,17 +168,17 @@ const translations = {
         'header.logout': 'ඉවත් වන්න',
         
         // Dashboard
-        'dashboard.welcome': 'ආපසු සාදරයෙන් පිළිගනිමු',
-        'dashboard.total_orders': 'සම්පූර්ණ ඇණවුම්',
-        'dashboard.revenue': 'ආදායම',
-        'dashboard.customers': 'පාරිභෝගිකයින්',
-        'dashboard.low_stock': 'අඩු තොග අයිතම',
-        'dashboard.recent_orders': 'මෑත ඇණවුම්',
-        'dashboard.view_all': 'සියල්ල බලන්න',
-        'dashboard.order_number': 'ඇණවුම් අංකය',
-        'dashboard.customer': 'පාරිභෝගිකයා',
-        'dashboard.date': 'දිනය',
-        'dashboard.total': 'එකතුව',
+        // 'dashboard.welcome': 'ආපසු සාදරයෙන් පිළිගනිමු',
+        // 'dashboard.total_orders': 'සම්පූර්ණ ඇණවුම්',
+        // 'dashboard.revenue': 'ආදායම',
+        // 'dashboard.customers': 'පාරිභෝගිකයින්',
+        // 'dashboard.low_stock': 'අඩු තොග අයිතම',
+        // 'dashboard.recent_orders': 'මෑත ඇණවුම්',
+        // 'dashboard.view_all': 'සියල්ල බලන්න',
+        // 'dashboard.order_number': 'ඇණවුම් අංකය',
+        // 'dashboard.customer': 'පාරිභෝගිකයා',
+        // 'dashboard.date': 'දිනය',
+        // 'dashboard.total': 'එකතුව',
         
         
         // Footer
@@ -257,17 +257,17 @@ const translations = {
         'header.logout': 'வெளியேறு',
         
         // Dashboard
-        'dashboard.welcome': 'மீண்டும் வருக',
-        'dashboard.total_orders': 'மொத்த ஆர்டர்கள்',
-        'dashboard.revenue': 'வருவாய்',
-        'dashboard.customers': 'வாடிக்கையாளர்கள்',
-        'dashboard.low_stock': 'குறைந்த பங்கு பொருட்கள்',
-        'dashboard.recent_orders': 'சமீபத்திய ஆர்டர்கள்',
-        'dashboard.view_all': 'அனைத்தையும் காண்க',
-        'dashboard.order_number': 'ஆர்டர் எண்',
-        'dashboard.customer': 'வாடிக்கையாளர்',
-        'dashboard.date': 'தேதி',
-        'dashboard.total': 'மொத்தம்',
+        // 'dashboard.welcome': 'மீண்டும் வருக',
+        // 'dashboard.total_orders': 'மொத்த ஆர்டர்கள்',
+        // 'dashboard.revenue': 'வருவாய்',
+        // 'dashboard.customers': 'வாடிக்கையாளர்கள்',
+        // 'dashboard.low_stock': 'குறைந்த பங்கு பொருட்கள்',
+        // 'dashboard.recent_orders': 'சமீபத்திய ஆர்டர்கள்',
+        // 'dashboard.view_all': 'அனைத்தையும் காண்க',
+        // 'dashboard.order_number': 'ஆர்டர் எண்',
+        // 'dashboard.customer': 'வாடிக்கையாளர்',
+        // 'dashboard.date': 'தேதி',
+        // 'dashboard.total': 'மொத்தம்',
         
         // Footer
         'footer.copyright': '© 2024 அளவு மேலாண்மை. அனைத்து உரிமைகளும் பாதுகாக்கப்படுகின்றன.',

@@ -8,7 +8,7 @@ $pageTitle = 'Categories | Qty Management';
 ob_start();
 ?>
 
-<script src="../../assets/js/categories/translations.js"></script>
+<script src="../../assets/js/translations/categories/translations.js"></script>
 
 <!-- main app wrapper -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-10">

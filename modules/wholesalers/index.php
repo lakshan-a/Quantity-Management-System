@@ -8,7 +8,7 @@ $pageTitle = 'Wholesalers | Qty Management';
 ob_start();
 ?>
 
-  <script src="../../assets/js/wholesalers/translations.js"></script>
+  <script src="../../assets/js/translations/wholesalers/translations.js"></script>
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
     <!-- MAIN PAGE CONTAINER - equivalent to WholesalePage component -->

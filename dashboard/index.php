@@ -8,7 +8,7 @@ $pageTitle = 'Dashboard | Qty Management';
 ob_start();
 ?>
 
-<script src="../assets/js/dashboards/translations.js"></script>
+<script src="../assets/js/translations/dashboards/translations.js"></script>
 
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
@@ -315,23 +315,23 @@ ob_start();
     }
 
     // Dark mode toggle with localStorage persistence
-    function initDarkMode() {
-      if (localStorage.getItem('darkMode') === 'true' || (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-      const toggleBtn = document.getElementById('darkModeToggle');
-      toggleBtn?.addEventListener('click', () => {
-        if (document.documentElement.classList.contains('dark')) {
-          document.documentElement.classList.remove('dark');
-          localStorage.setItem('darkMode', 'false');
-        } else {
-          document.documentElement.classList.add('dark');
-          localStorage.setItem('darkMode', 'true');
-        }
-      });
-    }
+    // function initDarkMode() {
+    //   if (localStorage.getItem('darkMode') === 'true' || (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    //     document.documentElement.classList.add('dark');
+    //   } else {
+    //     document.documentElement.classList.remove('dark');
+    //   }
+    //   const toggleBtn = document.getElementById('darkModeToggle');
+    //   toggleBtn?.addEventListener('click', () => {
+    //     if (document.documentElement.classList.contains('dark')) {
+    //       document.documentElement.classList.remove('dark');
+    //       localStorage.setItem('darkMode', 'false');
+    //     } else {
+    //       document.documentElement.classList.add('dark');
+    //       localStorage.setItem('darkMode', 'true');
+    //     }
+    //   });
+    // }
 
     // Revenue is always shown (no toggle)
     function init() {

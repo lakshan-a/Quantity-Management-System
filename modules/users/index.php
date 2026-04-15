@@ -10,7 +10,7 @@ $pageTitle = 'Users | Qty Management';
 ob_start();
 ?>
 
-<script src="../../assets/js/users/translations.js"></script>
+<script src="../../assets/js/translations/users/translations.js"></script>
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-10">
     <div id="app" class="space-y-6">

@@ -8,7 +8,7 @@ $pageTitle = 'Couriers | Qty Management';
 ob_start();
 ?>
 
-<script src="../../assets/js/couriers/translations.js"></script>
+<script src="../../assets/js/translations/couriers/translations.js"></script>
 
 <div class="max-w-7xl mx-auto px-4 sm:px-6 py-8 md:py-10">
     <div class="space-y-6">
