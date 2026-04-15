@@ -15,7 +15,7 @@ ob_start();
 
 <div>
     <h1 class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 dark:from-gray-200 dark:to-gray-400 bg-clip-text text-transparent" data-i18n="payments_title">Payments Management</h1>
-    <p class="text-gray-500 dark:text-gray-400 text-sm mt-1" data-i18n="damages_subtitle">Manage damages efficiently, keep products organized, and track performance at a glance.</p>
+    <p class="text-gray-500 dark:text-gray-400 text-sm mt-1" data-i18n="damages_subtitle">Manage payments securely, track transactions, and monitor cash flow in real time.</p>
 </div>
     
     <!-- Stats Cards Grid -->

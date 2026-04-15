@@ -8,12 +8,15 @@ $pageTitle = 'Dashboard | Qty Management';
 ob_start();
 ?>
 
+<script src="../assets/js/dashboards/translations.js"></script>
+
+
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 md:py-8">
     <!-- Page header -->
     <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
       <div>
-        <h1 class="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white tracking-tight">Dashboard</h1>
-        <p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Welcome back, here's what's happening with your business today.</p>
+        <h1 class="text-2xl md:text-3xl font-bold text-slate-800 dark:text-white tracking-tight" data-i18n="welcome_back">Welcome back, <?php echo htmlspecialchars($_SESSION['user_name']); ?>!</h1>
+        <p class="text-slate-500 dark:text-slate-400 text-sm mt-1" data-i18n="dashboard_subtitle">Here's what's happening with your business today.</p>
       </div>
     </div>
 
@@ -30,31 +33,31 @@ ob_start();
       <!-- Recent Orders (spans 2 cols on large) -->
       <div class="lg:col-span-2 bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
         <div class="p-5 border-b border-slate-200 dark:border-slate-700">
-          <h3 class="text-lg font-bold text-slate-900 dark:text-white">Recent Orders</h3>
-          <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Latest 5 orders from your store</p>
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white" data-i18n="recent_orders_title">Recent Orders</h3>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5" data-i18n="recent_orders_subtitle">Latest 5 orders from your store</p>
         </div>
         <div class="overflow-x-auto">
           <table class="w-full">
             <thead class="bg-slate-50 dark:bg-slate-800/60">
               <tr class="border-b border-slate-200 dark:border-slate-700">
-                <th class="px-5 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Order</th>
-                <th class="px-5 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Customer</th>
-                <th class="px-5 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Amount</th>
-                <th class="px-5 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Status</th>
-              </tr>
+                <th class="px-5 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="col_order">Order</th>
+                <th class="px-5 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="col_customer">Customer</th>
+                <th class="px-5 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="col_amount">Amount</th>
+                <th class="px-5 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="col_status">Status</th>
+               </tr>
             </thead>
             <tbody id="recentOrdersTableBody" class="divide-y divide-slate-200 dark:divide-slate-700">
               <!-- dynamic content from JS -->
             </tbody>
-          </table>
+           </table>
         </div>
       </div>
 
-      <!-- Quick Actions Card -->
+      <!-- Order Status Distribution Card -->
       <div class="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm p-6">
          <div class="mb-4">
-          <h3 class="text-lg font-bold text-slate-900 dark:text-white">Order Status Distribution</h3>
-          <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5">Breakdown of all orders by status</p>
+          <h3 class="text-lg font-bold text-slate-900 dark:text-white" data-i18n="order_status_title">Order Status Distribution</h3>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mt-0.5" data-i18n="order_status_subtitle">Breakdown of all orders by status</p>
         </div>
         <div class="relative" style="height: 260px;">
           <canvas id="orderStatusChart"></canvas>
@@ -64,11 +67,8 @@ ob_start();
     </div>
   </div>
 
-  </div>
-
   <!-- Toast Notification -->
   <div id="toastMsg" class="fixed bottom-5 right-5 bg-slate-800 dark:bg-slate-700 text-white px-4 py-2 rounded-lg shadow-lg text-sm z-50 transition-all duration-300 opacity-0 pointer-events-none"></div>
-
   <!-- Chart.js CDN -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 
@@ -94,27 +94,12 @@ ob_start();
       { order_id: '5', order_number: 'ORD-2024-005', customer_name: 'Chris Wilson', total_amount: 449.0, status: 'pending' },
     ];
 
-    // Order status distribution data for pie chart
+    // Order status distribution data for pie chart - improved with better colors and data
     const orderStatusData = {
       labels: ['Pending', 'Processing', 'Shipped', 'Delivered', 'Returned'],
       values: [45, 38, 62, 1156, 46],
+      // Modern, softer color palette for better visual appeal
       colors: ['#f59e0b', '#3b82f6', '#06b6d4', '#10b981', '#ef4444']
-    };
-
-    // Inventory distribution data for pie chart
-    const inventoryData = {
-      labels: ['Healthy Stock', 'Low Stock', 'Out of Stock', 'Damaged'],
-      values: [245, 12, 8, 8],
-      colors: ['#10b981', '#f59e0b', '#ef4444', '#8b5cf6']
-    };
-
-    // status color mapping for table
-    const statusColors = {
-      pending: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
-      processing: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
-      shipped: 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-400',
-      delivered: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400',
-      returned: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
     };
 
     // Helper: format numbers
@@ -216,6 +201,13 @@ ob_start();
     function renderRecentOrders() {
       const tbody = document.getElementById('recentOrdersTableBody');
       if (!tbody) return;
+      const statusColors = {
+        pending: 'bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400',
+        processing: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
+        shipped: 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-cyan-400',
+        delivered: 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400',
+        returned: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
+      };
       let rowsHtml = '';
       recentOrders.forEach(order => {
         const statusClass = statusColors[order.status] || statusColors.pending;
@@ -225,22 +217,24 @@ ob_start();
             <td class="px-5 py-3 text-sm text-slate-600 dark:text-slate-300">${order.customer_name}</td>
             <td class="px-5 py-3 text-sm font-mono text-slate-700 dark:text-slate-200">$${order.total_amount.toFixed(2)}</td>
             <td class="px-5 py-3"><span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium ${statusClass}">${order.status}</span></td>
-           </tr>
+          </tr>
         `;
       });
       tbody.innerHTML = rowsHtml;
     }
 
-    // Initialize pie charts
+    // Initialize improved pie chart
     let orderStatusChartInstance = null;
-    let inventoryChartInstance = null;
 
     function initCharts() {
       const orderCtx = document.getElementById('orderStatusChart')?.getContext('2d');
-      const inventoryCtx = document.getElementById('inventoryChart')?.getContext('2d');
       
       if (orderCtx) {
         if (orderStatusChartInstance) orderStatusChartInstance.destroy();
+        
+        // Calculate total for percentage display
+        const total = orderStatusData.values.reduce((a, b) => a + b, 0);
+        
         orderStatusChartInstance = new Chart(orderCtx, {
           type: 'pie',
           data: {
@@ -248,61 +242,76 @@ ob_start();
             datasets: [{
               data: orderStatusData.values,
               backgroundColor: orderStatusData.colors,
-              borderWidth: 0,
-              hoverOffset: 10
+              borderWidth: 2,
+              borderColor: '#ffffff',
+              hoverBorderColor: '#ffffff',
+              hoverOffset: 12,
+              cutout: '0%',
+              radius: '85%'
             }]
           },
           options: {
             responsive: true,
             maintainAspectRatio: true,
             plugins: {
-              legend: { display: false },
-              tooltip: { callbacks: { label: (ctx) => `${ctx.label}: ${ctx.raw} orders (${((ctx.raw / orderStatusData.values.reduce((a,b)=>a+b,0))*100).toFixed(1)}%)` } }
-            }
-          }
-        });
-      }
-      
-      if (inventoryCtx) {
-        if (inventoryChartInstance) inventoryChartInstance.destroy();
-        inventoryChartInstance = new Chart(inventoryCtx, {
-          type: 'pie',
-          data: {
-            labels: inventoryData.labels,
-            datasets: [{
-              data: inventoryData.values,
-              backgroundColor: inventoryData.colors,
-              borderWidth: 0,
-              hoverOffset: 10
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: true,
-            plugins: {
-              legend: { display: false },
-              tooltip: { callbacks: { label: (ctx) => `${ctx.label}: ${ctx.raw} items (${((ctx.raw / inventoryData.values.reduce((a,b)=>a+b,0))*100).toFixed(1)}%)` } }
+              tooltip: { 
+                callbacks: { 
+                  label: (ctx) => {
+                    const value = ctx.raw;
+                    const percentage = ((value / total) * 100).toFixed(1);
+                    return `${ctx.label}: ${value.toLocaleString()} orders (${percentage}%)`;
+                  }
+                },
+                backgroundColor: 'rgba(0,0,0,0.8)',
+                titleColor: '#fff',
+                bodyColor: '#e2e8f0',
+                padding: 10,
+                cornerRadius: 8,
+                displayColors: true
+              },
+              legend: { 
+                display: false 
+              }
+            },
+            layout: {
+              padding: 10
+            },
+            elements: {
+              arc: {
+                shadowOffsetX: 2,
+                shadowOffsetY: 2,
+                shadowBlur: 8,
+                shadowColor: 'rgba(0, 0, 0, 0.1)'
+              }
+            },
+            animation: {
+              animateScale: true,
+              animateRotate: true,
+              duration: 800,
+              easing: 'easeOutCubic'
             }
           }
         });
       }
 
-      // Generate custom legends
+      // Generate custom legend with better styling and percentages
       generateLegend('orderStatusLegend', orderStatusData.labels, orderStatusData.colors, orderStatusData.values);
-      generateLegend('inventoryLegend', inventoryData.labels, inventoryData.colors, inventoryData.values);
     }
 
     function generateLegend(containerId, labels, colors, values) {
       const container = document.getElementById(containerId);
       if (!container) return;
       const total = values.reduce((a,b) => a + b, 0);
-      container.innerHTML = labels.map((label, i) => `
-        <div class="flex items-center gap-1.5">
-          <span class="w-3 h-3 rounded-full" style="background-color: ${colors[i]}"></span>
-          <span class="text-slate-600 dark:text-slate-400">${label}</span>
-          <span class="font-medium text-slate-800 dark:text-slate-200">${Math.round((values[i]/total)*100)}%</span>
-        </div>
-      `).join('');
+      container.innerHTML = labels.map((label, i) => {
+        const percentage = ((values[i] / total) * 100).toFixed(1);
+        return `
+          <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-700/50 rounded-full px-3 py-1.5 shadow-sm">
+            <span class="w-3 h-3 rounded-full shadow-sm" style="background-color: ${colors[i]}"></span>
+            <span class="text-slate-600 dark:text-slate-300 text-xs font-medium">${label}</span>
+            <span class="font-bold text-slate-800 dark:text-slate-200 text-xs bg-white dark:bg-slate-600 px-1.5 py-0.5 rounded-full">${percentage}%</span>
+          </div>
+        `;
+      }).join('');
     }
 
     // Dark mode toggle with localStorage persistence
@@ -324,46 +333,12 @@ ob_start();
       });
     }
 
-    let revenueEnabled = true;
-    
-    function setRevenueVisibility(visible) {
-      revenueEnabled = visible;
-      renderStats(revenueEnabled);
-    }
-
-    function addDemoRevenueToggle() {
-      const headerContainer = document.querySelector('.mb-6');
-      if (headerContainer && !document.querySelector('#revenueToggleDemo')) {
-        const toggleDiv = document.createElement('div');
-        toggleDiv.className = 'flex items-center gap-2 text-sm bg-white dark:bg-slate-800 px-3 py-1.5 rounded-full border border-slate-200 dark:border-slate-700 shadow-sm';
-        toggleDiv.id = 'revenueToggleDemo';
-        toggleDiv.innerHTML = `
-          <span class="text-slate-600 dark:text-slate-300"><svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>Revenue Card</span>
-          <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" id="revenueToggleCheckbox" class="sr-only peer" ${revenueEnabled ? 'checked' : ''}>
-            <div class="w-9 h-5 bg-gray-300 peer-focus:outline-none rounded-full peer dark:bg-gray-600 peer-checked:bg-blue-600 peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-4 after:w-4 after:transition-all"></div>
-          </label>
-        `;
-        const firstDiv = headerContainer.querySelector('.flex-col.sm\\:flex-row');
-        if (firstDiv) {
-          firstDiv.appendChild(toggleDiv);
-        } else {
-          headerContainer.appendChild(toggleDiv);
-        }
-        const checkbox = document.getElementById('revenueToggleCheckbox');
-        checkbox.addEventListener('change', (e) => {
-          setRevenueVisibility(e.target.checked);
-          showToast(e.target.checked ? 'Revenue card enabled' : 'Revenue card hidden', 'info');
-        });
-      }
-    }
-
+    // Revenue is always shown (no toggle)
     function init() {
-      renderStats(revenueEnabled);
+      renderStats(true);
       renderRecentOrders();
       initCharts();
       initDarkMode();
-      addDemoRevenueToggle();
     }
 
     init();

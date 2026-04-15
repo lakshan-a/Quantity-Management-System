@@ -74,7 +74,8 @@ const translations = {
 
         // ==================== PAYMENT  ====================
 
-        
+        'payments_title': 'Payment Management',
+        'damages_subtitle': 'Manage payments securely, track transactions, and monitor cash flow in real time.',
         'total_revenue': 'Total Revenue',
         'pending_amount': 'Pending Amount',
         'cod_payments': 'COD Payments',
@@ -175,6 +176,8 @@ const translations = {
 
         // ==================== PAYMENT  ====================
 
+        'payments_title': 'ගෙවීම් කළමනාකරණය',
+        'damages_subtitle': 'ගෙවීම් ආරක්ෂිතව කළමනාකරණය කරන්න, ගනුදෙනු නිරීක්ෂණය කරන්න, සහ මුදල් ප්රවාහය තත්ය කාලීනව නිරීක්ෂණය කරන්න.',
         'total_revenue': 'මුළු ආදායම',
         'pending_amount': 'විසඳුම් නොකළ මුදල',
         'cod_payments': 'COD ගෙවීම්',
@@ -276,6 +279,8 @@ const translations = {
 
         // ==================== PAYMENT  ====================
 
+        'payments_title': 'கட்டண மேலாண்மை',
+        'damages_subtitle': 'கட்டணங்களைப் பாதுகாப்பாக மேலாண்மை செய்யுங்கள், பரிவர்த்தனைகளைக் கண்காணியுங்கள், மற்றும் பணப்பாய்வை நிகழ்நேரத்தில் கண்காணியுங்கள்.',
         'total_revenue': 'மொத்த வருவாய்',
         'pending_amount': 'நிலுவைத் தொகை',
         'cod_payments': 'COD கட்டணங்கள்',
