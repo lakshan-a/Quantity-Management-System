@@ -53,6 +53,33 @@ ob_start();
         </table>
       </div>
     </div>
+
+    <!-- Blocked Customers Section -->
+    <div class="mt-8">
+      <h2 class="text-xl font-semibold text-slate-900 dark:text-white mb-4 flex items-center gap-2" data-i18n="blocked_customers_title">
+        <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"></path>
+        </svg>
+        Blocked Customers
+      </h2>
+      <div class="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full">
+            <thead>
+              <tr class="border-b border-slate-200 dark:border-slate-700 bg-red-50 dark:bg-red-900/20">
+                <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase" data-i18n="table_header_id">ID</th>
+                <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase" data-i18n="table_header_name">Name</th>
+                <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase" data-i18n="table_header_email">Email</th>
+                <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase" data-i18n="table_header_phone">Phone</th>
+                <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase" data-i18n="table_header_blocked_date">Blocked Date</th>
+                <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase" data-i18n="table_header_actions">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="blockedCustomersTableBody" class="divide-y divide-slate-200 dark:divide-slate-700"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -120,7 +147,7 @@ ob_start();
   </div>
 </div>
 
-<!-- VIEW CUSTOMER MODAL -->
+<!-- VIEW CUSTOMER MODAL (with Block/Unblock button) -->
 <div id="viewModal" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-modal="true" role="dialog">
   <div class="fixed inset-0 bg-black/50" id="viewModalBackdrop"></div>
   <div class="fixed inset-0 flex flex-col sm:items-center sm:justify-center sm:p-4">
@@ -134,11 +161,14 @@ ob_start();
         </button>
       </div>
       <div id="viewModalContent" class="p-4 space-y-4"></div>
+      <div class="p-4 border-t border-slate-200 dark:border-slate-700 flex justify-end">
+        <button id="blockUnblockBtn" class="px-4 py-2 rounded-lg font-medium transition-colors" data-i18n="block_customer">Block Customer</button>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- DELETE CONFIRM MODAL (exactly as requested) -->
+<!-- DELETE CONFIRM MODAL -->
 <div id="deleteModal" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-modal="true" role="dialog">
   <div class="fixed inset-0 bg-black/50 transition-opacity" id="deleteModalBackdrop"></div>
   <div class="fixed inset-0 flex flex-col sm:items-center sm:justify-center sm:p-4">
@@ -166,11 +196,11 @@ ob_start();
 <script>
   // ---------- MOCK DATA ----------
   let customers = [
-    { customer_id: 'CUM-2024-001', business_id: 'biz1', full_name: 'John Smith', phone: '+1234567890', email: 'john@example.com', address: '123 Main St', city: 'New York', district: 'Manhattan', postal_code: '10001', notes: '', created_by: '1', createdAt: new Date(), updatedAt: new Date() },
-    { customer_id: 'CUM-2024-002', business_id: 'biz1', full_name: 'Sarah Johnson', phone: '+1234567891', email: 'sarah@example.com', address: '456 Oak Ave', city: 'Los Angeles', district: 'Downtown', postal_code: '90001', notes: '', created_by: '1', createdAt: new Date(), updatedAt: new Date() },
-    { customer_id: 'CUM-2024-003', business_id: 'biz1', full_name: 'Mike Brown', phone: '+1234567892', email: 'mike@example.com', address: '789 Pine Rd', city: 'Chicago', district: 'Loop', postal_code: '60601', notes: '', created_by: '1', createdAt: new Date(), updatedAt: new Date() },
-    { customer_id: 'CUM-2024-004', business_id: 'biz1', full_name: 'Emily Davis', phone: '+1234567893', email: 'emily@example.com', address: '321 Elm St', city: 'Houston', district: 'Midtown', postal_code: '77001', notes: '', created_by: '1', createdAt: new Date(), updatedAt: new Date() },
-    { customer_id: 'CUM-2024-005', business_id: 'biz1', full_name: 'Chris Wilson', phone: '+1234567894', email: 'chris@example.com', address: '654 Cedar Ln', city: 'Phoenix', district: 'Central', postal_code: '85001', notes: '', created_by: '1', createdAt: new Date(), updatedAt: new Date() }
+    { customer_id: 'CUM-2024-001', business_id: 'biz1', full_name: 'John Smith', phone: '+1234567890', email: 'john@example.com', address: '123 Main St', city: 'New York', district: 'Manhattan', postal_code: '10001', notes: '', created_by: '1', createdAt: new Date(), updatedAt: new Date(), status: 'active', blocked_at: null },
+    { customer_id: 'CUM-2024-002', business_id: 'biz1', full_name: 'Sarah Johnson', phone: '+1234567891', email: 'sarah@example.com', address: '456 Oak Ave', city: 'Los Angeles', district: 'Downtown', postal_code: '90001', notes: '', created_by: '1', createdAt: new Date(), updatedAt: new Date(), status: 'active', blocked_at: null },
+    { customer_id: 'CUM-2024-003', business_id: 'biz1', full_name: 'Mike Brown', phone: '+1234567892', email: 'mike@example.com', address: '789 Pine Rd', city: 'Chicago', district: 'Loop', postal_code: '60601', notes: '', created_by: '1', createdAt: new Date(), updatedAt: new Date(), status: 'blocked', blocked_at: new Date('2025-01-15') },
+    { customer_id: 'CUM-2024-004', business_id: 'biz1', full_name: 'Emily Davis', phone: '+1234567893', email: 'emily@example.com', address: '321 Elm St', city: 'Houston', district: 'Midtown', postal_code: '77001', notes: '', created_by: '1', createdAt: new Date(), updatedAt: new Date(), status: 'active', blocked_at: null },
+    { customer_id: 'CUM-2024-005', business_id: 'biz1', full_name: 'Chris Wilson', phone: '+1234567894', email: 'chris@example.com', address: '654 Cedar Ln', city: 'Phoenix', district: 'Central', postal_code: '85001', notes: '', created_by: '1', createdAt: new Date(), updatedAt: new Date(), status: 'active', blocked_at: null }
   ];
 
   // Helper: generate next customer ID (CUM-YYYY-XXX)
@@ -184,11 +214,20 @@ ob_start();
 
   let currentDeleteCustomerId = null;
   let editingCustomerId = null;
+  let currentViewCustomer = null;
 
-  // Render customers (desktop + mobile)
+  // Helper to format date
+  function formatDate(date) {
+    if (!date) return '—';
+    const d = new Date(date);
+    return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+  }
+
+  // Render customers (desktop + mobile) - active customers only
   function renderCustomers() {
     const searchQuery = document.getElementById('searchInput').value.toLowerCase();
-    const filtered = customers.filter(c => 
+    const activeCustomers = customers.filter(c => c.status !== 'blocked');
+    const filtered = activeCustomers.filter(c => 
       c.full_name.toLowerCase().includes(searchQuery) ||
       c.email.toLowerCase().includes(searchQuery) ||
       c.phone.includes(searchQuery) ||
@@ -220,7 +259,7 @@ ob_start();
       </tr>
     `).join('') : '<tr><td colspan="6" class="px-4 py-8 text-center text-slate-500">No customers found</td></tr>';
 
-    // Mobile cards
+    // Mobile cards (active customers only)
     const mobileContainer = document.getElementById('mobileCustomersContainer');
     mobileContainer.innerHTML = filtered.length ? filtered.map(c => `
       <div class="p-4 space-y-3">
@@ -242,27 +281,105 @@ ob_start();
     `).join('') : '<div class="p-8 text-center text-slate-500">No customers found</div>';
   }
 
+  // Render blocked customers table
+  function renderBlockedCustomers() {
+    const blockedCustomers = customers.filter(c => c.status === 'blocked');
+    const tbody = document.getElementById('blockedCustomersTableBody');
+    tbody.innerHTML = blockedCustomers.length ? blockedCustomers.map(c => `
+      <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50">
+        <td class="px-4 py-3 text-sm font-mono text-slate-900 dark:text-white">${c.customer_id}</td>
+        <td class="px-4 py-3 text-sm font-medium text-slate-900 dark:text-white">${escapeHtml(c.full_name)}</td>
+        <td class="px-4 py-3 text-sm text-slate-600 dark:text-slate-300">${escapeHtml(c.email)}</td>
+        <td class="px-4 py-3 text-sm text-slate-600 dark:text-slate-300">${escapeHtml(c.phone)}</td>
+        <td class="px-4 py-3 text-sm text-slate-600 dark:text-slate-300">${formatDate(c.blocked_at)}</td>
+        <td class="px-4 py-3">
+          <button onclick="unblockCustomer('${c.customer_id}')" class="inline-flex items-center px-3 py-1.5 bg-green-500 text-white text-sm font-medium rounded-lg hover:bg-green-600 transition-colors">
+            <svg class="w-3.5 h-3.5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            Unblock
+          </button>
+        </td>
+      </tr>
+    `).join('') : '<tr><td colspan="6" class="px-4 py-8 text-center text-slate-500">No blocked customers</td></tr>';
+  }
+
   // Helper to escape HTML
   function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, function(m) { if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m;}); }
 
-  // View Customer
-  window.viewCustomer = (id) => {
+  // Block/Unblock functions
+  function blockCustomer(id) {
     const customer = customers.find(c => c.customer_id === id);
-    if(!customer) return;
+    if(customer && customer.status !== 'blocked') {
+      customer.status = 'blocked';
+      customer.blocked_at = new Date();
+      renderCustomers();
+      renderBlockedCustomers();
+      // Close view modal if open
+      document.getElementById('viewModal').classList.add('hidden');
+      // Show success message (optional)
+      // alert(`Customer ${customer.full_name} has been blocked.`);
+    }
+  }
+
+  function unblockCustomer(id) {
+    const customer = customers.find(c => c.customer_id === id);
+    if(customer && customer.status === 'blocked') {
+      customer.status = 'active';
+      customer.blocked_at = null;
+      renderCustomers();
+      renderBlockedCustomers();
+      // alert(`Customer ${customer.full_name} has been unblocked.`);
+    }
+  }
+
+  // View Customer with Block/Unblock button
+  window.viewCustomer = (id) => {
+    currentViewCustomer = customers.find(c => c.customer_id === id);
+    if(!currentViewCustomer) return;
+    
     const container = document.getElementById('viewModalContent');
+    const isBlocked = currentViewCustomer.status === 'blocked';
+    
     container.innerHTML = `
       <div class="grid grid-cols-2 gap-4">
-        <div><p class="text-sm text-slate-500">${t('customer_id_label')}</p><p class="font-medium font-mono">${customer.customer_id}</p></div>
-        <div><p class="text-sm text-slate-500">${t('full_name_label')}</p><p class="font-medium">${escapeHtml(customer.full_name)}</p></div>
-        <div><p class="text-sm text-slate-500">${t('phone_label')}</p><p class="font-medium">${escapeHtml(customer.phone)}</p></div>
-        <div><p class="text-sm text-slate-500">${t('email_label')}</p><p class="font-medium">${escapeHtml(customer.email)}</p></div>
-        <div><p class="text-sm text-slate-500">${t('city_label')}</p><p class="font-medium">${escapeHtml(customer.city || '—')}</p></div>
-        <div><p class="text-sm text-slate-500">${t('district_label')}</p><p class="font-medium">${escapeHtml(customer.district || '—')}</p></div>
-        <div><p class="text-sm text-slate-500">${t('postal_code_label')}</p><p class="font-medium">${escapeHtml(customer.postal_code || '—')}</p></div>
-        <div class="col-span-2"><p class="text-sm text-slate-500">${t('address_label')}</p><p class="font-medium">${escapeHtml(customer.address || '—')}</p></div>
-        ${customer.notes ? `<div class="col-span-2"><p class="text-sm text-slate-500">${t('notes_label')}</p><p class="font-medium">${escapeHtml(customer.notes)}</p></div>` : ''}
-      </div>
+                <div><p class="text-sm text-slate-500">${t('customer_id_label')}</p><p class="font-medium font-mono">${currentViewCustomer.customer_id}</p></div>
+                <div><p class="text-sm text-slate-500">${t('full_name_label')}</p><p class="font-medium">${escapeHtml(currentViewCustomer.full_name)}</p></div>
+                <div><p class="text-sm text-slate-500">${t('phone_label')}</p><p class="font-medium">${escapeHtml(currentViewCustomer.phone)}</p></div>
+                <div><p class="text-sm text-slate-500">${t('email_label')}</p><p class="font-medium">${escapeHtml(currentViewCustomer.email)}</p></div>
+                <div><p class="text-sm text-slate-500">${t('city_label')}</p><p class="font-medium">${escapeHtml(currentViewCustomer.city || '—')}</p></div>
+                <div><p class="text-sm text-slate-500">${t('district_label')}</p><p class="font-medium">${escapeHtml(currentViewCustomer.district || '—')}</p></div>
+                <div><p class="text-sm text-slate-500">${t('postal_code_label')}</p><p class="font-medium">${escapeHtml(currentViewCustomer.postal_code || '—')}</p></div>
+                <div><p class="text-sm text-slate-500">${t('status_label')}</p><p class="font-medium"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${isBlocked ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}">${isBlocked ? t('blocked') : t('active')}</span></p></div>
+                <div class="col-span-2"><p class="text-sm text-slate-500">${t('address_label')}</p><p class="font-medium">${escapeHtml(currentViewCustomer.address || '—')}</p></div>
+                ${currentViewCustomer.notes ? `<div class="col-span-2"><p class="text-sm text-slate-500">${t('notes_label')}</p><p class="font-medium">${escapeHtml(currentViewCustomer.notes)}</p></div>` : ''}
+                ${isBlocked && currentViewCustomer.blocked_at ? `<div class="col-span-2"><p class="text-sm text-slate-500">${t('blocked_date_label')}</p><p class="font-medium">${formatDate(currentViewCustomer.blocked_at)}</p></div>` : ''}
+            </div>
     `;
+    
+    const blockBtn = document.getElementById('blockUnblockBtn');
+    if(isBlocked) {
+      blockBtn.textContent = 'Unblock Customer';
+      blockBtn.classList.remove('bg-red-500', 'hover:bg-red-600');
+      blockBtn.classList.add('bg-green-500', 'hover:bg-green-600');
+    } else {
+      blockBtn.textContent = 'Block Customer';
+      blockBtn.classList.remove('bg-green-500', 'hover:bg-green-600');
+      blockBtn.classList.add('bg-red-500', 'hover:bg-red-600');
+    }
+    
+    // Remove previous event listener and add new one
+    const newBlockBtn = blockBtn.cloneNode(true);
+    blockBtn.parentNode.replaceChild(newBlockBtn, blockBtn);
+    newBlockBtn.addEventListener('click', () => {
+      if(currentViewCustomer.status === 'blocked') {
+        unblockCustomer(currentViewCustomer.customer_id);
+      } else {
+        blockCustomer(currentViewCustomer.customer_id);
+      }
+      document.getElementById('viewModal').classList.add('hidden');
+    });
+    
     document.getElementById('viewModal').classList.remove('hidden');
   };
 
@@ -320,10 +437,10 @@ ob_start();
     };
     
     if(editingCustomerId) {
-      // update
+      // update - preserve status and blocked_at
       customers = customers.map(c => c.customer_id === editingCustomerId ? { ...c, ...formData, updatedAt: new Date() } : c);
     } else {
-      // create
+      // create - new customers are active by default
       const newId = generateCustomerId();
       const newCustomer = {
         customer_id: newId,
@@ -332,10 +449,13 @@ ob_start();
         created_by: '1',
         createdAt: new Date(),
         updatedAt: new Date(),
+        status: 'active',
+        blocked_at: null
       };
       customers.push(newCustomer);
     }
     renderCustomers();
+    renderBlockedCustomers();
     closeCustomerModal();
   }
 
@@ -355,6 +475,7 @@ ob_start();
     if(currentDeleteCustomerId) {
       customers = customers.filter(c => c.customer_id !== currentDeleteCustomerId);
       renderCustomers();
+      renderBlockedCustomers();
       closeDeleteModal();
       // if view modal open with deleted customer, close it
       document.getElementById('viewModal').classList.add('hidden');
@@ -371,6 +492,7 @@ ob_start();
   
   // Initial render
   renderCustomers();
+  renderBlockedCustomers();
 </script>
 
 <?php
