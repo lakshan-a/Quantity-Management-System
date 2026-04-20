@@ -103,7 +103,7 @@ const translations = {
         'form_item_name': 'Item Name *',
         'form_category': 'Category',
         'select_option': 'Select...',
-        'form_wholesale': 'Wholesale',
+        'form_wholesale': 'wholesaler',
         'form_size': 'Size',
         'size_placeholder': 'e.g., M, L, XL, One Size',
         'form_colors': 'Colors',

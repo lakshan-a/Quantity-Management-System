@@ -87,16 +87,16 @@ ob_start();
         <form id="orderForm" class="space-y-6">
           <!-- 2 columns: Customer + Courier -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
-            <!-- Customer select -->
+            <!-- Customer with clickable popup -->
             <div>
               <label class="block text-sm font-semibold text-slate-700 dark:text-slate-200 mb-1.5" data-i18n="label_customer">Customer <span class="text-red-500">*</span></label>
-              <select id="customer_id" required class="w-full px-4 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
-                <option value="" data-i18n="select_customer">Select customer</option>
-                <option value="1">John Smith</option>
-                <option value="2">Sarah Johnson</option>
-                <option value="3">Mike Brown</option>
-                <option value="4">Emily Davis</option>
-              </select>
+              <div class="relative">
+                <input type="text" id="customer_id" readonly placeholder="Click to select or add customer" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 cursor-pointer" data-i18n-placeholder="select_customer_placeholder">
+                <input type="hidden" id="customer_name_hidden">
+                <button type="button" id="openCustomerModalBtn" class="absolute right-2 top-1/2 -translate-y-1/2 p-1.5 text-blue-500 hover:text-blue-600">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                </button>
+              </div>
             </div>
             <!-- Courier select -->
             <div>
@@ -121,7 +121,6 @@ ob_start();
               </button>
             </div>
             <div id="itemsListContainer" class="space-y-3">
-              <!-- dynamic rows will be injected here -->
               <div class="item-row flex flex-wrap sm:flex-nowrap gap-3 items-center">
                 <div class="flex-1 min-w-[180px]">
                   <select class="itemSelect w-full px-3 py-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-sm">
@@ -166,8 +165,7 @@ ob_start();
             </div>
             <div>
               <label class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1" data-i18n="label_tracking_number">Tracking Number</label>
-              <input type="text" id="tracking_number" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-slate-100 dark:bg-slate-700/60 font-mono text-slate-600 dark:text-slate-300" placeholder="Auto-generated" readonly disabled>
-              <p class="text-xs text-slate-400 mt-1" data-i18n="tracking_hint">Auto-generated on creation</p>
+              <input type="text" id="tracking_number" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
             </div>
             <div>
               <label class="block text-sm font-medium text-slate-700 dark:text-slate-200 mb-1" data-i18n="label_discount">Discount ($)</label>
@@ -179,7 +177,7 @@ ob_start();
             </div>
           </div>
 
-          <!-- order summary preview (dynamic subtotal/delivery/total) -->
+          <!-- order summary preview -->
           <div class="bg-slate-100 dark:bg-slate-700/40 rounded-xl p-4">
             <div class="flex justify-between text-sm"><span class="text-slate-600 dark:text-slate-300" data-i18n="summary_subtotal">Subtotal:</span> <span id="previewSubtotal">$0.00</span></div>
             <div class="flex justify-between text-sm mt-1"><span class="text-slate-600 dark:text-slate-300" data-i18n="summary_delivery">Delivery fee:</span> <span id="previewDelivery">$0.00</span></div>
@@ -191,6 +189,89 @@ ob_start();
       <div class="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-3 p-4 border-t border-slate-200 dark:border-slate-700">
         <button class="closeModalBtn px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors" data-i18n="cancel_btn">Cancel</button>
         <button id="saveOrderBtn" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors" data-i18n="create_order_btn">Create Order</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CUSTOMER MODAL (Add/Select Customer) -->
+<div id="customerModal" class="fixed inset-0 z-50 overflow-y-auto hidden" aria-modal="true" role="dialog">
+  <div class="fixed inset-0 bg-black/50" id="customerModalBackdrop"></div>
+  <div class="fixed inset-0 flex flex-col sm:items-center sm:justify-center sm:p-4">
+    <div class="flex-1 sm:hidden"></div>
+    <div class="relative w-full bg-white dark:bg-slate-800 shadow-xl rounded-t-2xl sm:rounded-xl sm:max-w-2xl max-h-[90vh] overflow-hidden">
+      <div class="flex items-center justify-between p-4 border-b border-slate-200 dark:border-slate-700">
+        <div class="absolute top-2 left-1/2 -translate-x-1/2 w-10 h-1 bg-slate-300 dark:bg-slate-600 rounded-full sm:hidden"></div>
+        <h2 id="customerModalTitle" class="text-lg font-semibold text-slate-900 dark:text-white pt-2 sm:pt-0" data-i18n="select_customer_title">Select Customer</h2>
+        <button class="closeCustomerModalBtn p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+      </div>
+      <div class="p-4 overflow-y-auto max-h-[calc(90vh-140px)]">
+        <!-- Search and Add New Customer -->
+        <div class="flex flex-col sm:flex-row gap-3 mb-4">
+          <div class="relative flex-1">
+            <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <input type="text" id="customerSearchInput" data-i18n-placeholder="search_customers" placeholder="Search customers..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          </div>
+          <button id="showAddCustomerFormBtn" class="inline-flex items-center justify-center px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors">
+            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+            <span data-i18n="add_new_customer">Add New Customer</span>
+          </button>
+        </div>
+        
+        <!-- Customer List Container -->
+        <div id="customerListContainer" class="space-y-2 max-h-80 overflow-y-auto mb-4"></div>
+        
+        <!-- Add Customer Form (hidden by default) -->
+        <div id="addCustomerFormContainer" class="hidden border-t border-slate-200 dark:border-slate-700 pt-4 mt-2">
+          <h3 class="text-md font-semibold text-slate-800 dark:text-slate-200 mb-3" data-i18n="add_customer_title">Add New Customer</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_customer_id">Customer ID</label>
+              <input type="text" id="new_customer_id_display" readonly class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-60 disabled:cursor-not-allowed font-mono">
+              <p class="text-xs text-slate-500 mt-1" data-i18n="auto_generated_hint">Auto-generated</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_full_name">Full Name *</label>
+              <input type="text" id="new_full_name" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_phone">Phone *</label>
+              <input type="text" id="new_phone" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_email">Email</label>
+              <input type="email" id="new_email" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_address">Address</label>
+              <input type="text" id="new_address" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_city">City</label>
+              <input type="text" id="new_city" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_district">District</label>
+              <input type="text" id="new_district" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_postal_code">Postal Code</label>
+              <input type="text" id="new_postal_code" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div class="md:col-span-2">
+              <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_notes">Notes</label>
+              <textarea id="new_notes" rows="2" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"></textarea>
+            </div>
+          </div>
+          <div class="flex justify-end gap-3 mt-4">
+            <button id="cancelAddCustomerBtn" class="px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 font-medium rounded-lg hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors" data-i18n="cancel_btn">Cancel</button>
+            <button id="saveNewCustomerBtn" class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-600 transition-colors" data-i18n="save_btn">Save Customer</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -247,15 +328,32 @@ ob_start();
 <script>
   // ---------- MOCK DATA ----------
   let orders = [
-    { order_id: '1', business_id: 'biz1', order_number: 'ORD-2024-001', customer_id: '1', customer_name: 'John Smith', order_items: [{ item_id: '1', item_name: 'Wireless Headphones', price: 89.99, quantity: 2 }], payment_status: 'paid', payment_method: 'bank_transfer', courier_id: '1', courier_name: 'FedEx', tracking_number: 'FX123456', delivery_fee: 15.99, delivery_type: 'pay', discount: 10, total_amount: 185.97, status: 'delivered', created_by: '1', createdAt: new Date('2024-01-15'), updatedAt: new Date('2024-01-15') },
-    { order_id: '2', business_id: 'biz1', order_number: 'ORD-2024-002', customer_id: '2', customer_name: 'Sarah Johnson', order_items: [{ item_id: '2', item_name: 'Cotton T-Shirt', price: 29.99, quantity: 3 }], payment_status: 'pending', payment_method: 'cod', courier_id: '2', courier_name: 'UPS', delivery_fee: 12.99, delivery_type: 'pay', discount: 0, total_amount: 102.96, status: 'processing', created_by: '1', createdAt: new Date('2024-01-18'), updatedAt: new Date('2024-01-18') },
-    { order_id: '3', business_id: 'biz1', order_number: 'ORD-2024-003', customer_id: '3', customer_name: 'Mike Brown', order_items: [{ item_id: '3', item_name: 'Smart Watch', price: 249.99, quantity: 1 }], payment_status: 'paid', payment_method: 'bank_transfer', courier_id: '1', courier_name: 'FedEx', tracking_number: 'FX789012', delivery_fee: 15.99, delivery_type: 'pay', discount: 25, total_amount: 240.98, status: 'shipped', created_by: '1', createdAt: new Date('2024-01-20'), updatedAt: new Date('2024-01-20') },
-    { order_id: '4', business_id: 'biz1', order_number: 'ORD-2024-004', customer_id: '4', customer_name: 'Emily Davis', order_items: [{ item_id: '5', item_name: 'Yoga Mat', price: 39.99, quantity: 2 }], payment_status: 'pending', payment_method: 'cod', courier_id: '4', courier_name: 'Local Courier', delivery_fee: 8.99, delivery_type: 'pay', discount: 5, total_amount: 83.97, status: 'pending', created_by: '1', createdAt: new Date('2024-01-22'), updatedAt: new Date('2024-01-22') }
+    { order_id: '1', business_id: 'biz1', order_number: 'ORD-2024-001', customer_id: 'CUM-2024-001', customer_name: 'John Smith', order_items: [{ item_id: '1', item_name: 'Wireless Headphones', price: 89.99, quantity: 2 }], payment_status: 'paid', payment_method: 'bank_transfer', courier_id: '1', courier_name: 'FedEx', tracking_number: 'FX123456', delivery_fee: 15.99, delivery_type: 'pay', discount: 10, total_amount: 185.97, status: 'delivered', created_by: '1', createdAt: new Date('2024-01-15'), updatedAt: new Date('2024-01-15') },
+    { order_id: '2', business_id: 'biz1', order_number: 'ORD-2024-002', customer_id: 'CUM-2024-002', customer_name: 'Sarah Johnson', order_items: [{ item_id: '2', item_name: 'Cotton T-Shirt', price: 29.99, quantity: 3 }], payment_status: 'pending', payment_method: 'cod', courier_id: '2', courier_name: 'UPS', delivery_fee: 12.99, delivery_type: 'pay', discount: 0, total_amount: 102.96, status: 'processing', created_by: '1', createdAt: new Date('2024-01-18'), updatedAt: new Date('2024-01-18') },
+    { order_id: '3', business_id: 'biz1', order_number: 'ORD-2024-003', customer_id: 'CUM-2024-003', customer_name: 'Mike Brown', order_items: [{ item_id: '3', item_name: 'Smart Watch', price: 249.99, quantity: 1 }], payment_status: 'paid', payment_method: 'bank_transfer', courier_id: '1', courier_name: 'FedEx', tracking_number: 'FX789012', delivery_fee: 15.99, delivery_type: 'pay', discount: 25, total_amount: 240.98, status: 'shipped', created_by: '1', createdAt: new Date('2024-01-20'), updatedAt: new Date('2024-01-20') },
+    { order_id: '4', business_id: 'biz1', order_number: 'ORD-2024-004', customer_id: 'CUM-2024-004', customer_name: 'Emily Davis', order_items: [{ item_id: '5', item_name: 'Yoga Mat', price: 39.99, quantity: 2 }], payment_status: 'pending', payment_method: 'cod', courier_id: '4', courier_name: 'Local Courier', delivery_fee: 8.99, delivery_type: 'pay', discount: 5, total_amount: 83.97, status: 'pending', created_by: '1', createdAt: new Date('2024-01-22'), updatedAt: new Date('2024-01-22') }
   ];
 
-  const customerOptions = [{ value: '1', label: 'John Smith' },{ value: '2', label: 'Sarah Johnson' },{ value: '3', label: 'Mike Brown' },{ value: '4', label: 'Emily Davis' }];
+  // Customer data array
+  let customers = [
+    { customer_id: 'CUM-2024-001', full_name: 'John Smith', phone: '555-0101', email: 'john@example.com', city: 'New York', district: 'Manhattan', postal_code: '10001', address: '123 Main St', notes: '' },
+    { customer_id: 'CUM-2024-002', full_name: 'Sarah Johnson', phone: '555-0102', email: 'sarah@example.com', city: 'Los Angeles', district: 'Downtown', postal_code: '90001', address: '456 Oak Ave', notes: '' },
+    { customer_id: 'CUM-2024-003', full_name: 'Mike Brown', phone: '555-0103', email: 'mike@example.com', city: 'Chicago', district: 'Loop', postal_code: '60601', address: '789 Pine Rd', notes: '' },
+    { customer_id: 'CUM-2024-004', full_name: 'Emily Davis', phone: '555-0104', email: 'emily@example.com', city: 'Houston', district: 'Uptown', postal_code: '77001', address: '321 Elm St', notes: '' }
+  ];
+
   const courierOptions = [{ value: '1', label: 'FedEx', fee: 15.99 },{ value: '2', label: 'UPS', fee: 12.99 },{ value: '3', label: 'DHL', fee: 18.99 },{ value: '4', label: 'Local Courier', fee: 8.99 }];
   const itemOptions = [{ value: '1', label: 'Wireless Headphones', price: 89.99 },{ value: '2', label: 'Cotton T-Shirt', price: 29.99 },{ value: '3', label: 'Smart Watch', price: 249.99 },{ value: '5', label: 'Yoga Mat', price: 39.99 }];
+
+
+    // Helper: generate next customer ID (CUM-YYYY-XXX)
+  function generateCustomerId() {
+    const year = new Date().getFullYear();
+    const existingForYear = customers.filter(c => c.customer_id.startsWith(`CUM-${year}-`));
+    const numbers = existingForYear.map(c => parseInt(c.customer_id.split('-')[2])).filter(n => !isNaN(n));
+    const nextNum = numbers.length > 0 ? Math.max(...numbers) + 1 : 1;
+    return `CUM-${year}-${String(nextNum).padStart(3, '0')}`;
+  }
 
   // Helper functions
   const formatDate = (date) => new Date(date).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
@@ -264,6 +362,17 @@ ob_start();
 
   let currentDeleteOrderId = null;
   let currentViewOrder = null;
+  let selectedCustomerId = null;
+  let pendingCustomerId = null; // Store generated ID for new customer
+
+  // Function to update the auto-generated customer ID display
+  function updateAutoGeneratedCustomerId() {
+    const newCustomerIdInput = document.getElementById('new_customer_id_display');
+    if (newCustomerIdInput) {
+      pendingCustomerId = generateCustomerId();
+      newCustomerIdInput.value = pendingCustomerId;
+    }
+  }
 
   // Ensure viewOrder function is globally accessible
   window.viewOrder = (orderId) => {
@@ -499,7 +608,7 @@ ob_start();
             <button onclick="printOrder('${order.order_id}')" class="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg" title="Print"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg></button>
             <button onclick="deleteOrderPrompt('${order.order_id}')" class="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg" title="Delete"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
           </div></td>
-        </tr>
+          </tr>
       `).join('');
     } else {
       tbody.innerHTML = '<tr><td colspan="7" class="px-4 py-8 text-center text-slate-500">No orders found</td></tr>';
@@ -545,6 +654,142 @@ ob_start();
   document.getElementById('cancelDeleteBtn').onclick = closeDeleteModal;
   document.getElementById('deleteModalBackdrop').onclick = closeDeleteModal;
 
+  // --- CUSTOMER MODAL FUNCTIONS ---
+  function renderCustomerList(searchTerm = '') {
+    const container = document.getElementById('customerListContainer');
+    if (!container) return;
+    
+    let filteredCustomers = [...customers];
+    if (searchTerm) {
+      const term = searchTerm.toLowerCase();
+      filteredCustomers = filteredCustomers.filter(c => 
+        c.full_name.toLowerCase().includes(term) || 
+        c.phone.includes(term) ||
+        (c.email && c.email.toLowerCase().includes(term))
+      );
+    }
+    
+    if (filteredCustomers.length === 0) {
+      container.innerHTML = '<div class="text-center py-8 text-slate-500">No customers found. Click "Add New Customer" to create one.</div>';
+      return;
+    }
+    
+    container.innerHTML = filteredCustomers.map(customer => `
+      <div class="customer-item flex items-center justify-between p-3 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 cursor-pointer transition" data-customer-id="${customer.customer_id}" data-customer-name="${escapeHtml(customer.full_name)}">
+        <div class="flex-1">
+          <p class="font-medium text-slate-800 dark:text-slate-200">${escapeHtml(customer.full_name)}</p>
+          <p class="text-sm text-slate-500">${escapeHtml(customer.phone)} ${customer.email ? '• ' + escapeHtml(customer.email) : ''}</p>
+          ${customer.address ? `<p class="text-xs text-slate-400 mt-1">${escapeHtml(customer.address)}${customer.city ? ', ' + escapeHtml(customer.city) : ''}</p>` : ''}
+        </div>
+        <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+      </div>
+    `).join('');
+    
+    // Add click handlers for customer selection
+    document.querySelectorAll('.customer-item').forEach(el => {
+      el.addEventListener('click', () => {
+        const customerId = el.dataset.customerId;
+        const customerName = el.dataset.customerName;
+        selectCustomer(customerId, customerName);
+      });
+    });
+  }
+  
+  function selectCustomer(customerId, customerName) {
+    selectedCustomerId = customerId;
+    const customerInput = document.getElementById('customer_id');
+    const customerNameHidden = document.getElementById('customer_name_hidden');
+    if (customerInput) {
+      customerInput.value = customerName;
+      customerInput.dataset.customerId = customerId;
+    }
+    if (customerNameHidden) customerNameHidden.value = customerId;
+    
+    // Close customer modal
+    closeCustomerModal();
+  }
+  
+  function openCustomerModal() {
+    const customerModal = document.getElementById('customerModal');
+    if (customerModal) {
+      // Reset search and hide add form
+      const searchInput = document.getElementById('customerSearchInput');
+      if (searchInput) searchInput.value = '';
+      const addFormContainer = document.getElementById('addCustomerFormContainer');
+      if (addFormContainer) addFormContainer.classList.add('hidden');
+      
+      // Generate and display auto-generated ID for new customer
+      updateAutoGeneratedCustomerId();
+      
+      renderCustomerList();
+      customerModal.classList.remove('hidden');
+    }
+  }
+  
+  function closeCustomerModal() {
+    const customerModal = document.getElementById('customerModal');
+    if (customerModal) customerModal.classList.add('hidden');
+    // Reset add customer form
+    resetAddCustomerForm();
+  }
+  
+  function resetAddCustomerForm() {
+    document.getElementById('new_full_name').value = '';
+    document.getElementById('new_phone').value = '';
+    document.getElementById('new_email').value = '';
+    document.getElementById('new_city').value = '';
+    document.getElementById('new_district').value = '';
+    document.getElementById('new_postal_code').value = '';
+    document.getElementById('new_address').value = '';
+    document.getElementById('new_notes').value = '';
+    // Regenerate ID when form is reset
+    updateAutoGeneratedCustomerId();
+  }
+  
+  function saveNewCustomer() {
+    const fullName = document.getElementById('new_full_name').value.trim();
+    const phone = document.getElementById('new_phone').value.trim();
+    
+    if (!fullName) {
+      alert('Please enter customer full name');
+      return;
+    }
+    if (!phone) {
+      alert('Please enter customer phone number');
+      return;
+    }
+    
+    // Use the pre-generated customer ID
+    const newId = pendingCustomerId || generateCustomerId();
+    
+    const newCustomer = {
+      customer_id: newId,
+      full_name: fullName,
+      phone: phone,
+      email: document.getElementById('new_email').value.trim(),
+      city: document.getElementById('new_city').value.trim(),
+      district: document.getElementById('new_district').value.trim(),
+      postal_code: document.getElementById('new_postal_code').value.trim(),
+      address: document.getElementById('new_address').value.trim(),
+      notes: document.getElementById('new_notes').value.trim()
+    };
+    
+    customers.push(newCustomer);
+    
+    // Auto-select the new customer
+    selectCustomer(newId, fullName);
+    
+    // Hide add form
+    document.getElementById('addCustomerFormContainer').classList.add('hidden');
+    
+    // Refresh customer list
+    const searchInput = document.getElementById('customerSearchInput');
+    renderCustomerList(searchInput ? searchInput.value : '');
+    
+    // Regenerate ID for next time
+    updateAutoGeneratedCustomerId();
+  }
+  
   // --- Create Order Modal with Preview Logic ---
   function updatePreview() {
     // Calculate subtotal from current items
@@ -646,7 +891,11 @@ ob_start();
 
   function resetAndOpenOrderModal() {
     // Reset form fields
-    document.getElementById('customer_id').value = '';
+    const customerInput = document.getElementById('customer_id');
+    if (customerInput) {
+      customerInput.value = '';
+      delete customerInput.dataset.customerId;
+    }
     document.getElementById('courier_id').value = '';
     document.getElementById('payment_method').value = 'cod';
     document.getElementById('payment_status').value = 'pending';
@@ -676,25 +925,20 @@ ob_start();
     attachItemEvents();
     updateRemoveButtonsVisibility();
     
-    // Set auto-generated tracking number
-    const trackingInput = document.getElementById('tracking_number');
-    if (trackingInput) {
-      trackingInput.value = `TRK-${Date.now().toString(36).toUpperCase()}`;
-    }
     updatePreview();
     document.getElementById('orderModal').classList.remove('hidden');
   }
 
   // Save order handler
   function saveOrder() {
-    const customerId = document.getElementById('customer_id').value;
-    const courierId = document.getElementById('courier_id').value;
+    const customerId = document.getElementById('customer_id').dataset.customerId;
+    const customerName = document.getElementById('customer_id').value;
     
     if (!customerId) { 
-      alert('Please select a customer'); 
+      alert('Please select a customer by clicking the customer field'); 
       return; 
     }
-    if (!courierId) { 
+    if (!document.getElementById('courier_id').value) { 
       alert('Please select a courier'); 
       return; 
     }
@@ -742,12 +986,12 @@ ob_start();
       business_id: 'biz1',
       order_number: nextOrderNumber,
       customer_id: customerId,
-      customer_name: customerOptions.find(c => c.value === customerId)?.label || 'Unknown',
+      customer_name: customerName,
       order_items: items,
       payment_status: document.getElementById('payment_status').value,
       payment_method: document.getElementById('payment_method').value,
-      courier_id: courierId,
-      courier_name: courierOptions.find(c => c.value === courierId)?.label || 'Unknown',
+      courier_id: courierSelect.value,
+      courier_name: courierOptions.find(c => c.value === courierSelect.value)?.label || 'Unknown',
       tracking_number: document.getElementById('tracking_number').value,
       delivery_fee: finalDeliveryFee,
       delivery_type: deliveryType,
@@ -781,6 +1025,41 @@ ob_start();
     if (el) el.addEventListener('click', () => document.getElementById('orderModal').classList.add('hidden'));
   });
   
+  // Customer modal event listeners
+  const openCustomerBtn = document.getElementById('openCustomerModalBtn');
+  if (openCustomerBtn) {
+    openCustomerBtn.addEventListener('click', openCustomerModal);
+  }
+  
+  // Make customer input clickable
+  const customerInputField = document.getElementById('customer_id');
+  if (customerInputField) {
+    customerInputField.addEventListener('click', openCustomerModal);
+  }
+  
+  document.querySelectorAll('.closeCustomerModalBtn, #customerModalBackdrop').forEach(el => {
+    if (el) el.addEventListener('click', closeCustomerModal);
+  });
+  
+  document.getElementById('showAddCustomerFormBtn')?.addEventListener('click', () => {
+    const addFormContainer = document.getElementById('addCustomerFormContainer');
+    if (addFormContainer) {
+      addFormContainer.classList.toggle('hidden');
+      resetAddCustomerForm();
+    }
+  });
+  
+  document.getElementById('cancelAddCustomerBtn')?.addEventListener('click', () => {
+    document.getElementById('addCustomerFormContainer').classList.add('hidden');
+    resetAddCustomerForm();
+  });
+  
+  document.getElementById('saveNewCustomerBtn')?.addEventListener('click', saveNewCustomer);
+  
+  document.getElementById('customerSearchInput')?.addEventListener('input', (e) => {
+    renderCustomerList(e.target.value);
+  });
+  
   // Listen for changes that affect preview
   document.getElementById('courier_id')?.addEventListener('change', updatePreview);
   document.getElementById('delivery_type')?.addEventListener('change', updatePreview);
@@ -794,6 +1073,28 @@ ob_start();
   renderOrders();
   attachItemEvents();
   updateRemoveButtonsVisibility();
+  
+  // Simple translation helper
+  function t(key) {
+    const translations = {
+      'customer_label': 'Customer',
+      'courier_label': 'Courier',
+      'payment_method_label': 'Payment Method',
+      'payment_status_label': 'Payment Status',
+      'delivery_type_label': 'Delivery Type',
+      'tracking_label': 'Tracking Number',
+      'notes_label': 'Notes',
+      'items_label': 'Order Items',
+      'delivery_fee_label': 'Delivery Fee',
+      'discount_label': 'Discount',
+      'total_label': 'Total',
+      'mark_as_processing': 'Mark as Processing',
+      'mark_as_shipped': 'Mark as Shipped',
+      'mark_as_delivered': 'Mark as Delivered',
+      'print_invoice': 'Print Invoice'
+    };
+    return translations[key] || key;
+  }
 </script>
 
 <?php

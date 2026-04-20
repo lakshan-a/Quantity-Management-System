@@ -142,7 +142,7 @@ ob_start();
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_wholesale">Wholesale</label>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_wholesale">wholesaler</label>
                         <select id="wholesaleId" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
                             <option value="" data-i18n="select_option">Select...</option>
                             <option value="1">ABC Wholesale</option>
@@ -160,14 +160,14 @@ ob_start();
                     <div>
                         <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_cost_price">Cost Price</label>
                         <div class="relative">
-                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">$</span>
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">Rs</span>
                             <input type="number" id="costPrice" step="0.01" placeholder="0.00" class="w-full pl-7 pr-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
                         </div>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_selling_price">Selling Price</label>
                         <div class="relative">
-                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">$</span>
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">Rs</span>
                             <input type="number" id="sellingPrice" step="0.01" placeholder="0.00" class="w-full pl-7 pr-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
                         </div>
                     </div>
