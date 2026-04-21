@@ -83,7 +83,7 @@ ob_start();
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
         </button>
       </div>
-      <div class="p-4 overflow-y-auto max-h-[calc(90vh-140px)]" id="orderFormContainer">
+      <div class="p-4 overflow-y-auto max-h-[calc(80vh-140px)]" id="orderFormContainer">
         <form id="orderForm" class="space-y-6">
           <!-- 2 columns: Customer + Courier -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">

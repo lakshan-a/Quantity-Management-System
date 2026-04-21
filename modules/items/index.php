@@ -96,10 +96,10 @@ ob_start();
                             <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="table_header_stock">Stock</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="table_header_status">Status</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="table_header_actions">Actions</th>
-                        </tr>
+                         </tr>
                     </thead>
                     <tbody id="desktopItemsTableBody" class="divide-y divide-slate-200 dark:divide-slate-700"></tbody>
-                </table>
+                 </table>
             </div>
         </div>
     </div>
@@ -120,7 +120,7 @@ ob_start();
                     </svg>
                 </button>
             </div>
-            <div class="p-4 overflow-y-auto max-h-[calc(90vh-140px)]">
+            <div class="p-4 overflow-y-auto max-h-[calc(80vh-140px)]">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_item_code">Item Code</label>
@@ -149,9 +149,19 @@ ob_start();
                             <option value="2">XYZ Distributors</option>
                         </select>
                     </div>
-                    <div>
+                    <div class="md:col-span-2">
                         <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_size">Size</label>
-                        <input type="text" id="size" data-i18n-placeholder="size_placeholder" placeholder="e.g., M, L, XL, One Size" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
+                        <div class="flex flex-wrap gap-2 mt-1">
+                            <button type="button" data-size="SM" class="size-option-btn px-3 py-1.5 text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">SM</button>
+                            <button type="button" data-size="MD" class="size-option-btn px-3 py-1.5 text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">MD</button>
+                            <button type="button" data-size="LG" class="size-option-btn px-3 py-1.5 text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">LG</button>
+                            <button type="button" data-size="XL" class="size-option-btn px-3 py-1.5 text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">XL</button>
+                            <button type="button" data-size="2XL" class="size-option-btn px-3 py-1.5 text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">2XL</button>
+                            <button type="button" data-size="3XL" class="size-option-btn px-3 py-1.5 text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">3XL</button>
+                            <button type="button" data-size="3XL" class="size-option-btn px-3 py-1.5 text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">4XL</button>
+                            <button type="button" data-size="3XL" class="size-option-btn px-3 py-1.5 text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">5XL</button>
+                        </div>
+                        <input type="hidden" id="size" value="">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_colors">Colors</label>
@@ -315,7 +325,8 @@ ob_start();
     const itemNameField = document.getElementById('itemName');
     const categoryIdField = document.getElementById('categoryId');
     const wholesaleIdField = document.getElementById('wholesaleId');
-    const sizeField = document.getElementById('size');
+    const sizeHiddenField = document.getElementById('size');
+    const sizeOptionBtns = document.querySelectorAll('.size-option-btn');
     const colorsField = document.getElementById('colors');
     const costPriceField = document.getElementById('costPrice');
     const sellingPriceField = document.getElementById('sellingPrice');
@@ -327,6 +338,37 @@ ob_start();
     const previewImg = document.getElementById('previewImg');
     const removeImgBtn = document.getElementById('removeImgBtn');
     const modalTitle = document.getElementById('modalTitle');
+
+    // Size button click handler
+    function initSizeButtons() {
+        sizeOptionBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const selectedSize = btn.getAttribute('data-size');
+                // Update hidden input value
+                sizeHiddenField.value = selectedSize;
+                // Update button styles
+                sizeOptionBtns.forEach(b => {
+                    b.classList.remove('bg-blue-500', 'text-white', 'border-blue-500');
+                    b.classList.add('bg-white', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-200', 'border-slate-300', 'dark:border-slate-600');
+                });
+                btn.classList.remove('bg-white', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-200', 'border-slate-300', 'dark:border-slate-600');
+                btn.classList.add('bg-blue-500', 'text-white', 'border-blue-500');
+            });
+        });
+    }
+
+    // Set selected size in UI
+    function setSelectedSizeUI(sizeValue) {
+        sizeHiddenField.value = sizeValue || '';
+        sizeOptionBtns.forEach(btn => {
+            btn.classList.remove('bg-blue-500', 'text-white', 'border-blue-500');
+            btn.classList.add('bg-white', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-200', 'border-slate-300', 'dark:border-slate-600');
+            if (btn.getAttribute('data-size') === sizeValue) {
+                btn.classList.remove('bg-white', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-200', 'border-slate-300', 'dark:border-slate-600');
+                btn.classList.add('bg-blue-500', 'text-white', 'border-blue-500');
+            }
+        });
+    }
 
     function formatDate(date) { return new Date(date).toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' }); }
 
@@ -426,7 +468,7 @@ ob_start();
                     <span class="inline-flex px-2 py-0.5 rounded-full text-xs ${item.status === 'active' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' : 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300'}">
                         ${item.status === 'active' ? 'Active' : 'Inactive'}
                     </span>
-                 </td>
+                  </td>
                 <td class="px-4 py-3">
                     <div class="flex gap-2">
                         <button data-id="${item.item_id}" data-action="view" class="action-btn p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" title="View Details">
@@ -439,8 +481,8 @@ ob_start();
                             <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                         </button>
                     </div>
-                 </td>
-             </tr>
+                  </td>
+              </tr>
         `).join('');
         attachActionEvents();
     }
@@ -490,7 +532,7 @@ ob_start();
     function showViewModal(item) {
         const movements = getStockMovements(item.item_id);
         const colorsHtml = item.colors && item.colors.length ? item.colors.map(c => `<span class="inline-flex px-2 py-0.5 rounded-full text-xs bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300">${escapeHtml(c)}</span>`).join('') : '<span class="text-slate-500 text-sm">—</span>';
-        const movementsHtml = movements.length === 0 ? `<p class="text-sm text-slate-500 text-center py-4">${t('no_stock_movements')}</p>` : movements.map(m => `
+        const movementsHtml = movements.length === 0 ? `<p class="text-sm text-slate-500 text-center py-4">No stock movements recorded.</p>` : movements.map(m => `
             <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
                 <div class="flex items-center gap-3">
                     <div class="w-8 h-8 rounded-full flex items-center justify-center ${m.type === 'in' ? 'bg-emerald-100 dark:bg-emerald-900/30' : 'bg-red-100 dark:bg-red-900/30'}">
@@ -513,21 +555,21 @@ ob_start();
                 ${item.item_image ? `<img src="${item.item_image}" class="w-full h-full object-cover">` : `<svg class="w-16 h-16 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>`}
             </div>
             <div class="grid grid-cols-2 gap-4">
-                <div class="col-span-2 sm:col-span-1"><p class="text-sm text-slate-500">${t('item_code_label')}</p><p class="font-medium font-mono text-slate-900 dark:text-white">${item.item_code}</p></div>
-                <div class="col-span-2 sm:col-span-1"><p class="text-sm text-slate-500">${t('item_name_label')}</p><p class="font-medium text-slate-900 dark:text-white">${escapeHtml(item.item_name)}</p></div>
-                <div><p class="text-sm text-slate-500">${t('cost_price_label')}</p><p class="font-medium text-slate-900 dark:text-white">$${item.cost_price.toFixed(2)}</p></div>
-                <div><p class="text-sm text-slate-500">${t('selling_price_label')}</p><p class="font-medium text-slate-900 dark:text-white">$${item.selling_price.toFixed(2)}</p></div>
-                <div><p class="text-sm text-slate-500">${t('stock_quantity_label')}</p><p class="font-medium ${item.stock_quantity < 10 ? 'text-red-500' : 'text-slate-900 dark:text-white'}">${item.stock_quantity}</p></div>
-                <div><p class="text-sm text-slate-500">${t('status_label')}</p><span class="inline-flex px-2 py-0.5 rounded-full text-xs ${item.status === 'active' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' : 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300'}">${item.status === 'active' ? t('active_option') : t('inactive_option')}</span></div>
-                <div class="col-span-2"><p class="text-sm text-slate-500 mb-1">${t('colors_label')}</p><div class="flex flex-wrap gap-2">${colorsHtml}</div></div>
-                <div class="col-span-2"><p class="text-sm text-slate-500">${t('size_label')}</p><p class="text-slate-900 dark:text-white">${item.size || '—'}</p></div>
-                ${item.category_id ? `<div><p class="text-sm text-slate-500">${t('category_id_label')}</p><p class="text-slate-900 dark:text-white">${item.category_id}</p></div>` : ''}
-                ${item.wholesale_id ? `<div><p class="text-sm text-slate-500">${t('wholesale_id_label')}</p><p class="text-slate-900 dark:text-white">${item.wholesale_id}</p></div>` : ''}
+                <div class="col-span-2 sm:col-span-1"><p class="text-sm text-slate-500">Item Code</p><p class="font-medium font-mono text-slate-900 dark:text-white">${item.item_code}</p></div>
+                <div class="col-span-2 sm:col-span-1"><p class="text-sm text-slate-500">Item Name</p><p class="font-medium text-slate-900 dark:text-white">${escapeHtml(item.item_name)}</p></div>
+                <div><p class="text-sm text-slate-500">Cost Price</p><p class="font-medium text-slate-900 dark:text-white">$${item.cost_price.toFixed(2)}</p></div>
+                <div><p class="text-sm text-slate-500">Selling Price</p><p class="font-medium text-slate-900 dark:text-white">$${item.selling_price.toFixed(2)}</p></div>
+                <div><p class="text-sm text-slate-500">Stock Quantity</p><p class="font-medium ${item.stock_quantity < 10 ? 'text-red-500' : 'text-slate-900 dark:text-white'}">${item.stock_quantity}</p></div>
+                <div><p class="text-sm text-slate-500">Status</p><span class="inline-flex px-2 py-0.5 rounded-full text-xs ${item.status === 'active' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' : 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300'}">${item.status === 'active' ? 'Active' : 'Inactive'}</span></div>
+                <div class="col-span-2"><p class="text-sm text-slate-500 mb-1">Colors</p><div class="flex flex-wrap gap-2">${colorsHtml}</div></div>
+                <div class="col-span-2"><p class="text-sm text-slate-500">Size</p><p class="text-slate-900 dark:text-white">${item.size || '—'}</p></div>
+                ${item.category_id ? `<div><p class="text-sm text-slate-500">Category ID</p><p class="text-slate-900 dark:text-white">${item.category_id}</p></div>` : ''}
+                ${item.wholesale_id ? `<div><p class="text-sm text-slate-500">Wholesaler ID</p><p class="text-slate-900 dark:text-white">${item.wholesale_id}</p></div>` : ''}
             </div>
             <div class="border-t border-slate-200 dark:border-slate-700 pt-4">
                 <div class="flex items-center gap-2 mb-3">
                     <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <h3 class="font-semibold text-slate-900 dark:text-white">${t('stock_movement_history')}</h3>
+                    <h3 class="font-semibold text-slate-900 dark:text-white">Stock Movement History</h3>
                 </div>
                 <div class="space-y-2">${movementsHtml}</div>
             </div>
@@ -544,7 +586,7 @@ ob_start();
         itemNameField.value = item.item_name;
         categoryIdField.value = item.category_id || '';
         wholesaleIdField.value = item.wholesale_id || '';
-        sizeField.value = item.size || '';
+        setSelectedSizeUI(item.size || '');
         colorsField.value = item.colors ? item.colors.join(', ') : '';
         costPriceField.value = item.cost_price;
         sellingPriceField.value = item.selling_price;
@@ -563,7 +605,7 @@ ob_start();
         itemNameField.value = '';
         categoryIdField.value = '';
         wholesaleIdField.value = '';
-        sizeField.value = '';
+        setSelectedSizeUI('');
         colorsField.value = '';
         costPriceField.value = '';
         sellingPriceField.value = '';
@@ -606,7 +648,7 @@ ob_start();
             item_name: name,
             category_id: categoryIdField.value || null,
             wholesale_id: wholesaleIdField.value || null,
-            size: sizeField.value || null,
+            size: sizeHiddenField.value || null,
             colors: colorsField.value ? colorsField.value.split(',').map(c=>c.trim()).filter(Boolean) : [],
             cost_price: parseFloat(costPriceField.value) || 0,
             selling_price: parseFloat(sellingPriceField.value) || 0,
@@ -696,7 +738,8 @@ ob_start();
         } 
     });
     
-    // Initial render
+    // Initialize size buttons and render
+    initSizeButtons();
     render();
 </script>
 
