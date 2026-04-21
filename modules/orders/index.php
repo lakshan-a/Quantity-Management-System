@@ -61,10 +61,10 @@ ob_start();
               <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase" data-i18n="col_status">Status</th>
               <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase" data-i18n="col_date">Date</th>
               <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase" data-i18n="col_actions">Actions</th>
-            </tr>
+             </tr>
           </thead>
           <tbody id="ordersTableBody" class="divide-y divide-slate-200 dark:divide-slate-700"></tbody>
-        </table>
+         </table>
       </div>
     </div>
   </div>
@@ -345,8 +345,7 @@ ob_start();
   const courierOptions = [{ value: '1', label: 'FedEx', fee: 15.99 },{ value: '2', label: 'UPS', fee: 12.99 },{ value: '3', label: 'DHL', fee: 18.99 },{ value: '4', label: 'Local Courier', fee: 8.99 }];
   const itemOptions = [{ value: '1', label: 'Wireless Headphones', price: 89.99 },{ value: '2', label: 'Cotton T-Shirt', price: 29.99 },{ value: '3', label: 'Smart Watch', price: 249.99 },{ value: '5', label: 'Yoga Mat', price: 39.99 }];
 
-
-    // Helper: generate next customer ID (CUM-YYYY-XXX)
+  // Helper: generate next customer ID (CUM-YYYY-XXX)
   function generateCustomerId() {
     const year = new Date().getFullYear();
     const existingForYear = customers.filter(c => c.customer_id.startsWith(`CUM-${year}-`));
@@ -374,6 +373,32 @@ ob_start();
     }
   }
 
+  // Translation helper that uses the global translations object
+  function translate(key) {
+    if (window.translations && window.translations[key]) {
+      return window.translations[key];
+    }
+    // Fallback translations for dynamic content
+    const fallbacks = {
+      'customer_label': 'Customer',
+      'courier_label': 'Courier',
+      'payment_method_label': 'Payment Method',
+      'payment_status_label': 'Payment Status',
+      'delivery_type_label': 'Delivery Type',
+      'tracking_label': 'Tracking Number',
+      'notes_label': 'Notes',
+      'items_label': 'Order Items',
+      'delivery_fee_label': 'Delivery Fee',
+      'discount_label': 'Discount',
+      'total_label': 'Total',
+      'mark_as_processing': 'Mark as Processing',
+      'mark_as_shipped': 'Mark as Shipped',
+      'mark_as_delivered': 'Mark as Delivered',
+      'print_invoice': 'Print Invoice'
+    };
+    return fallbacks[key] || key;
+  }
+
   // Ensure viewOrder function is globally accessible
   window.viewOrder = (orderId) => {
     console.log('viewOrder called with ID:', orderId);
@@ -398,13 +423,13 @@ ob_start();
     const subtotal = order.order_items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     
     container.innerHTML = `
-      <div class="flex items-center justify-between flex-wrap gap-3">
+       <div class="flex items-center justify-between flex-wrap gap-3">
         <div class="flex items-center gap-3">
           <div class="w-12 h-12 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
             <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
           </div>
           <div>
-            <p class="font-semibold text-lg">${order.order_number}</p>
+            <p class="font-semibold text-lg">${escapeHtml(order.order_number)}</p>
             <p class="text-sm text-slate-500">${formatDate(order.createdAt)}</p>
           </div>
         </div>
@@ -412,19 +437,19 @@ ob_start();
       </div>
       
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div><p class="text-sm text-slate-500">${t('customer_label')}</p><p class="font-medium">${order.customer_name}</p></div>
-        <div><p class="text-sm text-slate-500">${t('courier_label')}</p><p class="font-medium">${order.courier_name}</p></div>
+        <div><p class="text-sm text-slate-500">${t('customer_label')}</p><p class="font-medium">${escapeHtml(order.customer_name)}</p></div>
+        <div><p class="text-sm text-slate-500">${t('courier_label')}</p><p class="font-medium">${escapeHtml(order.courier_name)}</p></div>
         <div><p class="text-sm text-slate-500">${t('payment_method_label')}</p><p class="capitalize">${order.payment_method.replace('_', ' ')}</p></div>
         <div><p class="text-sm text-slate-500 mb-1">${t('payment_status_label')}</p><span class="inline-flex px-2 py-0.5 rounded-full text-xs font-medium ${paymentStatusColors[order.payment_status]}">${order.payment_status}</span></div>
         <div><p class="text-sm text-slate-500 mb-1">${t('delivery_type_label')}</p><span class="inline-flex px-2 py-0.5 rounded-full text-xs font-medium ${order.delivery_type === 'free' ? 'bg-emerald-100 text-emerald-700' : 'bg-blue-100 text-blue-700'}">${order.delivery_type === 'free' ? 'Free' : 'Paid Delivery'}</span></div>
-        ${order.tracking_number ? `<div class="col-span-2"><p class="text-sm text-slate-500">${t('tracking_label')}</p><p class="font-mono text-sm">${order.tracking_number}</p></div>` : ''}
-        ${order.notes ? `<div class="col-span-2"><p class="text-sm text-slate-500">${t('notes_label')}</p><p class="text-sm">${order.notes}</p></div>` : ''}
+        ${order.tracking_number ? `<div class="col-span-2"><p class="text-sm text-slate-500">${t('tracking_label')}</p><p class="font-mono text-sm">${escapeHtml(order.tracking_number)}</p></div>` : ''}
+        ${order.notes ? `<div class="col-span-2"><p class="text-sm text-slate-500">${t('notes_label')}</p><p class="text-sm">${escapeHtml(order.notes)}</p></div>` : ''}
       </div>
       
       <div>
         <p class="text-sm font-medium mb-2">${t('items_label')}</p>
         <div class="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 space-y-2">
-          ${order.order_items.map(item => `<div class="flex justify-between"><span>${item.item_name} × ${item.quantity}</span><span>$${(item.price * item.quantity).toFixed(2)}</span></div>`).join('')}
+          ${order.order_items.map(item => `<div class="flex justify-between"><span>${escapeHtml(item.item_name)} × ${item.quantity}</span><span>$${(item.price * item.quantity).toFixed(2)}</span></div>`).join('')}
           <div class="border-t pt-2 mt-2 space-y-1">
             <div class="flex justify-between text-sm"><span>${t('delivery_fee_label')}</span><span>$${order.delivery_fee.toFixed(2)}</span></div>
             ${order.discount > 0 ? `<div class="flex justify-between text-sm"><span>${t('discount_label')}</span><span class="text-red-500">-$${order.discount.toFixed(2)}</span></div>` : ''}
@@ -566,7 +591,7 @@ ob_start();
                 </tr>
               `).join('')}
             </tbody>
-           </table>
+          </table>
           
           <div class="totals">
             <div class="totals-row"><span>Subtotal:</span><span>$${subtotal.toFixed(2)}</span></div>
@@ -608,7 +633,7 @@ ob_start();
             <button onclick="printOrder('${order.order_id}')" class="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg" title="Print"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg></button>
             <button onclick="deleteOrderPrompt('${order.order_id}')" class="p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg" title="Delete"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
           </div></td>
-          </tr>
+         </tr>
       `).join('');
     } else {
       tbody.innerHTML = '<tr><td colspan="7" class="px-4 py-8 text-center text-slate-500">No orders found</td></tr>';
@@ -1074,27 +1099,42 @@ ob_start();
   attachItemEvents();
   updateRemoveButtonsVisibility();
   
-  // Simple translation helper
-  function t(key) {
-    const translations = {
-      'customer_label': 'Customer',
-      'courier_label': 'Courier',
-      'payment_method_label': 'Payment Method',
-      'payment_status_label': 'Payment Status',
-      'delivery_type_label': 'Delivery Type',
-      'tracking_label': 'Tracking Number',
-      'notes_label': 'Notes',
-      'items_label': 'Order Items',
-      'delivery_fee_label': 'Delivery Fee',
-      'discount_label': 'Discount',
-      'total_label': 'Total',
-      'mark_as_processing': 'Mark as Processing',
-      'mark_as_shipped': 'Mark as Shipped',
-      'mark_as_delivered': 'Mark as Delivered',
-      'print_invoice': 'Print Invoice'
-    };
-    return translations[key] || key;
+  // Apply translations to all elements with data-i18n attribute
+  function applyTranslations() {
+    if (window.translations) {
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (window.translations[key]) {
+          if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+            if (el.getAttribute('data-i18n-placeholder') !== null) {
+              el.placeholder = window.translations[key];
+            } else {
+              el.value = window.translations[key];
+            }
+          } else if (el.tagName === 'SELECT') {
+            // For select options, we need to handle differently
+            // Skip for now as options are handled by data-i18n on option elements
+          } else {
+            el.textContent = window.translations[key];
+          }
+        }
+      });
+      
+      // Handle select options with data-i18n
+      document.querySelectorAll('option[data-i18n]').forEach(option => {
+        const key = option.getAttribute('data-i18n');
+        if (window.translations[key]) {
+          option.textContent = window.translations[key];
+        }
+      });
+    }
   }
+  
+  // Apply translations when page loads and when language changes
+  applyTranslations();
+  
+  // Listen for language change events
+  document.addEventListener('languageChanged', applyTranslations);
 </script>
 
 <?php
