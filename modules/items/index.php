@@ -96,10 +96,10 @@ ob_start();
                             <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="table_header_stock">Stock</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="table_header_status">Status</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="table_header_actions">Actions</th>
-                         </tr>
+                          </tr>
                     </thead>
                     <tbody id="desktopItemsTableBody" class="divide-y divide-slate-200 dark:divide-slate-700"></tbody>
-                 </table>
+                  </table>
             </div>
         </div>
     </div>
@@ -124,8 +124,8 @@ ob_start();
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_item_code">Item Code</label>
-                        <input type="text" id="itemCode" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 disabled:opacity-50 disabled:cursor-not-allowed" readonly disabled>
-                        <p id="codeHelper" class="text-xs text-slate-500 mt-1" data-i18n="auto_generated_hint">Auto-generated</p>
+                        <input type="text" id="itemCode" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-transparent" >
+                        <!-- <p id="codeHelper" class="text-xs text-slate-500 mt-1" data-i18n="auto_generated_hint">Auto-generated</p> -->
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_item_name">Item Name *</label>
@@ -150,7 +150,7 @@ ob_start();
                         </select>
                     </div>
                     <div class="md:col-span-2">
-                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_size">Size</label>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_size">Sizes (Multi-select)</label>
                         <div class="flex flex-wrap gap-2 mt-1">
                             <button type="button" data-size="SM" class="size-option-btn px-3 py-1.5 text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">SM</button>
                             <button type="button" data-size="MD" class="size-option-btn px-3 py-1.5 text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">MD</button>
@@ -158,10 +158,12 @@ ob_start();
                             <button type="button" data-size="XL" class="size-option-btn px-3 py-1.5 text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">XL</button>
                             <button type="button" data-size="2XL" class="size-option-btn px-3 py-1.5 text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">2XL</button>
                             <button type="button" data-size="3XL" class="size-option-btn px-3 py-1.5 text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">3XL</button>
-                            <button type="button" data-size="3XL" class="size-option-btn px-3 py-1.5 text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">4XL</button>
-                            <button type="button" data-size="3XL" class="size-option-btn px-3 py-1.5 text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">5XL</button>
+                            <button type="button" data-size="4XL" class="size-option-btn px-3 py-1.5 text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">4XL</button>
+                            <button type="button" data-size="5XL" class="size-option-btn px-3 py-1.5 text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">5XL</button>
                         </div>
                         <input type="hidden" id="size" value="">
+                        <div id="selectedSizesContainer" class="flex flex-wrap gap-2 mt-3"></div>
+                        <p class="text-xs text-slate-500 mt-1" data-i18n="multi_size_hint">Click on sizes to select multiple. Click again to remove.</p>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_colors">Colors</label>
@@ -170,15 +172,15 @@ ob_start();
                     <div>
                         <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_cost_price">Cost Price</label>
                         <div class="relative">
-                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">Rs</span>
-                            <input type="number" id="costPrice" step="0.01" placeholder="0.00" class="w-full pl-7 pr-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
+                            <!-- <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">Rs. </span> -->
+                            <input type="number" id="costPrice" step="0.01" placeholder="Rs. 0.00" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
                         </div>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_selling_price">Selling Price</label>
                         <div class="relative">
-                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">Rs</span>
-                            <input type="number" id="sellingPrice" step="0.01" placeholder="0.00" class="w-full pl-7 pr-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
+                            <!-- <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">Rs.</span> -->
+                            <input type="number" id="sellingPrice" step="0.01" placeholder="Rs. 0.00" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
                         </div>
                     </div>
                     <div>
@@ -272,11 +274,11 @@ ob_start();
 <script>
     // ---------- MOCK DATA ----------
     let items = [
-        { item_id: "1", business_id: "biz1", item_code: "ITM001", category_id: "1", wholesale_id: "1", item_name: "Wireless Headphones", size: "One Size", colors: ["Black","White"], cost_price: 45, selling_price: 89.99, status: "active", stock_quantity: 150, item_image: "", created_by: "1", createdAt: new Date(), updatedAt: new Date() },
-        { item_id: "2", business_id: "biz1", item_code: "ITM002", category_id: "2", wholesale_id: "1", item_name: "Cotton T-Shirt", size: "M", colors: ["Blue","Red","Green"], cost_price: 12, selling_price: 29.99, status: "active", stock_quantity: 500, item_image: "", created_by: "1", createdAt: new Date(), updatedAt: new Date() },
-        { item_id: "3", business_id: "biz1", item_code: "ITM003", category_id: "1", wholesale_id: "2", item_name: "Smart Watch", size: "One Size", colors: ["Silver","Gold"], cost_price: 120, selling_price: 249.99, status: "active", stock_quantity: 8, item_image: "", created_by: "1", createdAt: new Date(), updatedAt: new Date() },
-        { item_id: "4", business_id: "biz1", item_code: "ITM004", category_id: "3", wholesale_id: "1", item_name: "Garden Tools Set", size: "Standard", colors: ["Green"], cost_price: 35, selling_price: 79.99, status: "inactive", stock_quantity: 0, item_image: "", created_by: "1", createdAt: new Date(), updatedAt: new Date() },
-        { item_id: "5", business_id: "biz1", item_code: "ITM005", category_id: "4", wholesale_id: "2", item_name: "Yoga Mat", size: "6mm", colors: ["Purple","Blue","Pink"], cost_price: 15, selling_price: 39.99, status: "active", stock_quantity: 200, item_image: "", created_by: "1", createdAt: new Date(), updatedAt: new Date() }
+        { item_id: "1", business_id: "biz1", item_code: "ITM001", category_id: "1", wholesale_id: "1", item_name: "Wireless Headphones", size: ["MD"], colors: ["Black","White"], cost_price: 45, selling_price: 89.99, status: "active", stock_quantity: 150, item_image: "", created_by: "1", createdAt: new Date(), updatedAt: new Date() },
+        { item_id: "2", business_id: "biz1", item_code: "ITM002", category_id: "2", wholesale_id: "1", item_name: "Cotton T-Shirt", size: ["MD","LG","XL"], colors: ["Blue","Red","Green"], cost_price: 12, selling_price: 29.99, status: "active", stock_quantity: 500, item_image: "", created_by: "1", createdAt: new Date(), updatedAt: new Date() },
+        { item_id: "3", business_id: "biz1", item_code: "ITM003", category_id: "1", wholesale_id: "2", item_name: "Smart Watch", size: ["One Size"], colors: ["Silver","Gold"], cost_price: 120, selling_price: 249.99, status: "active", stock_quantity: 8, item_image: "", created_by: "1", createdAt: new Date(), updatedAt: new Date() },
+        { item_id: "4", business_id: "biz1", item_code: "ITM004", category_id: "3", wholesale_id: "1", item_name: "Garden Tools Set", size: ["Standard"], colors: ["Green"], cost_price: 35, selling_price: 79.99, status: "inactive", stock_quantity: 0, item_image: "", created_by: "1", createdAt: new Date(), updatedAt: new Date() },
+        { item_id: "5", business_id: "biz1", item_code: "ITM005", category_id: "4", wholesale_id: "2", item_name: "Yoga Mat", size: ["6mm"], colors: ["Purple","Blue","Pink"], cost_price: 15, selling_price: 39.99, status: "active", stock_quantity: 200, item_image: "", created_by: "1", createdAt: new Date(), updatedAt: new Date() }
     ];
     
     // Mock stock movements
@@ -291,6 +293,8 @@ ob_start();
     let currentEditId = null;
     let currentImageBase64 = "";
     let itemToDeleteId = null;
+    // Store selected sizes as array
+    let selectedSizes = [];
 
     // DOM elements
     const searchInput = document.getElementById('searchInput');
@@ -338,51 +342,131 @@ ob_start();
     const previewImg = document.getElementById('previewImg');
     const removeImgBtn = document.getElementById('removeImgBtn');
     const modalTitle = document.getElementById('modalTitle');
+    const selectedSizesContainer = document.getElementById('selectedSizesContainer');
 
-    // Size button click handler
-    function initSizeButtons() {
-        sizeOptionBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const selectedSize = btn.getAttribute('data-size');
-                // Update hidden input value
-                sizeHiddenField.value = selectedSize;
-                // Update button styles
-                sizeOptionBtns.forEach(b => {
-                    b.classList.remove('bg-blue-500', 'text-white', 'border-blue-500');
-                    b.classList.add('bg-white', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-200', 'border-slate-300', 'dark:border-slate-600');
-                });
-                btn.classList.remove('bg-white', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-200', 'border-slate-300', 'dark:border-slate-600');
-                btn.classList.add('bg-blue-500', 'text-white', 'border-blue-500');
+    // Update the display of selected size tags
+    function updateSelectedSizesDisplay() {
+        if (!selectedSizesContainer) return;
+        
+        if (selectedSizes.length === 0) {
+            selectedSizesContainer.innerHTML = '';
+            return;
+        }
+        
+        selectedSizesContainer.innerHTML = selectedSizes.map(size => `
+            <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
+                ${escapeHtml(size)}
+                <button type="button" data-size="${size}" class="remove-size-btn ml-1 hover:text-blue-900 dark:hover:text-blue-200 focus:outline-none">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </span>
+        `).join('');
+        
+        // Add event listeners to remove buttons
+        document.querySelectorAll('.remove-size-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const sizeToRemove = btn.getAttribute('data-size');
+                removeSize(sizeToRemove);
             });
         });
     }
-
-    // Set selected size in UI
-    function setSelectedSizeUI(sizeValue) {
-        sizeHiddenField.value = sizeValue || '';
+    
+    // Remove a size from selection
+    function removeSize(sizeValue) {
+        selectedSizes = selectedSizes.filter(s => s !== sizeValue);
+        updateSizeButtonsUI();
+        updateSelectedSizesDisplay();
+        updateHiddenSizeField();
+    }
+    
+    // Toggle size selection
+    function toggleSizeSelection(sizeValue) {
+        if (selectedSizes.includes(sizeValue)) {
+            selectedSizes = selectedSizes.filter(s => s !== sizeValue);
+        } else {
+            selectedSizes.push(sizeValue);
+        }
+        updateSizeButtonsUI();
+        updateSelectedSizesDisplay();
+        updateHiddenSizeField();
+    }
+    
+    // Update button styles based on selected sizes
+    function updateSizeButtonsUI() {
         sizeOptionBtns.forEach(btn => {
-            btn.classList.remove('bg-blue-500', 'text-white', 'border-blue-500');
-            btn.classList.add('bg-white', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-200', 'border-slate-300', 'dark:border-slate-600');
-            if (btn.getAttribute('data-size') === sizeValue) {
+            const sizeValue = btn.getAttribute('data-size');
+            if (selectedSizes.includes(sizeValue)) {
                 btn.classList.remove('bg-white', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-200', 'border-slate-300', 'dark:border-slate-600');
                 btn.classList.add('bg-blue-500', 'text-white', 'border-blue-500');
+            } else {
+                btn.classList.remove('bg-blue-500', 'text-white', 'border-blue-500');
+                btn.classList.add('bg-white', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-200', 'border-slate-300', 'dark:border-slate-600');
             }
         });
+    }
+    
+    // Update hidden field with JSON string of selected sizes
+    function updateHiddenSizeField() {
+        sizeHiddenField.value = JSON.stringify(selectedSizes);
+    }
+    
+    // Set selected sizes from existing data (array or string)
+    function setSelectedSizes(sizeValue) {
+        if (!sizeValue) {
+            selectedSizes = [];
+        } else if (Array.isArray(sizeValue)) {
+            selectedSizes = [...sizeValue];
+        } else if (typeof sizeValue === 'string') {
+            // Try to parse JSON first, otherwise treat as single size
+            try {
+                const parsed = JSON.parse(sizeValue);
+                if (Array.isArray(parsed)) {
+                    selectedSizes = parsed;
+                } else {
+                    selectedSizes = [sizeValue];
+                }
+            } catch (e) {
+                selectedSizes = sizeValue ? [sizeValue] : [];
+            }
+        } else {
+            selectedSizes = [];
+        }
+        updateSizeButtonsUI();
+        updateSelectedSizesDisplay();
+        updateHiddenSizeField();
+    }
+
+    // Size button click handler - now toggles selection
+    function initSizeButtons() {
+        sizeOptionBtns.forEach(btn => {
+            btn.removeEventListener('click', handleSizeClick);
+            btn.addEventListener('click', handleSizeClick);
+        });
+    }
+    
+    function handleSizeClick(e) {
+        const btn = e.currentTarget;
+        const sizeValue = btn.getAttribute('data-size');
+        toggleSizeSelection(sizeValue);
     }
 
     function formatDate(date) { return new Date(date).toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' }); }
 
-    function generateItemCode() {
-        const maxNum = items.reduce((max, item) => {
-            const match = item.item_code.match(/ITM(\d+)/);
-            return match ? Math.max(max, parseInt(match[1])) : max;
-        }, 0);
-        return `ITM${String(maxNum + 1).padStart(3,'0')}`;
-    }
+    // function generateItemCode() {
+    //     const maxNum = items.reduce((max, item) => {
+    //         const match = item.item_code.match(/ITM(\d+)/);
+    //         return match ? Math.max(max, parseInt(match[1])) : max;
+    //     }, 0);
+    //     return `ITM${String(maxNum + 1).padStart(3,'0')}`;
+    // }
     
     function escapeHtml(str) { 
         if(!str) return ''; 
-        return str.replace(/[&<>]/g, function(m){
+        if(typeof str === 'object') return str;
+        return String(str).replace(/[&<>]/g, function(m){
             if(m==='&') return '&amp;'; 
             if(m==='<') return '&lt;'; 
             if(m==='>') return '&gt;'; 
@@ -390,6 +474,22 @@ ob_start();
         }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
             return c;
         });
+    }
+    
+    // Format sizes for display (from array to comma-separated string)
+    function formatSizesForDisplay(sizes) {
+        if (!sizes) return '—';
+        if (Array.isArray(sizes)) return sizes.join(', ');
+        if (typeof sizes === 'string') {
+            try {
+                const parsed = JSON.parse(sizes);
+                if (Array.isArray(parsed)) return parsed.join(', ');
+                return sizes;
+            } catch (e) {
+                return sizes;
+            }
+        }
+        return '—';
     }
 
     function applyFilters() {
@@ -442,6 +542,7 @@ ob_start();
                 <div class="grid grid-cols-2 gap-2 text-sm">
                     <div><span class="text-slate-500 text-xs block">Price</span><span class="font-medium">$${item.selling_price.toFixed(2)}</span></div>
                     <div><span class="text-slate-500 text-xs block">Stock</span><span class="font-medium ${item.stock_quantity < 10 ? 'text-red-500' : ''}">${item.stock_quantity}</span></div>
+                    <div><span class="text-slate-500 text-xs block">Sizes</span><span class="text-xs">${formatSizesForDisplay(item.size)}</span></div>
                     <div class="col-span-2"><span class="text-slate-500 text-xs block">Status</span><span class="inline-flex mt-1 px-2 py-0.5 rounded-full text-xs ${item.status === 'active' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' : 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300'}">${item.status}</span></div>
                 </div>
                 <div class="flex gap-2 pt-2 border-t border-slate-100 dark:border-slate-700 mt-2">
@@ -468,7 +569,7 @@ ob_start();
                     <span class="inline-flex px-2 py-0.5 rounded-full text-xs ${item.status === 'active' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' : 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300'}">
                         ${item.status === 'active' ? 'Active' : 'Inactive'}
                     </span>
-                  </td>
+                </td>
                 <td class="px-4 py-3">
                     <div class="flex gap-2">
                         <button data-id="${item.item_id}" data-action="view" class="action-btn p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" title="View Details">
@@ -481,7 +582,7 @@ ob_start();
                             <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                         </button>
                     </div>
-                  </td>
+                </td>
               </tr>
         `).join('');
         attachActionEvents();
@@ -532,6 +633,7 @@ ob_start();
     function showViewModal(item) {
         const movements = getStockMovements(item.item_id);
         const colorsHtml = item.colors && item.colors.length ? item.colors.map(c => `<span class="inline-flex px-2 py-0.5 rounded-full text-xs bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300">${escapeHtml(c)}</span>`).join('') : '<span class="text-slate-500 text-sm">—</span>';
+        const sizesHtml = item.size && item.size.length ? item.size.map(s => `<span class="inline-flex px-2 py-0.5 rounded-full text-xs bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300">${escapeHtml(s)}</span>`).join('') : '<span class="text-slate-500 text-sm">—</span>';
         const movementsHtml = movements.length === 0 ? `<p class="text-sm text-slate-500 text-center py-4">No stock movements recorded.</p>` : movements.map(m => `
             <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
                 <div class="flex items-center gap-3">
@@ -562,7 +664,7 @@ ob_start();
                 <div><p class="text-sm text-slate-500">Stock Quantity</p><p class="font-medium ${item.stock_quantity < 10 ? 'text-red-500' : 'text-slate-900 dark:text-white'}">${item.stock_quantity}</p></div>
                 <div><p class="text-sm text-slate-500">Status</p><span class="inline-flex px-2 py-0.5 rounded-full text-xs ${item.status === 'active' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' : 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300'}">${item.status === 'active' ? 'Active' : 'Inactive'}</span></div>
                 <div class="col-span-2"><p class="text-sm text-slate-500 mb-1">Colors</p><div class="flex flex-wrap gap-2">${colorsHtml}</div></div>
-                <div class="col-span-2"><p class="text-sm text-slate-500">Size</p><p class="text-slate-900 dark:text-white">${item.size || '—'}</p></div>
+                <div class="col-span-2"><p class="text-sm text-slate-500 mb-1">Sizes</p><div class="flex flex-wrap gap-2">${sizesHtml}</div></div>
                 ${item.category_id ? `<div><p class="text-sm text-slate-500">Category ID</p><p class="text-slate-900 dark:text-white">${item.category_id}</p></div>` : ''}
                 ${item.wholesale_id ? `<div><p class="text-sm text-slate-500">Wholesaler ID</p><p class="text-slate-900 dark:text-white">${item.wholesale_id}</p></div>` : ''}
             </div>
@@ -586,7 +688,8 @@ ob_start();
         itemNameField.value = item.item_name;
         categoryIdField.value = item.category_id || '';
         wholesaleIdField.value = item.wholesale_id || '';
-        setSelectedSizeUI(item.size || '');
+        // Set selected sizes from item
+        setSelectedSizes(item.size || []);
         colorsField.value = item.colors ? item.colors.join(', ') : '';
         costPriceField.value = item.cost_price;
         sellingPriceField.value = item.selling_price;
@@ -601,11 +704,11 @@ ob_start();
     function openAddModal() {
         currentEditId = null;
         modalTitle.innerText = 'Add Item';
-        itemCodeField.value = generateItemCode();
+        itemCodeField.value = '';
         itemNameField.value = '';
         categoryIdField.value = '';
         wholesaleIdField.value = '';
-        setSelectedSizeUI('');
+        setSelectedSizes([]);
         colorsField.value = '';
         costPriceField.value = '';
         sellingPriceField.value = '';
@@ -648,7 +751,7 @@ ob_start();
             item_name: name,
             category_id: categoryIdField.value || null,
             wholesale_id: wholesaleIdField.value || null,
-            size: sizeHiddenField.value || null,
+            size: selectedSizes, // Store as array
             colors: colorsField.value ? colorsField.value.split(',').map(c=>c.trim()).filter(Boolean) : [],
             cost_price: parseFloat(costPriceField.value) || 0,
             selling_price: parseFloat(sellingPriceField.value) || 0,

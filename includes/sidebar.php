@@ -10,22 +10,23 @@ $lang = isset($_COOKIE['user_lang']) ? $_COOKIE['user_lang'] : 'en';
 // Define nav groups with data-i18n attributes instead of hardcoded text
 $navGroups = [
     'sidebar.main' => [
-        ['href'=>'../dashboard/index.php',        'icon'=>'dashboard',          'i18n'=>'sidebar.dashboard'],
-        ['href'=>'../modules/orders/index.php',   'icon'=>'shopping_cart',      'i18n'=>'sidebar.orders'],
-        ['href'=>'../modules/customer/index.php', 'icon'=>'people',             'i18n'=>'sidebar.customers'],
+        ['href'=>'/dashboard/dashboard/index.php',        'icon'=>'dashboard',          'i18n'=>'sidebar.dashboard'],
+        ['href'=>'/dashboard/modules/orders/index.php',   'icon'=>'shopping_cart',      'i18n'=>'sidebar.orders'],
+        ['href'=>'/dashboard/modules/customer/index.php', 'icon'=>'people',             'i18n'=>'sidebar.customers'],
     ],
     'sidebar.operations' => [
-        ['href'=>'../modules/payments/index.php', 'icon'=>'payments',           'i18n'=>'sidebar.payments'],
-        ['href'=>'../modules/returns/index.php',  'icon'=>'assignment_return',  'i18n'=>'sidebar.returns'],
-        ['href'=>'../modules/damages/index.php',  'icon'=>'report_problem',     'i18n'=>'sidebar.damages'],
+        ['href'=>'/dashboard/modules/payments/index.php', 'icon'=>'payments',           'i18n'=>'sidebar.payments'],
+        ['href'=>'/dashboard/modules/returns/index.php',  'icon'=>'assignment_return',  'i18n'=>'sidebar.returns'],
+        ['href'=>'/dashboard/modules/damages/index.php',  'icon'=>'report_problem',     'i18n'=>'sidebar.damages'],
     ],
     'sidebar.management' => [
-        ['href'=>'../modules/items/index.php',        'icon'=>'inventory_2',        'i18n'=>'sidebar.items'],
-        ['href'=>'../modules/categories/index.php',   'icon'=>'category',           'i18n'=>'sidebar.categories'],
-        ['href'=>'../modules/wholesalers/index.php',  'icon'=>'store',              'i18n'=>'sidebar.wholesalers'],
-        ['href'=>'../modules/couriers/index.php',     'icon'=>'local_shipping',     'i18n'=>'sidebar.couriers'],
-        ['href'=>'../modules/businesses/index.php',   'icon'=>'business',           'i18n'=>'sidebar.businesses'],
-        ['href'=>'../modules/users/index.php',        'icon'=>'admin_panel_settings','i18n'=>'sidebar.users'],
+        ['href'=>'/dashboard/modules/items/index.php',        'icon'=>'inventory_2',        'i18n'=>'sidebar.items'],
+        ['href'=>'/dashboard/modules/categories/index.php',   'icon'=>'category',           'i18n'=>'sidebar.categories'],
+        ['href'=>'/dashboard/modules/wholesalers/index.php',  'icon'=>'store',              'i18n'=>'sidebar.wholesalers'],
+        ['href'=>'/dashboard/modules/couriers/index.php',     'icon'=>'local_shipping',     'i18n'=>'sidebar.couriers'],
+        ['href'=>'/dashboard/modules/businesses/index.php',   'icon'=>'business',           'i18n'=>'sidebar.businesses'],
+        ['href'=>'/dashboard/modules/users/index.php',        'icon'=>'admin_panel_settings','i18n'=>'sidebar.users'],
+        // ['href'=>'../modules/users/index.php',        'icon'=>'admin_panel_settings','i18n'=>'sidebar.users'],
     ],
 ];
 
