@@ -96,10 +96,10 @@ ob_start();
                             <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="table_header_stock">Stock</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="table_header_status">Status</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="table_header_actions">Actions</th>
-                          </tr>
+                            </tr>
                     </thead>
                     <tbody id="desktopItemsTableBody" class="divide-y divide-slate-200 dark:divide-slate-700"></tbody>
-                  </table>
+                </table>
             </div>
         </div>
     </div>
@@ -123,16 +123,16 @@ ob_start();
             <div class="p-4 overflow-y-auto max-h-[calc(80vh-140px)]">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_item_code">Item Code</label>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_item_code">Item Code <span class="text-red-500">*</span></label>
                         <input type="text" id="itemCode" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-transparent" >
                         <!-- <p id="codeHelper" class="text-xs text-slate-500 mt-1" data-i18n="auto_generated_hint">Auto-generated</p> -->
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_item_name">Item Name *</label>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_item_name">Item Name <span class="text-red-500">*</span></label>
                         <input type="text" id="itemName" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_category">Category</label>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_category">Category <span class="text-red-500">*</span></label>
                         <select id="categoryId" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
                             <option value="" data-i18n="select_option">Select...</option>
                             <option value="1">Electronics</option>
@@ -142,28 +142,77 @@ ob_start();
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_wholesale">wholesaler</label>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_wholesale">wholesaler <span class="text-red-500">*</span></label>
                         <select id="wholesaleId" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
                             <option value="" data-i18n="select_option">Select...</option>
                             <option value="1">ABC Wholesale</option>
                             <option value="2">XYZ Distributors</option>
                         </select>
                     </div>
+                    <!-- Product Type (predefined + ability to add new) -->
                     <div class="md:col-span-2">
-                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_size">Sizes (Multi-select)</label>
-                        <div class="flex flex-wrap gap-2 mt-1">
-                            <button type="button" data-size="SM" class="size-option-btn px-3 py-1.5 text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">SM</button>
-                            <button type="button" data-size="MD" class="size-option-btn px-3 py-1.5 text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">MD</button>
-                            <button type="button" data-size="LG" class="size-option-btn px-3 py-1.5 text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">LG</button>
-                            <button type="button" data-size="XL" class="size-option-btn px-3 py-1.5 text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">XL</button>
-                            <button type="button" data-size="2XL" class="size-option-btn px-3 py-1.5 text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">2XL</button>
-                            <button type="button" data-size="3XL" class="size-option-btn px-3 py-1.5 text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">3XL</button>
-                            <button type="button" data-size="4XL" class="size-option-btn px-3 py-1.5 text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">4XL</button>
-                            <button type="button" data-size="5XL" class="size-option-btn px-3 py-1.5 text-sm font-medium rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">5XL</button>
+                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Product Type <span class="text-red-500">*</span></label>
+                        <div class="flex flex-wrap gap-3 items-center">
+                            <select id="productTypeSelect" class="px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 w-full md:w-64">
+                                <option value="" data-i18n="select_option">Select...</option>
+                                <option value="T-shirt">T-shirt</option>
+                                <option value="Pants">Pants</option>
+                                <option value="Shorts">Shorts</option>
+                                <option value="Electronics">Electronics</option>
+                                <option value="Home">Home & Living</option>
+                            </select>
+                            <div class="flex-1 flex gap-2">
+                                <input type="text" id="newProductType" placeholder="New product type (e.g., 'Sportswear')" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
+                                <button id="addTypeBtn" type="button" class="bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 dark:hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition whitespace-nowrap">
+                                    <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                                    Add Type
+                                </button>
+                            </div>
                         </div>
-                        <input type="hidden" id="size" value="">
-                        <div id="selectedSizesContainer" class="flex flex-wrap gap-2 mt-3"></div>
-                        <p class="text-xs text-slate-500 mt-1" data-i18n="multi_size_hint">Click on sizes to select multiple. Click again to remove.</p>
+                        <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">Select an existing type or write a new one and click "Add Type".</p>
+                    </div>
+
+                    <!-- SIZES MANAGEMENT (dynamic: predefined + add new size with quantity) -->
+                    <div class="border-t border-slate-200 dark:border-slate-700 pt-5 md:col-span-2">
+                        <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
+                            <h3 class="text-md font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
+                                <svg class="w-5 h-5 text-indigo-500 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path></svg>
+                                Sizes & Quantities
+                            </h3>
+                            <div class="flex gap-2">
+                                <input type="text" id="newSizeInput" placeholder="e.g., 2XL, 42, Large" class="px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-lg text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 w-32">
+                                <input type="number" id="newSizeQty" placeholder="Qty" value="0" min="0" class="px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-lg text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 w-24">
+                                <button id="addNewSizeBtn" class="bg-indigo-600 dark:bg-indigo-500 hover:bg-indigo-700 dark:hover:bg-indigo-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition">
+                                    <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+                                    Add Size
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Predefined size chips + custom sizes dynamic container -->
+                        <div class="mb-3">
+                            <span class="text-xs font-medium text-slate-500 dark:text-slate-400 block mb-2">Quick standard sizes:</span>
+                            <div id="predefinedSizesContainer" class="flex flex-wrap gap-2">
+                                <button type="button" data-size-name="XS" class="size-chip px-3 py-1.5 rounded-full text-sm font-medium border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition">XS</button>
+                                <button type="button" data-size-name="S" class="size-chip px-3 py-1.5 rounded-full text-sm font-medium border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition">S</button>
+                                <button type="button" data-size-name="M" class="size-chip px-3 py-1.5 rounded-full text-sm font-medium border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition">M</button>
+                                <button type="button" data-size-name="L" class="size-chip px-3 py-1.5 rounded-full text-sm font-medium border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition">L</button>
+                                <button type="button" data-size-name="XL" class="size-chip px-3 py-1.5 rounded-full text-sm font-medium border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition">XL</button>
+                                <button type="button" data-size-name="XXL" class="size-chip px-3 py-1.5 rounded-full text-sm font-medium border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition">XXL</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Active sizes list with quantity inputs (both predefined + custom) -->
+                        <div class="mt-4">
+                            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Selected sizes & quantities:</label>
+                            <div id="activeSizesList" class="bg-slate-50 dark:bg-slate-900/50 rounded-xl p-4 border border-slate-200 dark:border-slate-700 min-h-[100px] space-y-2">
+                                <div class="text-slate-400 dark:text-slate-500 text-sm italic text-center" id="noSizePlaceholder">No sizes selected. Click any size chip above or add custom.</div>
+                            </div>
+                        </div>
+                        <p class="text-xs text-slate-400 dark:text-slate-500 mt-2">
+                            <svg class="w-3 h-3 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Click on any size chip to include/exclude it. Adjust quantity for each included size.
+                        </p>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_colors">Colors</label>
@@ -173,7 +222,7 @@ ob_start();
                         <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_cost_price">Cost Price</label>
                         <div class="relative">
                             <!-- <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">Rs. </span> -->
-                            <input type="number" id="costPrice" step="0.01" placeholder="Rs. 0.00" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
+                            <input type="number" id="costPrice" step="0.01" placeholder="0.00" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
                         </div>
                     </div>
                     <div>
@@ -274,11 +323,11 @@ ob_start();
 <script>
     // ---------- MOCK DATA ----------
     let items = [
-        { item_id: "1", business_id: "biz1", item_code: "ITM001", category_id: "1", wholesale_id: "1", item_name: "Wireless Headphones", size: ["MD"], colors: ["Black","White"], cost_price: 45, selling_price: 89.99, status: "active", stock_quantity: 150, item_image: "", created_by: "1", createdAt: new Date(), updatedAt: new Date() },
-        { item_id: "2", business_id: "biz1", item_code: "ITM002", category_id: "2", wholesale_id: "1", item_name: "Cotton T-Shirt", size: ["MD","LG","XL"], colors: ["Blue","Red","Green"], cost_price: 12, selling_price: 29.99, status: "active", stock_quantity: 500, item_image: "", created_by: "1", createdAt: new Date(), updatedAt: new Date() },
-        { item_id: "3", business_id: "biz1", item_code: "ITM003", category_id: "1", wholesale_id: "2", item_name: "Smart Watch", size: ["One Size"], colors: ["Silver","Gold"], cost_price: 120, selling_price: 249.99, status: "active", stock_quantity: 8, item_image: "", created_by: "1", createdAt: new Date(), updatedAt: new Date() },
-        { item_id: "4", business_id: "biz1", item_code: "ITM004", category_id: "3", wholesale_id: "1", item_name: "Garden Tools Set", size: ["Standard"], colors: ["Green"], cost_price: 35, selling_price: 79.99, status: "inactive", stock_quantity: 0, item_image: "", created_by: "1", createdAt: new Date(), updatedAt: new Date() },
-        { item_id: "5", business_id: "biz1", item_code: "ITM005", category_id: "4", wholesale_id: "2", item_name: "Yoga Mat", size: ["6mm"], colors: ["Purple","Blue","Pink"], cost_price: 15, selling_price: 39.99, status: "active", stock_quantity: 200, item_image: "", created_by: "1", createdAt: new Date(), updatedAt: new Date() }
+        { item_id: "1", business_id: "biz1", item_code: "ITM001", category_id: "1", wholesale_id: "1", item_name: "Wireless Headphones", size: [{name:"MD", quantity:150}], colors: ["Black","White"], cost_price: 45, selling_price: 89.99, status: "active", stock_quantity: 150, item_image: "", created_by: "1", createdAt: new Date(), updatedAt: new Date() },
+        { item_id: "2", business_id: "biz1", item_code: "ITM002", category_id: "2", wholesale_id: "1", item_name: "Cotton T-Shirt", size: [{name:"MD", quantity:200},{name:"LG", quantity:200},{name:"XL", quantity:100}], colors: ["Blue","Red","Green"], cost_price: 12, selling_price: 29.99, status: "active", stock_quantity: 500, item_image: "", created_by: "1", createdAt: new Date(), updatedAt: new Date() },
+        { item_id: "3", business_id: "biz1", item_code: "ITM003", category_id: "1", wholesale_id: "2", item_name: "Smart Watch", size: [{name:"One Size", quantity:8}], colors: ["Silver","Gold"], cost_price: 120, selling_price: 249.99, status: "active", stock_quantity: 8, item_image: "", created_by: "1", createdAt: new Date(), updatedAt: new Date() },
+        { item_id: "4", business_id: "biz1", item_code: "ITM004", category_id: "3", wholesale_id: "1", item_name: "Garden Tools Set", size: [{name:"Standard", quantity:0}], colors: ["Green"], cost_price: 35, selling_price: 79.99, status: "inactive", stock_quantity: 0, item_image: "", created_by: "1", createdAt: new Date(), updatedAt: new Date() },
+        { item_id: "5", business_id: "biz1", item_code: "ITM005", category_id: "4", wholesale_id: "2", item_name: "Yoga Mat", size: [{name:"6mm", quantity:200}], colors: ["Purple","Blue","Pink"], cost_price: 15, selling_price: 39.99, status: "active", stock_quantity: 200, item_image: "", created_by: "1", createdAt: new Date(), updatedAt: new Date() }
     ];
     
     // Mock stock movements
@@ -293,8 +342,8 @@ ob_start();
     let currentEditId = null;
     let currentImageBase64 = "";
     let itemToDeleteId = null;
-    // Store selected sizes as array
-    let selectedSizes = [];
+    // Store selected sizes as array of objects {name, quantity}
+    let activeSizes = [];
 
     // DOM elements
     const searchInput = document.getElementById('searchInput');
@@ -329,8 +378,6 @@ ob_start();
     const itemNameField = document.getElementById('itemName');
     const categoryIdField = document.getElementById('categoryId');
     const wholesaleIdField = document.getElementById('wholesaleId');
-    const sizeHiddenField = document.getElementById('size');
-    const sizeOptionBtns = document.querySelectorAll('.size-option-btn');
     const colorsField = document.getElementById('colors');
     const costPriceField = document.getElementById('costPrice');
     const sellingPriceField = document.getElementById('sellingPrice');
@@ -342,152 +389,226 @@ ob_start();
     const previewImg = document.getElementById('previewImg');
     const removeImgBtn = document.getElementById('removeImgBtn');
     const modalTitle = document.getElementById('modalTitle');
-    const selectedSizesContainer = document.getElementById('selectedSizesContainer');
 
-    // Update the display of selected size tags
-    function updateSelectedSizesDisplay() {
-        if (!selectedSizesContainer) return;
+     // New elements for dynamic sizes
+    const predefinedSizesContainer = document.getElementById('predefinedSizesContainer');
+    const activeSizesList = document.getElementById('activeSizesList');
+    const newSizeInput = document.getElementById('newSizeInput');
+    const newSizeQty = document.getElementById('newSizeQty');
+    const addNewSizeBtn = document.getElementById('addNewSizeBtn');
+    const productTypeSelect = document.getElementById('productTypeSelect');
+    const newProductType = document.getElementById('newProductType');
+    const addTypeBtn = document.getElementById('addTypeBtn');
+
+    // Function to render active sizes list
+    function renderActiveSizesList() {
+        if (!activeSizesList) return;
         
-        if (selectedSizes.length === 0) {
-            selectedSizesContainer.innerHTML = '';
+        if (activeSizes.length === 0) {
+            activeSizesList.innerHTML = '<div class="text-slate-400 dark:text-slate-500 text-sm italic text-center" id="noSizePlaceholder">No sizes selected. Click any size chip above or add custom.</div>';
             return;
         }
         
-        selectedSizesContainer.innerHTML = selectedSizes.map(size => `
-            <span class="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
-                ${escapeHtml(size)}
-                <button type="button" data-size="${size}" class="remove-size-btn ml-1 hover:text-blue-900 dark:hover:text-blue-200 focus:outline-none">
-                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        activeSizesList.innerHTML = activeSizes.map((size, index) => `
+            <div class="flex items-center justify-between gap-3 p-2 bg-white dark:bg-slate-800 rounded-lg border border-slate-200 dark:border-slate-700" data-size-index="${index}">
+                <div class="flex items-center gap-3 flex-1">
+                    <span class="font-medium text-slate-800 dark:text-slate-200 w-20">${escapeHtml(size.name)}</span>
+                    <div class="flex items-center gap-2">
+                        <label class="text-xs text-slate-500 dark:text-slate-400">Qty:</label>
+                        <input type="number" min="0" value="${size.quantity}" class="size-quantity-input w-20 px-2 py-1 border border-slate-300 dark:border-slate-600 rounded-lg text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100" data-size-name="${size.name}">
+                    </div>
+                </div>
+                <button type="button" class="remove-size-row text-red-500 hover:text-red-700 p-1 rounded" data-size-name="${size.name}">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                 </button>
-            </span>
+            </div>
         `).join('');
         
+        // Add event listeners to quantity inputs
+        document.querySelectorAll('.size-quantity-input').forEach(input => {
+            input.removeEventListener('change', handleQuantityChange);
+            input.addEventListener('change', handleQuantityChange);
+        });
+        
         // Add event listeners to remove buttons
-        document.querySelectorAll('.remove-size-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const sizeToRemove = btn.getAttribute('data-size');
-                removeSize(sizeToRemove);
-            });
+        document.querySelectorAll('.remove-size-row').forEach(btn => {
+            btn.removeEventListener('click', handleRemoveSizeRow);
+            btn.addEventListener('click', handleRemoveSizeRow);
         });
     }
     
-    // Remove a size from selection
-    function removeSize(sizeValue) {
-        selectedSizes = selectedSizes.filter(s => s !== sizeValue);
-        updateSizeButtonsUI();
-        updateSelectedSizesDisplay();
-        updateHiddenSizeField();
-    }
-    
-    // Toggle size selection
-    function toggleSizeSelection(sizeValue) {
-        if (selectedSizes.includes(sizeValue)) {
-            selectedSizes = selectedSizes.filter(s => s !== sizeValue);
-        } else {
-            selectedSizes.push(sizeValue);
+    function handleQuantityChange(e) {
+        const sizeName = e.target.getAttribute('data-size-name');
+        const newQuantity = parseInt(e.target.value) || 0;
+        const sizeIndex = activeSizes.findIndex(s => s.name === sizeName);
+        if (sizeIndex !== -1) {
+            activeSizes[sizeIndex].quantity = newQuantity;
+            updateTotalStock();
         }
-        updateSizeButtonsUI();
-        updateSelectedSizesDisplay();
-        updateHiddenSizeField();
     }
     
-    // Update button styles based on selected sizes
-    function updateSizeButtonsUI() {
-        sizeOptionBtns.forEach(btn => {
-            const sizeValue = btn.getAttribute('data-size');
-            if (selectedSizes.includes(sizeValue)) {
-                btn.classList.remove('bg-white', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-200', 'border-slate-300', 'dark:border-slate-600');
-                btn.classList.add('bg-blue-500', 'text-white', 'border-blue-500');
+    function handleRemoveSizeRow(e) {
+        const sizeName = e.currentTarget.getAttribute('data-size-name');
+        removeSizeFromActive(sizeName);
+    }
+    
+    function updateTotalStock() {
+        const total = activeSizes.reduce((sum, size) => sum + (size.quantity || 0), 0);
+        if (stockQuantityField) stockQuantityField.value = total;
+    }
+    
+    function addSizeToActive(sizeName, quantity = 0) {
+        if (!sizeName || sizeName.trim() === '') return false;
+        sizeName = sizeName.trim();
+        
+        if (activeSizes.some(s => s.name === sizeName)) {
+            alert(`Size "${sizeName}" is already added.`);
+            return false;
+        }
+        
+        activeSizes.push({ name: sizeName, quantity: quantity });
+        renderActiveSizesList();
+        updateSizeChipsUI();
+        updateTotalStock();
+        return true;
+    }
+    
+    function removeSizeFromActive(sizeName) {
+        activeSizes = activeSizes.filter(s => s.name !== sizeName);
+        renderActiveSizesList();
+        updateSizeChipsUI();
+        updateTotalStock();
+    }
+    
+    function updateSizeChipsUI() {
+        const allChips = document.querySelectorAll('.size-chip');
+        allChips.forEach(chip => {
+            const sizeName = chip.getAttribute('data-size-name');
+            if (activeSizes.some(s => s.name === sizeName)) {
+                chip.classList.add('bg-indigo-600', 'text-white', 'border-indigo-600');
+                chip.classList.remove('bg-white', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-200', 'border-slate-300', 'dark:border-slate-600', 'hover:bg-slate-100', 'dark:hover:bg-slate-700');
             } else {
-                btn.classList.remove('bg-blue-500', 'text-white', 'border-blue-500');
-                btn.classList.add('bg-white', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-200', 'border-slate-300', 'dark:border-slate-600');
+                chip.classList.remove('bg-indigo-600', 'text-white', 'border-indigo-600');
+                chip.classList.add('bg-white', 'dark:bg-slate-800', 'text-slate-700', 'dark:text-slate-200', 'border-slate-300', 'dark:border-slate-600', 'hover:bg-slate-100', 'dark:hover:bg-slate-700');
             }
         });
     }
     
-    // Update hidden field with JSON string of selected sizes
-    function updateHiddenSizeField() {
-        sizeHiddenField.value = JSON.stringify(selectedSizes);
-    }
-    
-    // Set selected sizes from existing data (array or string)
-    function setSelectedSizes(sizeValue) {
-        if (!sizeValue) {
-            selectedSizes = [];
-        } else if (Array.isArray(sizeValue)) {
-            selectedSizes = [...sizeValue];
-        } else if (typeof sizeValue === 'string') {
-            // Try to parse JSON first, otherwise treat as single size
-            try {
-                const parsed = JSON.parse(sizeValue);
-                if (Array.isArray(parsed)) {
-                    selectedSizes = parsed;
-                } else {
-                    selectedSizes = [sizeValue];
-                }
-            } catch (e) {
-                selectedSizes = sizeValue ? [sizeValue] : [];
-            }
+    function handleSizeChipClick(e) {
+        const chip = e.currentTarget;
+        const sizeName = chip.getAttribute('data-size-name');
+        
+        if (activeSizes.some(s => s.name === sizeName)) {
+            removeSizeFromActive(sizeName);
         } else {
-            selectedSizes = [];
+            addSizeToActive(sizeName, 0);
         }
-        updateSizeButtonsUI();
-        updateSelectedSizesDisplay();
-        updateHiddenSizeField();
     }
 
-    // Size button click handler - now toggles selection
-    function initSizeButtons() {
-        sizeOptionBtns.forEach(btn => {
-            btn.removeEventListener('click', handleSizeClick);
-            btn.addEventListener('click', handleSizeClick);
-        });
+    // Helper function to generate item code
+    function generateItemCode() {
+        const maxNum = items.reduce((max, item) => {
+            const match = item.item_code.match(/ITM(\d+)/);
+            return match ? Math.max(max, parseInt(match[1])) : max;
+        }, 0);
+        return `ITM${String(maxNum + 1).padStart(3,'0')}`;
     }
     
-    function handleSizeClick(e) {
-        const btn = e.currentTarget;
-        const sizeValue = btn.getAttribute('data-size');
-        toggleSizeSelection(sizeValue);
+    function addCustomSize() {
+        const sizeName = newSizeInput.value.trim();
+        const quantity = parseInt(newSizeQty.value) || 0;
+        
+        if (!sizeName) {
+            alert('Please enter a size name (e.g., 2XL, 42, Large)');
+            return;
+        }
+        
+        if (addSizeToActive(sizeName, quantity)) {
+            newSizeInput.value = '';
+            newSizeQty.value = '0';
+            
+            let customChip = document.querySelector(`.size-chip[data-size-name="${sizeName}"]`);
+            if (!customChip) {
+                customChip = document.createElement('button');
+                customChip.type = 'button';
+                customChip.className = 'size-chip px-3 py-1.5 rounded-full text-sm font-medium border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition';
+                customChip.setAttribute('data-size-name', sizeName);
+                customChip.textContent = sizeName;
+                customChip.addEventListener('click', handleSizeChipClick);
+                predefinedSizesContainer.appendChild(customChip);
+            }
+        }
+    }
+    
+    function addProductType() {
+        const newType = newProductType.value.trim();
+        if (!newType) {
+            alert('Please enter a product type name');
+            return;
+        }
+        
+        let exists = false;
+        for (let i = 0; i < productTypeSelect.options.length; i++) {
+            if (productTypeSelect.options[i].value === newType) {
+                exists = true;
+                break;
+            }
+        }
+        
+        if (!exists) {
+            const option = document.createElement('option');
+            option.value = newType;
+            option.textContent = newType;
+            productTypeSelect.appendChild(option);
+            productTypeSelect.value = newType;
+            newProductType.value = '';
+        } else {
+            productTypeSelect.value = newType;
+            newProductType.value = '';
+        }
+    }
+    
+    function loadSizesFromItem(item) {
+        activeSizes = [];
+        if (item.size && Array.isArray(item.size)) {
+            item.size.forEach(sizeItem => {
+                if (typeof sizeItem === 'object' && sizeItem.name) {
+                    activeSizes.push({ name: sizeItem.name, quantity: sizeItem.quantity || 0 });
+                } else if (typeof sizeItem === 'string') {
+                    activeSizes.push({ name: sizeItem, quantity: 0 });
+                }
+            });
+        }
+        renderActiveSizesList();
+        updateSizeChipsUI();
+        updateTotalStock();
+    }
+    
+    function getSizesForSave() {
+        return activeSizes.map(s => ({ name: s.name, quantity: s.quantity }));
     }
 
-    function formatDate(date) { return new Date(date).toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' }); }
+    function formatDate(date) { 
+        if (!date) return '';
+        return new Date(date).toLocaleDateString('en-US', { year:'numeric', month:'short', day:'numeric' }); 
+    }
 
-    // function generateItemCode() {
-    //     const maxNum = items.reduce((max, item) => {
-    //         const match = item.item_code.match(/ITM(\d+)/);
-    //         return match ? Math.max(max, parseInt(match[1])) : max;
-    //     }, 0);
-    //     return `ITM${String(maxNum + 1).padStart(3,'0')}`;
-    // }
-    
     function escapeHtml(str) { 
         if(!str) return ''; 
-        if(typeof str === 'object') return str;
         return String(str).replace(/[&<>]/g, function(m){
             if(m==='&') return '&amp;'; 
             if(m==='<') return '&lt;'; 
             if(m==='>') return '&gt;'; 
             return m;
-        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
-            return c;
         });
     }
     
-    // Format sizes for display (from array to comma-separated string)
     function formatSizesForDisplay(sizes) {
-        if (!sizes) return '—';
-        if (Array.isArray(sizes)) return sizes.join(', ');
-        if (typeof sizes === 'string') {
-            try {
-                const parsed = JSON.parse(sizes);
-                if (Array.isArray(parsed)) return parsed.join(', ');
-                return sizes;
-            } catch (e) {
-                return sizes;
-            }
+        if (!sizes || sizes.length === 0) return '—';
+        if (Array.isArray(sizes)) {
+            return sizes.map(s => typeof s === 'object' ? `${s.name} (${s.quantity})` : s).join(', ');
         }
         return '—';
     }
@@ -633,7 +754,12 @@ ob_start();
     function showViewModal(item) {
         const movements = getStockMovements(item.item_id);
         const colorsHtml = item.colors && item.colors.length ? item.colors.map(c => `<span class="inline-flex px-2 py-0.5 rounded-full text-xs bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300">${escapeHtml(c)}</span>`).join('') : '<span class="text-slate-500 text-sm">—</span>';
-        const sizesHtml = item.size && item.size.length ? item.size.map(s => `<span class="inline-flex px-2 py-0.5 rounded-full text-xs bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300">${escapeHtml(s)}</span>`).join('') : '<span class="text-slate-500 text-sm">—</span>';
+        const sizesHtml = item.size && item.size.length ? item.size.map(s => {
+            if(typeof s === 'object') {
+                return `<span class="inline-flex px-2 py-0.5 rounded-full text-xs bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300">${escapeHtml(s.name)} (${s.quantity})</span>`;
+            }
+            return `<span class="inline-flex px-2 py-0.5 rounded-full text-xs bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300">${escapeHtml(s)}</span>`;
+        }).join('') : '<span class="text-slate-500 text-sm">—</span>';
         const movementsHtml = movements.length === 0 ? `<p class="text-sm text-slate-500 text-center py-4">No stock movements recorded.</p>` : movements.map(m => `
             <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
                 <div class="flex items-center gap-3">
@@ -688,12 +814,11 @@ ob_start();
         itemNameField.value = item.item_name;
         categoryIdField.value = item.category_id || '';
         wholesaleIdField.value = item.wholesale_id || '';
-        // Set selected sizes from item
-        setSelectedSizes(item.size || []);
+        // Load sizes into activeSizes
+        loadSizesFromItem(item);
         colorsField.value = item.colors ? item.colors.join(', ') : '';
         costPriceField.value = item.cost_price;
         sellingPriceField.value = item.selling_price;
-        stockQuantityField.value = item.stock_quantity;
         statusField.value = item.status;
         currentImageBase64 = item.item_image || '';
         updateImageUI();
@@ -704,11 +829,14 @@ ob_start();
     function openAddModal() {
         currentEditId = null;
         modalTitle.innerText = 'Add Item';
-        itemCodeField.value = '';
+        itemCodeField.value = generateItemCode();
         itemNameField.value = '';
         categoryIdField.value = '';
         wholesaleIdField.value = '';
-        setSelectedSizes([]);
+        // Clear sizes
+        activeSizes = [];
+        renderActiveSizesList();
+        updateSizeChipsUI();
         colorsField.value = '';
         costPriceField.value = '';
         sellingPriceField.value = '';
@@ -747,15 +875,25 @@ ob_start();
         const name = itemNameField.value.trim();
         if (!name) { alert("Item name is required"); return; }
         
+        // Get item code: if editing, keep existing; if adding, use generated value which should already be set
+        let itemCode = itemCodeField.value.trim();
+        if (!currentEditId && !itemCode) {
+            itemCode = generateItemCode();
+        }
+        
+        // Calculate total stock from sizes
+        const totalStock = activeSizes.reduce((sum, size) => sum + (size.quantity || 0), 0);
+        
         const common = {
+            item_code: itemCode,
             item_name: name,
             category_id: categoryIdField.value || null,
             wholesale_id: wholesaleIdField.value || null,
-            size: selectedSizes, // Store as array
+            size: getSizesForSave(), // Store as array of objects
             colors: colorsField.value ? colorsField.value.split(',').map(c=>c.trim()).filter(Boolean) : [],
             cost_price: parseFloat(costPriceField.value) || 0,
             selling_price: parseFloat(sellingPriceField.value) || 0,
-            stock_quantity: parseInt(stockQuantityField.value) || 0,
+            stock_quantity: totalStock,
             status: statusField.value,
             item_image: currentImageBase64 || null,
             updatedAt: new Date()
@@ -768,7 +906,6 @@ ob_start();
             const newItem = { 
                 item_id: newId, 
                 business_id: 'biz1', 
-                item_code: generateItemCode(), 
                 ...common, 
                 created_by: '1', 
                 createdAt: new Date(), 
@@ -832,6 +969,16 @@ ob_start();
     imageUpload.addEventListener('change', (e) => { if(e.target.files[0]) handleImageUpload(e.target.files[0]); });
     removeImgBtn.addEventListener('click', () => { currentImageBase64 = ''; updateImageUI(); if(imageUpload) imageUpload.value = ''; });
     
+    // Size management events
+    if (addNewSizeBtn) addNewSizeBtn.addEventListener('click', addCustomSize);
+    if (addTypeBtn) addTypeBtn.addEventListener('click', addProductType);
+    
+    // Initialize size chips click handlers
+    document.querySelectorAll('.size-chip').forEach(chip => {
+        chip.removeEventListener('click', handleSizeChipClick);
+        chip.addEventListener('click', handleSizeChipClick);
+    });
+    
     // Escape key handler
     window.addEventListener('keydown', (e) => { 
         if(e.key === 'Escape') { 
@@ -841,8 +988,7 @@ ob_start();
         } 
     });
     
-    // Initialize size buttons and render
-    initSizeButtons();
+    // Initial render
     render();
 </script>
 
