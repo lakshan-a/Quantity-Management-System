@@ -39,7 +39,7 @@ ob_start();
                                 </div>
                             </div>
                             <input type="file" id="imageUploadInput" accept="image/*" class="hidden">
-                            <div id="imageUploadStatus" class="hidden absolute -bottom-2 left-1/2 -translate-x-1/2 text-xs px-2 py-0.5 rounded-full bg-green-500 text-white"></div>
+                            <div id="imageUploadStatus" class="hidden absolute -bottom-2 left-1/2 -translate-x-1/2 text-xs px-2 py-0.5 rounded-full bg-green-500 text-white" data-i18n="uploaded">Uploaded!</div>
                         </div>
                         <h2 id="profileName" class="text-xl font-bold text-slate-900 dark:text-white">Loading...</h2>
                         <p id="profileRole" class="text-sm text-slate-500 dark:text-slate-400 mt-1"></p>
@@ -131,15 +131,15 @@ ob_start();
                     <div class="p-6 space-y-5">
                         <div>
                             <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="current_password">Current Password</label>
-                            <input type="password" id="currentPasswordInput" placeholder="••••••••" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                            <input type="password" id="currentPasswordInput" data-i18n-placeholder="password_placeholder" placeholder="••••••••" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="new_password">New Password</label>
-                            <input type="password" id="newPasswordInput" placeholder="••••••••" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                            <input type="password" id="newPasswordInput" data-i18n-placeholder="password_placeholder" placeholder="••••••••" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="confirm_password">Confirm New Password</label>
-                            <input type="password" id="confirmPasswordInput" placeholder="••••••••" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
+                            <input type="password" id="confirmPasswordInput" data-i18n-placeholder="password_placeholder" placeholder="••••••••" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 transition">
                         </div>
                         <div>
                             <button id="changePasswordBtn" class="inline-flex items-center justify-center px-5 py-2.5 bg-slate-800 dark:bg-slate-700 text-white font-medium rounded-lg hover:bg-slate-900 dark:hover:bg-slate-600 transition-colors shadow-sm">
