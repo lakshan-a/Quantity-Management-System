@@ -414,20 +414,20 @@ ob_start();
                     <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300 font-mono">${escapeHtml(r.return_id)}</span>
                 </div>
                 <div class="grid grid-cols-2 gap-2 text-sm">
-                    <div class="col-span-2"><span class="text-slate-500 text-xs block">Reason</span><span class="text-slate-700 dark:text-slate-300">${escapeHtml(r.reason)}</span></div>
-                    <div><span class="text-slate-500 text-xs block mb-1">Status</span><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${statusBadgeClass(r.return_status)}">${r.return_status}</span></div>
-                    <div><span class="text-slate-500 text-xs block mb-1">Refund</span><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${refundBadgeClass(r.refund_status)}">${r.refund_status}</span></div>
-                    <div><span class="text-slate-500 text-xs block">Created</span><span class="text-slate-700 dark:text-slate-300">${formatDate(r.createdAt)}</span></div>
-                    ${r.returned_date ? `<div><span class="text-slate-500 text-xs block">Return date</span><span class="text-slate-700 dark:text-slate-300">${formatDate(r.returned_date)}</span></div>` : ''}
+                    <div class="col-span-2"><span class="text-slate-500 text-xs block">${t('reason')}</span><span class="text-slate-700 dark:text-slate-300">${escapeHtml(r.reason)}</span></div>
+                    <div><span class="text-slate-500 text-xs block mb-1">${t('status')}</span><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${statusBadgeClass(r.return_status)}">${t(r.return_status)}</span></div>
+                    <div><span class="text-slate-500 text-xs block mb-1">${t('refund')}</span><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${refundBadgeClass(r.refund_status)}">${t(r.refund_status)}</span></div>
+                    <div><span class="text-slate-500 text-xs block">${t('created')}</span><span class="text-slate-700 dark:text-slate-300">${formatDate(r.createdAt)}</span></div>
+                    ${r.returned_date ? `<div><span class="text-slate-500 text-xs block">${t('return_date')}</span><span class="text-slate-700 dark:text-slate-300">${formatDate(r.returned_date)}</span></div>` : ''}
                 </div>
                 <div class="flex items-center gap-2 pt-2 border-t border-slate-100 dark:border-slate-700">
-                    <button data-id="${r.return_id}" class="viewReturnBtn p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg" title="View">
+                    <button data-id="${r.return_id}" class="viewReturnBtn p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg" title="${t('view')}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                     </button>
-                    <button data-id="${r.return_id}" class="editReturnBtn p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg" title="Edit">
+                    <button data-id="${r.return_id}" class="editReturnBtn p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg" title="${t('edit')}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3l4 4-7 7H10v-4l7-7z"/><path d="M4 20h16"/></svg>
                     </button>
-                    <button data-id="${r.return_id}" class="deleteReturnBtn p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg" title="Delete">
+                    <button data-id="${r.return_id}" class="deleteReturnBtn p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg" title="${t('delete')}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M8 6V4h8v2"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
                     </button>
                 </div>
@@ -440,19 +440,19 @@ ob_start();
                 <td class="px-4 py-3 text-sm text-slate-900 dark:text-white font-mono">${escapeHtml(r.return_id)}</td>
                 <td class="px-4 py-3 text-sm text-slate-900 dark:text-white">${escapeHtml(r.order_number)}</td>
                 <td class="px-4 py-3 text-sm text-slate-600 dark:text-slate-300">${escapeHtml(r.reason)}</td>
-                <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${statusBadgeClass(r.return_status)}">${r.return_status}</span></td>
-                <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${refundBadgeClass(r.refund_status)}">${r.refund_status}</span></td>
+                <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${statusBadgeClass(r.return_status)}">${t(r.return_status)}</span></td>
+                <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${refundBadgeClass(r.refund_status)}">${t(r.refund_status)}</span></td>
                 <td class="px-4 py-3 text-sm text-slate-600 dark:text-slate-300">${formatDate(r.createdAt)}</td>
                 <td class="px-4 py-3 text-sm text-slate-600 dark:text-slate-300">${r.returned_date ? formatDate(r.returned_date) : '-'}</td>
                 <td class="px-4 py-3">
                     <div class="flex items-center gap-1">
-                        <button data-id="${r.return_id}" class="viewReturnBtn p-1.5 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg" title="View">
+                        <button data-id="${r.return_id}" class="viewReturnBtn p-1.5 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg" title="${t('view')}">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                         </button>
-                        <button data-id="${r.return_id}" class="editReturnBtn p-1.5 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg" title="Edit">
+                        <button data-id="${r.return_id}" class="editReturnBtn p-1.5 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg" title="${t('edit')}">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3l4 4L7 21H3v-4L17 3z"/><path d="m15 5 4 4"/></svg>
                         </button>
-                        <button data-id="${r.return_id}" class="deleteReturnBtn p-1.5 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg" title="Delete">
+                        <button data-id="${r.return_id}" class="deleteReturnBtn p-1.5 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg" title="${t('delete')}">
                             <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M8 6V4h8v2"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
                         </button>
                     </div>
