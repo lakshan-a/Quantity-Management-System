@@ -513,28 +513,28 @@ ob_start();
                 </div>
                 <div class="grid grid-cols-2 gap-3 text-sm">
                     <div>
-                        <span class="text-slate-500 dark:text-slate-400 text-xs block">Phone</span>
+                        <span class="text-slate-500 dark:text-slate-400 text-xs block">${t('phone_label')}</span>
                         <span class="text-slate-700 dark:text-slate-300">${escapeHtml(u.phone)}</span>
                     </div>
                     <div>
-                        <span class="text-slate-500 dark:text-slate-400 text-xs block mb-1">Role</span>
-                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${roleColors[u.role]}">${u.role === 'admin' ? 'Admin' : 'Staff'}</span>
+                        <span class="text-slate-500 dark:text-slate-400 text-xs block mb-1">${t('role_label')}</span>
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${roleColors[u.role]}">${u.role === 'admin' ? t('admin') : t('staff')}</span>
                     </div>
                     <div class="col-span-2">
-                        <span class="text-slate-500 dark:text-slate-400 text-xs block mb-1">Status</span>
-                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${statusColors[u.status]}">${u.status === 'active' ? 'Active' : 'Inactive'}</span>
+                        <span class="text-slate-500 dark:text-slate-400 text-xs block mb-1">${t('status_label')}</span>
+                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${statusColors[u.status]}">${u.status === 'active' ? t('active') : t('inactive')}</span>
                     </div>
                 </div>
                 <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100 dark:border-slate-700">
-                    <button class="view-mobile-btn p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" data-id="${u.user_id}" title="View Details">
+                    <button class="view-mobile-btn p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" data-id="${u.user_id}" title="${t('view_details')}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                         <span class="sr-only">View</span>
                     </button>
-                    <button class="edit-mobile-btn p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" data-id="${u.user_id}" title="Edit User">
+                    <button class="edit-mobile-btn p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" data-id="${u.user_id}" title="${t('edit_user')}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3l4 4L7 21H3v-4L17 3z"/><path d="m15 5 4 4"/></svg>
                         <span class="sr-only">Edit</span>
                     </button>
-                    <button class="delete-mobile-btn p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors" data-id="${u.user_id}" title="Delete User">
+                    <button class="delete-mobile-btn p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors" data-id="${u.user_id}" title="${t('delete_user')}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M10 11v5M14 11v5"/></svg>
                         <span class="sr-only">Delete</span>
                     </button>
