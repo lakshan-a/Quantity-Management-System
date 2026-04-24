@@ -1,19 +1,15 @@
 <?php
-// ============================================
-// File: auth/login.php - Login Page
-// Description: User authentication interface
-// ============================================
 session_start();
 if(isset($_SESSION['user_id'])) {
     header("Location: ../dashboard/index.php");
     exit();
 }
 
-// Language translations
 $translations = [
     'en' => [
         'title' => 'Login | Qty Management',
-        'heading' => 'Sign in to your account',
+        'heading' => 'Welcome Back',
+        'subheading' => 'Sign in to continue to your account',
         'email' => 'Email Address',
         'password' => 'Password',
         'login_btn' => 'Sign In',
@@ -21,15 +17,12 @@ $translations = [
         'forgot' => 'Forgot password?',
         'no_account' => "Don't have an account?",
         'contact_admin' => 'Contact your administrator',
-        'language' => 'Language',
-        'english' => 'English',
-        'sinhala' => 'Sinhala',
-        'tamil' => 'Tamil',
         'login_error' => 'Invalid email or password'
     ],
     'si' => [
         'title' => 'පිවිසුම | ප්‍රමාණ කළමනාකරණය',
-        'heading' => 'ඔබේ ගිණුමට පුරනය වන්න',
+        'heading' => 'සාදරයෙන් පිළිගනිමු',
+        'subheading' => 'ඔබගේ ගිණුමට පිවිසෙන්න',
         'email' => 'විද්‍යුත් තැපෑල',
         'password' => 'මුරපදය',
         'login_btn' => 'පුරනය වන්න',
@@ -37,15 +30,12 @@ $translations = [
         'forgot' => 'මුරපදය අමතක වුණාද?',
         'no_account' => 'ගිණුමක් නැද්ද?',
         'contact_admin' => 'පරිපාලක අමතන්න',
-        'language' => 'භාෂාව',
-        'english' => 'ඉංග්‍රීසි',
-        'sinhala' => 'සිංහල',
-        'tamil' => 'දෙමළ',
         'login_error' => 'වලංගු නොවන විද්‍යුත් තැපෑලක් හෝ මුරපදයක්'
     ],
     'ta' => [
         'title' => 'உள்நுழைவு | அளவு மேலாண்மை',
-        'heading' => 'உங்கள் கணக்கில் உள்நுழையவும்',
+        'heading' => 'மீண்டும் வரவேற்கிறோம்',
+        'subheading' => 'உங்கள் கணக்கில் உள்நுழைக',
         'email' => 'மின்னஞ்சல் முகவரி',
         'password' => 'கடவுச்சொல்',
         'login_btn' => 'உள்நுழைக',
@@ -53,21 +43,16 @@ $translations = [
         'forgot' => 'கடவுச்சொல் மறந்துவிட்டதா?',
         'no_account' => 'கணக்கு இல்லையா?',
         'contact_admin' => 'உங்கள் நிர்வாகியை தொடர்பு கொள்ளவும்',
-        'language' => 'மொழி',
-        'english' => 'ஆங்கிலம்',
-        'sinhala' => 'சிங்களம்',
-        'tamil' => 'தமிழ்',
         'login_error' => 'தவறான மின்னஞ்சல் அல்லது கடவுச்சொல்'
     ]
 ];
 
-$lang = isset($_GET['lang']) ? $_GET['lang'] : (isset($_COOKIE['user_lang']) ? $_COOKIE['user_lang'] : 'en');
+$lang = $_GET['lang'] ?? ($_COOKIE['user_lang'] ?? 'en');
 setcookie('user_lang', $lang, time() + (86400 * 30), "/");
 $t = $translations[$lang];
 
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Simulate authentication - In real app, check database
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
     
@@ -83,82 +68,112 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="<?php echo $lang; ?>">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title><?php echo $t['title']; ?></title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <style>
-        body { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-        @media (max-width: 640px) {
-            .login-card { margin: 1rem; padding: 1.5rem; }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title><?php echo $t['title']; ?></title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<style>
+    /* body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    } */
+
+    .glass-card {
+        background: rgba(255, 255, 255, 0.12);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+
+    .input-field {
+        transition: all 0.3s ease;
+    }
+
+    .input-field:focus {
+        transform: translateY(-1px);
+        box-shadow: 0 8px 20px rgba(99,102,241,0.25);
+    }
+
+    .login-btn {
+        transition: all 0.3s ease;
+    }
+
+    .login-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 24px rgba(79,70,229,0.35);
+    }
+</style>
 </head>
-<body class="font-sans antialiased">
-    <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-        <div class="max-w-md w-full space-y-8 bg-white rounded-2xl shadow-2xl p-8 login-card">
-            <!-- Language Switcher -->
-            <div class="flex justify-end gap-2">
-                <a href="?lang=en" class="px-2 py-1 text-xs rounded <?php echo $lang=='en'?'bg-indigo-600 text-white':'bg-gray-200'; ?>">EN</a>
-                <a href="?lang=si" class="px-2 py-1 text-xs rounded <?php echo $lang=='si'?'bg-indigo-600 text-white':'bg-gray-200'; ?>">SI</a>
-                <a href="?lang=ta" class="px-2 py-1 text-xs rounded <?php echo $lang=='ta'?'bg-indigo-600 text-white':'bg-gray-200'; ?>">TA</a>
-            </div>
-            
-            <div class="text-center">
-                <div class="mx-auto h-12 w-12 bg-indigo-100 rounded-full flex items-center justify-center">
-                    <span class="text-indigo-600 text-2xl font-bold">Q</span>
-                </div>
-                <h2 class="mt-6 text-3xl font-extrabold text-gray-900"><?php echo $t['heading']; ?></h2>
-            </div>
-            
-            <?php if($error): ?>
-                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                    <span class="block sm:inline"><?php echo $error; ?></span>
-                </div>
-            <?php endif; ?>
-            
-            <form class="mt-8 space-y-6" method="POST">
-                <div class="rounded-md shadow-sm -space-y-px">
-                    <div>
-                        <label for="email" class="sr-only"><?php echo $t['email']; ?></label>
-                        <input id="email" name="email" type="email" required 
-                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" 
-                            placeholder="<?php echo $t['email']; ?>">
-                    </div>
-                    <div>
-                        <label for="password" class="sr-only"><?php echo $t['password']; ?></label>
-                        <input id="password" name="password" type="password" required 
-                            class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm" 
-                            placeholder="<?php echo $t['password']; ?>">
-                    </div>
-                </div>
 
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <input id="remember_me" name="remember_me" type="checkbox" class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded">
-                        <label for="remember_me" class="ml-2 block text-sm text-gray-900"><?php echo $t['remember']; ?></label>
-                    </div>
-                    <div class="text-sm">
-                        <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500"><?php echo $t['forgot']; ?></a>
-                    </div>
-                </div>
+<body class="min-h-screen flex bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
 
-                <div>
-                    <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-                        <?php echo $t['login_btn']; ?>
-                    </button>
-                </div>
-                
-                <div class="text-center text-sm text-gray-500">
-                    <p><?php echo $t['no_account']; ?> <span class="text-indigo-600"><?php echo $t['contact_admin']; ?></span></p>
-                    <p class="mt-2 text-xs">Demo: admin@example.com / password</p>
-                </div>
-            </form>
-        </div>
+<div class="glass-card w-full max-w-md rounded-3xl shadow-2xl md:p-8 p-4 text-white">
+    
+    <!-- Language Switch -->
+    <div class="flex justify-end gap-2 mb-6">
+        <a href="?lang=en" class="px-3 py-1 rounded-full text-xs font-medium <?php echo $lang=='en'?'bg-white text-indigo-700':'bg-white/20 text-white'; ?>">EN</a>
+        <a href="?lang=si" class="px-3 py-1 rounded-full text-xs font-medium <?php echo $lang=='si'?'bg-white text-indigo-700':'bg-white/20 text-white'; ?>">SI</a>
+        <a href="?lang=ta" class="px-3 py-1 rounded-full text-xs font-medium <?php echo $lang=='ta'?'bg-white text-indigo-700':'bg-white/20 text-white'; ?>">TA</a>
     </div>
+
+    <!-- Logo -->
+    <div class="text-center mb-8">
+        <h2 class="text-3xl font-bold"><?php echo $t['heading']; ?></h2>
+        <p class="text-white/80 mt-2 text-sm"><?php echo $t['subheading']; ?></p>
+    </div>
+
+    <!-- Error -->
+    <?php if($error): ?>
+        <div class="bg-red-500/20 border border-red-300 text-white px-4 py-3 rounded-xl mb-5 text-sm">
+            <?php echo $error; ?>
+        </div>
+    <?php endif; ?>
+
+    <!-- Form -->
+    <form method="POST" class="space-y-5">
+        
+        <div class="relative">
+            <span class="material-icons absolute left-4 top-3 text-white/70">mail</span>
+            <input type="email" name="email" required
+                class="input-field w-full pl-12 pr-4 py-3 rounded-xl bg-white/15 text-white placeholder-white/70 border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/30"
+                placeholder="<?php echo $t['email']; ?>">
+        </div>
+
+        <div class="relative">
+            <span class="material-icons absolute left-4 top-3 text-white/70">lock</span>
+            <input type="password" name="password" required
+                class="input-field w-full pl-12 pr-4 py-3 rounded-xl bg-white/15 text-white placeholder-white/70 border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/30"
+                placeholder="<?php echo $t['password']; ?>">
+        </div>
+
+        <div class="flex items-center justify-between text-sm">
+            <label class="flex items-center gap-2">
+                <input type="checkbox" class="rounded">
+                <span><?php echo $t['remember']; ?></span>
+            </label>
+            <a href="#" class="text-blue-300 hover:text-white hover:underline"><?php echo $t['forgot']; ?></a>
+        </div>
+
+        <button type="submit"
+            class="login-btn w-full py-3 rounded-xl bg-white text-indigo-700 font-semibold text-lg">
+            <?php echo $t['login_btn']; ?>
+        </button>
+
+        <div class="text-center text-sm text-white/80 pt-2">
+            <div class="flex gap-1 items-center justify-center">
+                <p><?php echo $t['no_account']; ?></p>
+            <a href="#" class="font-medium text-blue-300 hover:text-white hover:underline"><?php echo $t['contact_admin']; ?></p>
+            </div>
+            
+            <p class="mt-2 text-xs">Demo: admin@example.com / password</p>
+        </div>
+    </form>
+</div>
+
 </body>
 </html>

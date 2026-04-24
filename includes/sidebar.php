@@ -308,7 +308,7 @@ $currentPath = $_SERVER['REQUEST_URI'] ?? '';
 
     <!-- ── Bottom logout ── -->
     <div class="sidebar-bottom">
-        <a href="../auth/logout.php" class="sidebar-logout">
+        <a href="/dashboard/auth/logout.php" class="sidebar-logout">
             <span class="material-icons-round" style="font-size:20px;">logout</span>
             <span data-i18n="sidebar.logout">sidebar.logout</span>
         </a>
