@@ -445,7 +445,7 @@ $userInitials = strtoupper(implode('', array_map(fn($w) => $w[0], array_slice(ex
                 </div>
             </div>
             <div style="padding:6px 0;">
-                <a href="../modules/users/profile.php" class="hdr-dropdown-item">
+                <a href="/dashboard/modules/profile/index.php" class="hdr-dropdown-item">
                     <span class="material-icons-round mi">person</span>
                     <span data-i18n="header.my_profile">My Profile</span>
                 </a>
