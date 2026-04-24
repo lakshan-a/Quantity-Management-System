@@ -14,9 +14,9 @@ ob_start();
     <div id="app" class="space-y-6">
 
     <div>
-    <h1 class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 dark:from-gray-200 dark:to-gray-400 bg-clip-text text-transparent" data-i18n="items_title">Items Management</h1>
-    <p class="text-gray-500 dark:text-gray-400 text-sm mt-1" data-i18n="items_subtitle">Manage your Items, organize products, and track performance.</p>
-</div>
+        <h1 class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-gray-800 to-gray-600 dark:from-gray-200 dark:to-gray-400 bg-clip-text text-transparent" data-i18n="items_title">Items Management</h1>
+        <p class="text-gray-500 dark:text-gray-400 text-sm mt-1" data-i18n="items_subtitle">Manage your Items, organize products, and track performance.</p>
+    </div>
 
         <!-- Header with search, filter, and add button -->
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -96,7 +96,7 @@ ob_start();
                             <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="table_header_stock">Stock</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="table_header_status">Status</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="table_header_actions">Actions</th>
-                            </tr>
+                        </tr>
                     </thead>
                     <tbody id="desktopItemsTableBody" class="divide-y divide-slate-200 dark:divide-slate-700"></tbody>
                 </table>
@@ -124,8 +124,7 @@ ob_start();
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_item_code">Item Code <span class="text-red-500">*</span></label>
-                        <input type="text" id="itemCode" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-transparent" >
-                        <!-- <p id="codeHelper" class="text-xs text-slate-500 mt-1" data-i18n="auto_generated_hint">Auto-generated</p> -->
+                        <input type="text" id="itemCode" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_item_name">Item Name <span class="text-red-500">*</span></label>
@@ -142,7 +141,7 @@ ob_start();
                         </select>
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_wholesale">wholesaler <span class="text-red-500">*</span></label>
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_wholesale">Wholesaler <span class="text-red-500">*</span></label>
                         <select id="wholesaleId" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
                             <option value="" data-i18n="select_option">Select...</option>
                             <option value="1">ABC Wholesale</option>
@@ -151,7 +150,7 @@ ob_start();
                     </div>
                     <!-- Product Type (predefined + ability to add new) -->
                     <div class="md:col-span-2">
-                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Product Type <span class="text-red-500">*</span></label>
+                        <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2" data-i18n="form_product_type">Product Type <span class="text-red-500">*</span></label>
                         <div class="flex flex-wrap gap-3 items-center">
                             <select id="productTypeSelect" class="px-4 py-2.5 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 w-full md:w-64">
                                 <option value="" data-i18n="select_option">Select...</option>
@@ -162,14 +161,14 @@ ob_start();
                                 <option value="Home">Home & Living</option>
                             </select>
                             <div class="flex-1 flex gap-2">
-                                <input type="text" id="newProductType" placeholder="New product type (e.g., 'Sportswear')" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
+                                <input type="text" id="newProductType" data-i18n-placeholder="new_product_type_placeholder" placeholder="New product type (e.g., 'Sportswear')" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
                                 <button id="addTypeBtn" type="button" class="bg-slate-800 dark:bg-slate-700 hover:bg-slate-900 dark:hover:bg-slate-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition whitespace-nowrap">
                                     <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                                    Add Type
+                                    <span data-i18n="add_type_btn">Add Type</span>
                                 </button>
                             </div>
                         </div>
-                        <p class="text-xs text-slate-400 dark:text-slate-500 mt-1">Select an existing type or write a new one and click "Add Type".</p>
+                        <p class="text-xs text-slate-400 dark:text-slate-500 mt-1" data-i18n="product_type_helper">Select an existing type or write a new one and click "Add Type".</p>
                     </div>
 
                     <!-- SIZES MANAGEMENT (dynamic: predefined + add new size with quantity) -->
@@ -177,21 +176,21 @@ ob_start();
                         <div class="flex flex-wrap items-center justify-between gap-3 mb-4">
                             <h3 class="text-md font-bold text-slate-800 dark:text-slate-200 flex items-center gap-2">
                                 <svg class="w-5 h-5 text-indigo-500 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path></svg>
-                                Sizes & Quantities
+                                <span data-i18n="sizes_quantities_title">Sizes & Quantities</span>
                             </h3>
                             <div class="flex gap-2">
-                                <input type="text" id="newSizeInput" placeholder="e.g., 2XL, 42, Large" class="px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-lg text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 w-32">
-                                <input type="number" id="newSizeQty" placeholder="Qty" value="0" min="0" class="px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-lg text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 w-24">
+                                <input type="text" id="newSizeInput" data-i18n-placeholder="size_placeholder" placeholder="e.g., 2XL, 42, Large" class="px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-lg text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 w-32">
+                                <input type="number" id="newSizeQty" data-i18n-placeholder="qty_placeholder" placeholder="Qty" value="0" min="0" class="px-3 py-1.5 border border-slate-300 dark:border-slate-600 rounded-lg text-sm bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 w-24">
                                 <button id="addNewSizeBtn" class="bg-indigo-600 dark:bg-indigo-500 hover:bg-indigo-700 dark:hover:bg-indigo-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition">
                                     <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                                    Add Size
+                                    <span data-i18n="add_size_btn">Add Size</span>
                                 </button>
                             </div>
                         </div>
                         
                         <!-- Predefined size chips + custom sizes dynamic container -->
                         <div class="mb-3">
-                            <span class="text-xs font-medium text-slate-500 dark:text-slate-400 block mb-2">Quick standard sizes:</span>
+                            <span class="text-xs font-medium text-slate-500 dark:text-slate-400 block mb-2" data-i18n="quick_standard_sizes">Quick standard sizes:</span>
                             <div id="predefinedSizesContainer" class="flex flex-wrap gap-2">
                                 <button type="button" data-size-name="XS" class="size-chip px-3 py-1.5 rounded-full text-sm font-medium border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition">XS</button>
                                 <button type="button" data-size-name="S" class="size-chip px-3 py-1.5 rounded-full text-sm font-medium border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition">S</button>
@@ -204,14 +203,14 @@ ob_start();
                         
                         <!-- Active sizes list with quantity inputs (both predefined + custom) -->
                         <div class="mt-4">
-                            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">Selected sizes & quantities:</label>
+                            <label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2" data-i18n="selected_sizes_label">Selected sizes & quantities:</label>
                             <div id="activeSizesList" class="bg-slate-50 dark:bg-slate-900/50 rounded-xl p-4 border border-slate-200 dark:border-slate-700 min-h-[100px] space-y-2">
-                                <div class="text-slate-400 dark:text-slate-500 text-sm italic text-center" id="noSizePlaceholder">No sizes selected. Click any size chip above or add custom.</div>
+                                <div class="text-slate-400 dark:text-slate-500 text-sm italic text-center" id="noSizePlaceholder" data-i18n="no_sizes_selected">No sizes selected. Click any size chip above or add custom.</div>
                             </div>
                         </div>
                         <p class="text-xs text-slate-400 dark:text-slate-500 mt-2">
                             <svg class="w-3 h-3 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                            Click on any size chip to include/exclude it. Adjust quantity for each included size.
+                            <span data-i18n="size_helper_text">Click on any size chip to include/exclude it. Adjust quantity for each included size.</span>
                         </p>
                     </div>
                     <div>
@@ -221,20 +220,18 @@ ob_start();
                     <div>
                         <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_cost_price">Cost Price</label>
                         <div class="relative">
-                            <!-- <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">Rs. </span> -->
-                            <input type="number" id="costPrice" step="0.01" placeholder="0.00" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
+                            <input type="number" id="costPrice" step="0.01" data-i18n-placeholder="price_placeholder" placeholder="0.00" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
                         </div>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_selling_price">Selling Price</label>
                         <div class="relative">
-                            <!-- <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500">Rs.</span> -->
-                            <input type="number" id="sellingPrice" step="0.01" placeholder="Rs. 0.00" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
+                            <input type="number" id="sellingPrice" step="0.01" data-i18n-placeholder="price_placeholder" placeholder="0.00" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
                         </div>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_stock_quantity">Stock Quantity</label>
-                        <input type="number" id="stockQuantity" min="0" value="0" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800">
+                        <input type="number" id="stockQuantity" min="0" value="0" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800" readonly disabled>
                     </div>
                     <div>
                         <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_status">Status</label>
@@ -650,7 +647,7 @@ ob_start();
         
         // Mobile
         mobileContainer.innerHTML = filtered.map(item => `
-            <div class="p-4 space-y-3 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
+             <div class="p-4 space-y-3 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center overflow-hidden flex-shrink-0">
                         ${item.item_image ? `<img src="${item.item_image}" class="w-full h-full object-cover">` : `<svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>`}
@@ -661,15 +658,15 @@ ob_start();
                     </div>
                 </div>
                 <div class="grid grid-cols-2 gap-2 text-sm">
-                    <div><span class="text-slate-500 text-xs block">Price</span><span class="font-medium">$${item.selling_price.toFixed(2)}</span></div>
-                    <div><span class="text-slate-500 text-xs block">Stock</span><span class="font-medium ${item.stock_quantity < 10 ? 'text-red-500' : ''}">${item.stock_quantity}</span></div>
-                    <div><span class="text-slate-500 text-xs block">Sizes</span><span class="text-xs">${formatSizesForDisplay(item.size)}</span></div>
-                    <div class="col-span-2"><span class="text-slate-500 text-xs block">Status</span><span class="inline-flex mt-1 px-2 py-0.5 rounded-full text-xs ${item.status === 'active' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' : 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300'}">${item.status}</span></div>
+                    <div><span class="text-slate-500 text-xs block">${t('table_header_price')}</span><span class="font-medium">$${item.selling_price.toFixed(2)}</span></div>
+                    <div><span class="text-slate-500 text-xs block">${t('table_header_stock')}</span><span class="font-medium ${item.stock_quantity < 10 ? 'text-red-500' : ''}">${item.stock_quantity}</span></div>
+                    <div><span class="text-slate-500 text-xs block">${t('sizes_label')}</span><span class="text-xs">${formatSizesForDisplay(item.size)}</span></div>
+                    <div class="col-span-2"><span class="text-slate-500 text-xs block">${t('table_header_status')}</span><span class="inline-flex mt-1 px-2 py-0.5 rounded-full text-xs ${item.status === 'active' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' : 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300'}">${item.status === 'active' ? t('active_option') : t('inactive_option')}</span></div>
                 </div>
                 <div class="flex gap-2 pt-2 border-t border-slate-100 dark:border-slate-700 mt-2">
-                    <button data-id="${item.item_id}" data-action="view" class="action-btn p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"><svg class="w-4 h-4 text-slate-600 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg></button>
-                    <button data-id="${item.item_id}" data-action="edit" class="action-btn p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors"><svg class="w-4 h-4 text-slate-600 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>
-                    <button data-id="${item.item_id}" data-action="delete" class="action-btn p-2 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-lg transition-colors"><svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
+                    <button data-id="${item.item_id}" data-action="view" class="action-btn p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" title="${t('view_details_title')}"><svg class="w-4 h-4 text-slate-600 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg></button>
+                    <button data-id="${item.item_id}" data-action="edit" class="action-btn p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" title="${t('edit_item_title')}"><svg class="w-4 h-4 text-slate-600 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button>
+                    <button data-id="${item.item_id}" data-action="delete" class="action-btn p-2 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-lg transition-colors" title="${t('delete_title')}"><svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button>
                 </div>
             </div>
         `).join('');
@@ -688,18 +685,18 @@ ob_start();
                 <td class="px-4 py-3 text-sm ${item.stock_quantity < 10 ? 'text-red-500 font-semibold' : 'text-slate-700 dark:text-slate-300'}">${item.stock_quantity}</td>
                 <td class="px-4 py-3">
                     <span class="inline-flex px-2 py-0.5 rounded-full text-xs ${item.status === 'active' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' : 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300'}">
-                        ${item.status === 'active' ? 'Active' : 'Inactive'}
+                        ${item.status === 'active' ? t('active_option') : t('inactive_option')}
                     </span>
                 </td>
                 <td class="px-4 py-3">
                     <div class="flex gap-2">
-                        <button data-id="${item.item_id}" data-action="view" class="action-btn p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" title="View Details">
+                        <button data-id="${item.item_id}" data-action="view" class="action-btn p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" title="${t('view_details_title')}">
                             <svg class="w-4 h-4 text-slate-600 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
                         </button>
-                        <button data-id="${item.item_id}" data-action="edit" class="action-btn p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" title="Edit Item">
+                        <button data-id="${item.item_id}" data-action="edit" class="action-btn p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" title="${t('edit_item_title')}">
                             <svg class="w-4 h-4 text-slate-600 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                         </button>
-                        <button data-id="${item.item_id}" data-action="delete" class="action-btn p-2 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-lg transition-colors" title="Delete Item">
+                        <button data-id="${item.item_id}" data-action="delete" class="action-btn p-2 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-lg transition-colors" title="${t('delete_title')}">
                             <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                         </button>
                     </div>
@@ -760,7 +757,7 @@ ob_start();
             }
             return `<span class="inline-flex px-2 py-0.5 rounded-full text-xs bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300">${escapeHtml(s)}</span>`;
         }).join('') : '<span class="text-slate-500 text-sm">—</span>';
-        const movementsHtml = movements.length === 0 ? `<p class="text-sm text-slate-500 text-center py-4">No stock movements recorded.</p>` : movements.map(m => `
+        const movementsHtml = movements.length === 0 ? `<p class="text-sm text-slate-500 text-center py-4">${t('no_stock_movements')}</p>` : movements.map(m => `
             <div class="flex items-center justify-between p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
                 <div class="flex items-center gap-3">
                     <div class="w-8 h-8 rounded-full flex items-center justify-center ${m.type === 'in' ? 'bg-emerald-100 dark:bg-emerald-900/30' : 'bg-red-100 dark:bg-red-900/30'}">
@@ -783,21 +780,21 @@ ob_start();
                 ${item.item_image ? `<img src="${item.item_image}" class="w-full h-full object-cover">` : `<svg class="w-16 h-16 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>`}
             </div>
             <div class="grid grid-cols-2 gap-4">
-                <div class="col-span-2 sm:col-span-1"><p class="text-sm text-slate-500">Item Code</p><p class="font-medium font-mono text-slate-900 dark:text-white">${item.item_code}</p></div>
-                <div class="col-span-2 sm:col-span-1"><p class="text-sm text-slate-500">Item Name</p><p class="font-medium text-slate-900 dark:text-white">${escapeHtml(item.item_name)}</p></div>
-                <div><p class="text-sm text-slate-500">Cost Price</p><p class="font-medium text-slate-900 dark:text-white">$${item.cost_price.toFixed(2)}</p></div>
-                <div><p class="text-sm text-slate-500">Selling Price</p><p class="font-medium text-slate-900 dark:text-white">$${item.selling_price.toFixed(2)}</p></div>
-                <div><p class="text-sm text-slate-500">Stock Quantity</p><p class="font-medium ${item.stock_quantity < 10 ? 'text-red-500' : 'text-slate-900 dark:text-white'}">${item.stock_quantity}</p></div>
-                <div><p class="text-sm text-slate-500">Status</p><span class="inline-flex px-2 py-0.5 rounded-full text-xs ${item.status === 'active' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' : 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300'}">${item.status === 'active' ? 'Active' : 'Inactive'}</span></div>
-                <div class="col-span-2"><p class="text-sm text-slate-500 mb-1">Colors</p><div class="flex flex-wrap gap-2">${colorsHtml}</div></div>
-                <div class="col-span-2"><p class="text-sm text-slate-500 mb-1">Sizes</p><div class="flex flex-wrap gap-2">${sizesHtml}</div></div>
-                ${item.category_id ? `<div><p class="text-sm text-slate-500">Category ID</p><p class="text-slate-900 dark:text-white">${item.category_id}</p></div>` : ''}
-                ${item.wholesale_id ? `<div><p class="text-sm text-slate-500">Wholesaler ID</p><p class="text-slate-900 dark:text-white">${item.wholesale_id}</p></div>` : ''}
+                <div class="col-span-2 sm:col-span-1"><p class="text-sm text-slate-500">${t('item_code_label')}</p><p class="font-medium font-mono text-slate-900 dark:text-white">${item.item_code}</p></div>
+                <div class="col-span-2 sm:col-span-1"><p class="text-sm text-slate-500">${t('item_name_label')}</p><p class="font-medium text-slate-900 dark:text-white">${escapeHtml(item.item_name)}</p></div>
+                <div><p class="text-sm text-slate-500">${t('cost_price_label')}</p><p class="font-medium text-slate-900 dark:text-white">$${item.cost_price.toFixed(2)}</p></div>
+                <div><p class="text-sm text-slate-500">${t('selling_price_label')}</p><p class="font-medium text-slate-900 dark:text-white">$${item.selling_price.toFixed(2)}</p></div>
+                <div><p class="text-sm text-slate-500">${t('stock_quantity_label')}</p><p class="font-medium ${item.stock_quantity < 10 ? 'text-red-500' : 'text-slate-900 dark:text-white'}">${item.stock_quantity}</p></div>
+                <div><p class="text-sm text-slate-500">${t('status_label')}</p><span class="inline-flex px-2 py-0.5 rounded-full text-xs ${item.status === 'active' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400' : 'bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300'}">${item.status === 'active' ? t('active_option') : t('inactive_option')}</span></div>
+                <div class="col-span-2"><p class="text-sm text-slate-500 mb-1">${t('colors_label')}</p><div class="flex flex-wrap gap-2">${colorsHtml}</div></div>
+                <div class="col-span-2"><p class="text-sm text-slate-500 mb-1">${t('sizes_label')}</p><div class="flex flex-wrap gap-2">${sizesHtml}</div></div>
+                ${item.category_id ? `<div><p class="text-sm text-slate-500">${t('category_id_label')}</p><p class="text-slate-900 dark:text-white">${item.category_id}</p></div>` : ''}
+                ${item.wholesale_id ? `<div><p class="text-sm text-slate-500">${t('wholesale_id_label')}</p><p class="text-slate-900 dark:text-white">${item.wholesale_id}</p></div>` : ''}
             </div>
             <div class="border-t border-slate-200 dark:border-slate-700 pt-4">
                 <div class="flex items-center gap-2 mb-3">
                     <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                    <h3 class="font-semibold text-slate-900 dark:text-white">Stock Movement History</h3>
+                    <h3 class="font-semibold text-slate-900 dark:text-white">${t('stock_movement_history')}</h3>
                 </div>
                 <div class="space-y-2">${movementsHtml}</div>
             </div>
