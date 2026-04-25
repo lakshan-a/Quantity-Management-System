@@ -16,7 +16,7 @@ $translations = [
         'remember' => 'Remember me',
         'forgot' => 'Forgot password?',
         'no_account' => "Don't have an account?",
-        'contact_admin' => 'Contact your administrator',
+        'contact_admin' => 'Create Account',
         'login_error' => 'Invalid email or password'
     ],
     'si' => [
@@ -79,10 +79,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <style>
-    /* body {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    } */
-
     .glass-card {
         background: rgba(255, 255, 255, 0.12);
         backdrop-filter: blur(18px);
@@ -146,9 +142,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div class="relative">
             <span class="material-icons absolute left-4 top-3 text-white/70">lock</span>
-            <input type="password" name="password" required
-                class="input-field w-full pl-12 pr-4 py-3 rounded-xl bg-white/15 text-white placeholder-white/70 border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/30"
+            
+            <input type="password" name="password" id="password" required
+                class="input-field w-full pl-12 pr-12 py-3 rounded-xl bg-white/15 text-white placeholder-white/70 border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/30"
                 placeholder="<?php echo $t['password']; ?>">
+
+            <span onclick="togglePassword()"
+                id="toggleIcon"
+                class="material-icons absolute right-4 top-3 text-white/70 cursor-pointer select-none">
+                visibility
+            </span>
         </div>
 
         <div class="flex items-center justify-between text-sm">
@@ -167,13 +170,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="text-center text-sm text-white/80 pt-2">
             <div class="flex gap-1 items-center justify-center">
                 <p><?php echo $t['no_account']; ?></p>
-            <a href="#" class="font-medium text-blue-300 hover:text-white hover:underline"><?php echo $t['contact_admin']; ?></p>
+                <a href="#" class="font-medium text-blue-300 hover:text-white hover:underline"><?php echo $t['contact_admin']; ?></p>
             </div>
             
             <p class="mt-2 text-xs">Demo: admin@example.com / password</p>
         </div>
     </form>
 </div>
+<script>
+function togglePassword() {
+    const passwordField = document.getElementById("password");
+    const toggleIcon = document.getElementById("toggleIcon");
 
+    if (passwordField.type === "password") {
+        passwordField.type = "text";
+        toggleIcon.textContent = "visibility_off";
+    } else {
+        passwordField.type = "password";
+        toggleIcon.textContent = "visibility";
+    }
+}
+</script>
 </body>
 </html>
