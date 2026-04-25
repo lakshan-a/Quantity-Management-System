@@ -157,16 +157,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <div class="relative">
             <span class="material-icons absolute left-4 top-3 text-white/70">lock</span>
-            <input type="password" name="password" required
+            <input type="password" name="password" id="password" required
                 class="input-field w-full pl-12 pr-4 py-3 rounded-xl bg-white/15 text-white placeholder-white/70 border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/30"
                 placeholder="<?php echo $t['password']; ?>">
+
+                <span onclick="togglePassword()"
+                id="togglePasswordIcon"
+                class="material-icons absolute right-4 top-3 text-white/70 cursor-pointer select-none">
+                visibility
+            </span>
         </div>
 
         <div class="relative">
             <span class="material-icons absolute left-4 top-3 text-white/70">lock_outline</span>
-            <input type="password" name="confirm_password" required
+            <input type="password" name="confirm_password" id="confirm_password" required
                 class="input-field w-full pl-12 pr-4 py-3 rounded-xl bg-white/15 text-white placeholder-white/70 border border-white/20 focus:outline-none focus:ring-2 focus:ring-white/30"
                 placeholder="<?php echo $t['confirm_password']; ?>">
+
+                <span onclick="toggleConfirmPassword()"
+                id="toggleConfirmIcon"
+                class="material-icons absolute right-4 top-3 text-white/70 cursor-pointer select-none">
+                visibility
+            </span>
         </div>
 
         <button type="submit"
@@ -184,6 +196,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     </form>
 </div>
+
+<script>
+function togglePassword() {
+    const passwordField = document.getElementById("password");
+    const toggleIcon = document.getElementById("togglePasswordIcon");
+
+    if (passwordField.type === "password") {
+        passwordField.type = "text";
+        toggleIcon.textContent = "visibility_off";
+    } else {
+        passwordField.type = "password";
+        toggleIcon.textContent = "visibility";
+    }
+}
+
+function toggleConfirmPassword() {
+    const confirmPasswordField = document.getElementById("confirm_password");
+    const toggleIcon = document.getElementById("toggleConfirmIcon");
+
+    if (confirmPasswordField.type === "password") {
+        confirmPasswordField.type = "text";
+        toggleIcon.textContent = "visibility_off";
+    } else {
+        confirmPasswordField.type = "password";
+        toggleIcon.textContent = "visibility";
+    }
+}
+</script>
 
 </body>
 </html>

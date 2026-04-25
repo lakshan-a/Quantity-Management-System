@@ -57,9 +57,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
 <style>
-body {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
 
 .glass-card {
     background: rgba(255,255,255,0.12);
@@ -88,7 +85,7 @@ body {
 </style>
 </head>
 
-<body class="min-h-screen flex items-center justify-center p-4">
+<body class="min-h-screen flex bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
 
 <div class="glass-card w-full max-w-md rounded-3xl shadow-2xl p-8 text-white">
 
@@ -101,9 +98,6 @@ body {
 
     <!-- Header -->
     <div class="text-center mb-8">
-        <div class="mx-auto h-16 w-16 rounded-2xl bg-white/20 flex items-center justify-center shadow-lg mb-4">
-            <span class="material-icons text-3xl">lock_reset</span>
-        </div>
         <h2 class="text-3xl font-bold"><?php echo $t['heading']; ?></h2>
         <p class="text-white/80 mt-2 text-sm"><?php echo $t['subheading']; ?></p>
     </div>
@@ -131,7 +125,7 @@ body {
         </button>
 
         <div class="text-center text-sm text-white/80 pt-2">
-            <a href="login.php" class="text-white font-semibold hover:underline">
+            <a href="login.php" class="font-medium text-blue-300 hover:text-white hover:underline">
                 <?php echo $t['back_login']; ?>
             </a>
         </div>
