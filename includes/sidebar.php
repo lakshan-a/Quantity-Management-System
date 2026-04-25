@@ -38,7 +38,7 @@ $currentPath = $_SERVER['REQUEST_URI'] ?? '';
         /* Sidebar Light/Dark Mode Variables */
         .sidebar {
             --sidebar-bg-light: linear-gradient(170deg, #f8fafc 0%, #e2e8f0 60%, #cbd5e1 100%);
-            --sidebar-bg-dark: linear-gradient(170deg, #1e1b4b 0%, #312e81 60%, #3730a3 100%);
+            --sidebar-bg-dark: linear-gradient(170deg, #0f172a 0%, #1e293b 60%, #0f172a 100%);
             --sidebar-text-light: #1e293b;
             --sidebar-text-dark: rgba(255,255,255,.7);
             --sidebar-text-hover-light: #0f172a;
@@ -68,6 +68,10 @@ $currentPath = $_SERVER['REQUEST_URI'] ?? '';
             transition: transform .3s cubic-bezier(.4,0,.2,1), background .3s ease;
             overflow-y: auto;
             overflow-x: hidden;
+            
+            /* Flex layout for sticky positioning */
+            display: flex;
+            flex-direction: column;
         }
         
         /* Dark mode sidebar */
@@ -143,13 +147,31 @@ $currentPath = $_SERVER['REQUEST_URI'] ?? '';
             color: var(--sidebar-label-dark);
         }
 
-        /* Logo area */
+        /* Logo area - STICKY TOP */
         .sidebar-logo {
             display: flex;
             align-items: center;
             gap: 12px;
             padding: 20px 24px 16px;
             border-bottom: 1px solid var(--sidebar-border-light);
+            
+            /* Sticky positioning */
+            position: sticky;
+            top: 0;
+            background: inherit;
+            z-index: 10;
+        }
+        
+        /* Ensure gradient background continues under sticky logo */
+        .sidebar-logo::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: inherit;
+            z-index: -1;
         }
         
         html.dark .sidebar-logo {
@@ -256,20 +278,43 @@ $currentPath = $_SERVER['REQUEST_URI'] ?? '';
             color: #fca5a5;
         }
         
-        /* Bottom section */
+        /* Bottom section - STICKY BOTTOM */
         .sidebar-bottom {
             padding: 0 12px 24px;
             margin-top: auto;
             border-top: 1px solid var(--sidebar-border-light);
             padding-top: 16px;
+            
+            /* Sticky positioning */
+            position: sticky;
+            bottom: 0;
+            background: inherit;
+            z-index: 10;
+        }
+        
+        /* Ensure gradient background continues under sticky bottom */
+        .sidebar-bottom::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: inherit;
+            z-index: -1;
         }
         
         html.dark .sidebar-bottom {
             border-top-color: var(--sidebar-border-dark);
         }
+        
+        /* Scrollable nav area fills remaining space */
+        .sidebar-nav-wrapper {
+            flex: 1;
+        }
     </style>
 
-    <!-- ── Logo ── -->
+    <!-- ── Logo (Sticky Top) ── -->
     <div class="sidebar-logo">
         <div class="sidebar-logo-icon">
             <span class="material-icons-round">inventory</span>
@@ -284,8 +329,8 @@ $currentPath = $_SERVER['REQUEST_URI'] ?? '';
         </button>
     </div>
 
-    <!-- ── Navigation ── -->
-    <nav style="padding: 8px 0 24px;">
+    <!-- ── Scrollable Navigation Area ── -->
+    <div class="sidebar-nav-wrapper" style="padding: 8px 0 24px;">
         <?php foreach ($navGroups as $groupI18n => $items): ?>
             <div class="sidebar-section-label" data-i18n="<?php echo htmlspecialchars($groupI18n); ?>">
                 <?php echo htmlspecialchars($groupI18n); ?>
@@ -304,9 +349,9 @@ $currentPath = $_SERVER['REQUEST_URI'] ?? '';
                 </a>
             <?php endforeach; ?>
         <?php endforeach; ?>
-    </nav>
+    </div>
 
-    <!-- ── Bottom logout ── -->
+    <!-- ── Bottom logout (Sticky Bottom) ── -->
     <div class="sidebar-bottom">
         <a href="/dashboard/auth/logout.php" class="sidebar-logout">
             <span class="material-icons-round" style="font-size:20px;">logout</span>
@@ -315,4 +360,3 @@ $currentPath = $_SERVER['REQUEST_URI'] ?? '';
     </div>
 
 </aside>
-
