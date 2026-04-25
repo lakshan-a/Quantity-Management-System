@@ -159,7 +159,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <input type="checkbox" class="rounded">
                 <span><?php echo $t['remember']; ?></span>
             </label>
-            <a href="#" class="text-blue-300 hover:text-white hover:underline"><?php echo $t['forgot']; ?></a>
+            <a href="/dashboard/auth/forgot_password.php" class="text-blue-300 hover:text-white hover:underline"><?php echo $t['forgot']; ?></a>
         </div>
 
         <button type="submit"
@@ -170,7 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="text-center text-sm text-white/80 pt-2">
             <div class="flex gap-1 items-center justify-center">
                 <p><?php echo $t['no_account']; ?></p>
-                <a href="#" class="font-medium text-blue-300 hover:text-white hover:underline"><?php echo $t['contact_admin']; ?></p>
+                <a href="/dashboard/auth/register.php" class="font-medium text-blue-300 hover:text-white hover:underline"><?php echo $t['contact_admin']; ?></p>
             </div>
             
             <p class="mt-2 text-xs">Demo: admin@example.com / password</p>
