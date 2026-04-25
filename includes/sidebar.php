@@ -310,6 +310,12 @@ $currentPath = $_SERVER['REQUEST_URI'] ?? '';
         .sidebar-nav-wrapper {
             flex: 1;
         }
+
+        @media (min-width: 692px) {
+        .sidebar-close-btn {
+            display: none;
+        }
+}
     </style>
 
     <!-- ── Logo ── -->
@@ -321,8 +327,9 @@ $currentPath = $_SERVER['REQUEST_URI'] ?? '';
             <p class="sidebar-logo-text">QtyManager</p>
             <p class="sidebar-logo-sub">Inventory System</p>
         </div>
+        
         <!-- Close button (mobile only) -->
-        <button onclick="closeSidebar()" class="sidebar-close-btn md:hidden">
+        <button onclick="closeSidebar()" class="sidebar-close-btn lg:hidden">
             <span class="material-icons-round" style="font-size:18px;">close</span>
         </button>
     </div>

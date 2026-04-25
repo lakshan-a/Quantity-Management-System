@@ -115,7 +115,7 @@ $userInitials = strtoupper(implode('', array_map(fn($w) => $w[0], array_slice(ex
         }
 
         /* ── Search ── */
-        .search-wrap { position: relative; flex: 1; max-width: 480px; }
+        .search-wrap { position: relative; flex: 1; max-width: 680px; }
         .search-input {
             width: 100%; height: 38px;
             padding: 0 12px 0 40px;
@@ -269,7 +269,7 @@ $userInitials = strtoupper(implode('', array_map(fn($w) => $w[0], array_slice(ex
         /* Extra small devices */
         @media (max-width: 480px) {
             .top-header { padding: 0 8px; gap: 6px; }
-            .search-input { font-size: 13px; height: 34px; padding-left: 36px; }
+            .search-input { font-size: 13px; height: 34px; width: 150px; padding-left: 36px; }
             .search-icon { font-size: 16px; left: 10px; }
             .hdr-icon-btn { width: 32px; height: 32px; }
             .hdr-icon-btn .mi { font-size: 18px; }
