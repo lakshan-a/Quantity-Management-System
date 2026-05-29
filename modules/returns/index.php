@@ -43,6 +43,7 @@ ob_start();
                     <thead>
                         <tr class="border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50">
                             <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="return_id">Return ID</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="form_business_name">Business</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="order_number">Order #</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="reason">Reason</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="status">Status</th>
@@ -50,10 +51,10 @@ ob_start();
                             <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="created">Created</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="return_date_header">Return Date</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="actions">Actions</th>
-                        </tr>
+                         </tr>
                     </thead>
                     <tbody id="desktopReturnsBody" class="divide-y divide-slate-200 dark:divide-slate-700"></tbody>
-                </table>
+                 </table>
             </div>
             <div id="emptyStateMessage" class="hidden p-8 text-center text-slate-500 dark:text-slate-400 text-sm" data-i18n="no_returns_found">No returns found matching your search.</div>
         </div>
@@ -74,14 +75,21 @@ ob_start();
                 </button>
             </div>
             <div class="p-4 overflow-y-auto max-h-[calc(90vh-140px)] space-y-4">
+                <!-- Business Name Field (New Order Form) -->
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_business_name">Business Name <span class="text-red-500">*</span></label>
+                    <div class="relative">
+                        <input type="text" id="new_business_name_input" autocomplete="off" placeholder="Search business name..." class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="hidden" id="new_business_id_hidden">
+                        <div id="newBusinessSearchResults" class="absolute z-20 w-full mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg hidden max-h-60 overflow-y-auto"></div>
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1" data-i18n="business_helper">Start typing to search and select a business</p>
+                </div>
+
                 <div>
                     <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="order_label">Order *</label>
                     <select id="returnOrderId" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="" data-i18n="select_order">Select order</option>
-                        <option value="1">ORD-2024-001</option>
-                        <option value="2">ORD-2024-002</option>
-                        <option value="3">ORD-2024-003</option>
-                        <option value="4">ORD-2024-004</option>
                     </select>
                 </div>
                 <div>
@@ -137,13 +145,22 @@ ob_start();
             </div>
             <div class="p-4 overflow-y-auto max-h-[calc(90vh-140px)] space-y-4">
                 <input type="hidden" id="editReturnId">
+                <input type="hidden" id="editBusinessIdHidden">
+                
+                <!-- Business Name Field for Edit -->
                 <div>
-                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="order_label">Order</label>
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_business_name">Business Name <span class="text-red-500">*</span></label>
+                    <div class="relative">
+                        <input type="text" id="edit_business_name_input" autocomplete="off" placeholder="Search business name..." class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <div id="editBusinessSearchResults" class="absolute z-20 w-full mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg hidden max-h-60 overflow-y-auto"></div>
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1" data-i18n="business_helper">Start typing to search and select a business</p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="order_label">Order *</label>
                     <select id="editOrderId" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="1">ORD-2024-001</option>
-                        <option value="2">ORD-2024-002</option>
-                        <option value="3">ORD-2024-003</option>
-                        <option value="4">ORD-2024-004</option>
+                        <option value="" data-i18n="select_order">Select order</option>
                     </select>
                 </div>
                 <div>
@@ -234,6 +251,7 @@ ob_start();
         {
             return_id: 'RET-2024-001',
             business_id: 'biz1',
+            business_name: 'ABC Electronics',
             order_id: '1',
             order_number: 'ORD-2024-001',
             reason: 'Defective product',
@@ -248,6 +266,7 @@ ob_start();
         {
             return_id: 'RET-2024-002',
             business_id: 'biz1',
+            business_name: 'ABC Electronics',
             order_id: '2',
             order_number: 'ORD-2024-002',
             reason: 'Wrong size',
@@ -262,6 +281,7 @@ ob_start();
         {
             return_id: 'RET-2024-003',
             business_id: 'biz1',
+            business_name: 'ABC Electronics',
             order_id: '3',
             order_number: 'ORD-2024-003',
             reason: 'Changed mind',
@@ -274,16 +294,33 @@ ob_start();
             returned_date: null,
         }
     ];
-    const orderOptions = [
-        { value: '1', label: 'ORD-2024-001' },
-        { value: '2', label: 'ORD-2024-002' },
-        { value: '3', label: 'ORD-2024-003' },
-        { value: '4', label: 'ORD-2024-004' }
+    
+    // Mock orders data with business_id association
+    let ordersData = [
+        { order_id: '1', order_number: 'ORD-2024-001', business_id: 'biz1', business_name: 'ABC Electronics' },
+        { order_id: '2', order_number: 'ORD-2024-002', business_id: 'biz1', business_name: 'ABC Electronics' },
+        { order_id: '3', order_number: 'ORD-2024-003', business_id: 'biz1', business_name: 'ABC Electronics' },
+        { order_id: '4', order_number: 'ORD-2024-004', business_id: 'biz2', business_name: 'XYZ Retail' },
+        { order_id: '5', order_number: 'ORD-2024-005', business_id: 'biz2', business_name: 'XYZ Retail' },
+        { order_id: '6', order_number: 'ORD-2024-006', business_id: 'biz3', business_name: 'Global Traders' },
+        { order_id: '7', order_number: 'ORD-2024-007', business_id: 'biz4', business_name: 'Tech Solutions Inc.' },
+        { order_id: '8', order_number: 'ORD-2024-008', business_id: 'biz5', business_name: 'Home Goods Depot' },
+    ];
+    
+    // Mock businesses data for search with address
+    let businessesData = [
+        { business_id: 'biz1', business_name: 'ABC Electronics', address: '123 Main St, New York, NY 10001' },
+        { business_id: 'biz2', business_name: 'XYZ Retail', address: '456 Oak Ave, Los Angeles, CA 90001' },
+        { business_id: 'biz3', business_name: 'Global Traders', address: '789 Pine Rd, Chicago, IL 60601' },
+        { business_id: 'biz4', business_name: 'Tech Solutions Inc.', address: '321 Maple Dr, Houston, TX 77001' },
+        { business_id: 'biz5', business_name: 'Home Goods Depot', address: '654 Cedar Ln, Phoenix, AZ 85001' },
+        { business_id: 'biz6', business_name: 'Fashion Hub', address: '987 Elm St, Philadelphia, PA 19101' },
     ];
 
     let currentSearchQuery = '';
     let currentSelectedReturn = null;
     let pendingDeleteId = null;
+    let currentSelectedBusinessId = '';
 
     // Helper: status color mapping
     function statusBadgeClass(status) {
@@ -322,13 +359,10 @@ ob_start();
         }); 
     }
 
-    // Delete return - FIXED: properly removes the item and re-renders
+    // Delete return
     function deleteReturn(returnId) {
-        // Filter out the return with the matching ID
         returnsData = returnsData.filter(r => r.return_id !== returnId);
-        // Re-render the tables
         renderReturns();
-        // Close the delete modal
         closeDeleteModal();
     }
 
@@ -336,8 +370,10 @@ ob_start();
     function editReturn(returnId, updatedData) {
         returnsData = returnsData.map(r => r.return_id === returnId ? {
             ...r,
+            business_id: updatedData.business_id,
+            business_name: businessesData.find(b => b.business_id === updatedData.business_id)?.business_name || '',
             order_id: updatedData.order_id,
-            order_number: orderOptions.find(o => o.value === updatedData.order_id)?.label || '',
+            order_number: ordersData.find(o => o.order_id === updatedData.order_id)?.order_number || '',
             reason: updatedData.reason,
             return_status: updatedData.return_status,
             refund_status: updatedData.refund_status,
@@ -351,12 +387,15 @@ ob_start();
     // Add new return
     function addNewReturn(formDataObj) {
         const newId = `RET-${new Date().getFullYear()}-${String(returnsData.length + 1).padStart(3,'0')}`;
-        const orderLabel = orderOptions.find(o => o.value === formDataObj.order_id)?.label || '';
+        const selectedBusiness = businessesData.find(b => b.business_id === formDataObj.business_id);
+        const selectedOrder = ordersData.find(o => o.order_id === formDataObj.order_id);
+        
         const newReturn = {
             return_id: newId,
-            business_id: 'biz1',
+            business_id: formDataObj.business_id,
+            business_name: selectedBusiness?.business_name || '',
             order_id: formDataObj.order_id,
-            order_number: orderLabel,
+            order_number: selectedOrder?.order_number || '',
             reason: formDataObj.reason,
             return_status: formDataObj.return_status,
             refund_status: formDataObj.refund_status,
@@ -386,12 +425,128 @@ ob_start();
         renderReturns();
     }
 
+    // Function to populate order dropdown based on selected business
+    function populateOrderDropdown(businessId, selectElementId) {
+        const orderSelect = document.getElementById(selectElementId);
+        if (!orderSelect) return;
+        
+        // Filter orders by business_id
+        const filteredOrders = ordersData.filter(order => order.business_id === businessId);
+        
+        // Clear existing options except the first placeholder
+        while (orderSelect.options.length > 0) {
+            orderSelect.remove(0);
+        }
+        
+        // Add placeholder option
+        const placeholderOption = document.createElement('option');
+        placeholderOption.value = '';
+        placeholderOption.textContent = 'Select order';
+        placeholderOption.setAttribute('data-i18n', 'select_order');
+        orderSelect.appendChild(placeholderOption);
+        
+        // Add filtered orders
+        filteredOrders.forEach(order => {
+            const option = document.createElement('option');
+            option.value = order.order_id;
+            option.textContent = order.order_number;
+            orderSelect.appendChild(option);
+        });
+        
+        // Enable/disable based on selection
+        orderSelect.disabled = filteredOrders.length === 0;
+    }
+
+    // Generic business search function with enhanced results display
+    function setupBusinessSearch(inputId, resultsId, hiddenId, selectElementId, onSelectCallback) {
+        const businessInput = document.getElementById(inputId);
+        const searchResultsDiv = document.getElementById(resultsId);
+        const businessHidden = document.getElementById(hiddenId);
+        
+        if (!businessInput) return;
+        
+        function performBusinessSearch() {
+            const searchTerm = businessInput.value.trim().toLowerCase();
+            
+            if (searchTerm === '') {
+                searchResultsDiv.classList.add('hidden');
+                return;
+            }
+            
+            const filteredBusinesses = businessesData.filter(business => 
+                business.business_name.toLowerCase().includes(searchTerm)
+            );
+            
+            if (filteredBusinesses.length === 0) {
+                searchResultsDiv.innerHTML = '<div class="p-3 text-sm text-slate-500 dark:text-slate-400 text-center">No businesses found</div>';
+                searchResultsDiv.classList.remove('hidden');
+                return;
+            }
+            
+            // Enhanced business search results with address
+            searchResultsDiv.innerHTML = filteredBusinesses.map(business => `
+                <div class="business-result-item-${inputId} px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer border-b border-slate-100 dark:border-slate-700 last:border-0 transition" data-business-id="${business.business_id}" data-business-name="${escapeHtml(business.business_name)}">
+                    <div class="font-medium text-slate-800 dark:text-slate-200">${escapeHtml(business.business_name)}</div>
+                    <div class="text-xs text-slate-500">ID: ${business.business_id}</div>
+                    ${business.address ? `<div class="text-xs text-slate-400 mt-0.5">${escapeHtml(business.address)}</div>` : ''}
+                </div>
+            `).join('');
+            
+            searchResultsDiv.classList.remove('hidden');
+            
+            // Add click event listeners to each result
+            document.querySelectorAll(`.business-result-item-${inputId}`).forEach(item => {
+                item.removeEventListener('click', item._listener);
+                const handler = () => {
+                    const businessId = item.getAttribute('data-business-id');
+                    const businessName = item.getAttribute('data-business-name');
+                    businessInput.value = businessName;
+                    if (businessHidden) businessHidden.value = businessId;
+                    searchResultsDiv.classList.add('hidden');
+                    if (selectElementId) {
+                        populateOrderDropdown(businessId, selectElementId);
+                    }
+                    if (onSelectCallback) onSelectCallback(businessId);
+                };
+                item.addEventListener('click', handler);
+                item._listener = handler;
+            });
+        }
+        
+        let searchTimeout;
+        businessInput.addEventListener('input', () => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(performBusinessSearch, 300);
+        });
+        
+        // Close search results when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!businessInput.contains(e.target) && !searchResultsDiv.contains(e.target)) {
+                searchResultsDiv.classList.add('hidden');
+            }
+        });
+        
+        // Prevent closing when clicking on results
+        searchResultsDiv.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+        
+        return businessInput;
+    }
+
+    // Setup business search for New modal
+    setupBusinessSearch('new_business_name_input', 'newBusinessSearchResults', 'new_business_id_hidden', 'returnOrderId');
+    
+    // Setup business search for Edit modal
+    setupBusinessSearch('edit_business_name_input', 'editBusinessSearchResults', 'editBusinessIdHidden', 'editOrderId');
+
     // Render both views
     function renderReturns() {
         const filtered = returnsData.filter(r => 
             r.order_number.toLowerCase().includes(currentSearchQuery.toLowerCase()) ||
             r.reason.toLowerCase().includes(currentSearchQuery.toLowerCase()) ||
-            r.return_id.toLowerCase().includes(currentSearchQuery.toLowerCase())
+            r.return_id.toLowerCase().includes(currentSearchQuery.toLowerCase()) ||
+            (r.business_name && r.business_name.toLowerCase().includes(currentSearchQuery.toLowerCase()))
         );
         
         const mobileContainer = document.getElementById('mobileReturnsContainer');
@@ -410,7 +565,10 @@ ob_start();
         mobileContainer.innerHTML = filtered.map(r => `
             <div class="p-4 space-y-3">
                 <div class="flex items-center justify-between">
-                    <div class="font-medium text-slate-900 dark:text-white">${escapeHtml(r.order_number)}</div>
+                    <div>
+                        <div class="font-medium text-slate-900 dark:text-white">${escapeHtml(r.order_number)}</div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">${escapeHtml(r.business_name || '')}</div>
+                    </div>
                     <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300 font-mono">${escapeHtml(r.return_id)}</span>
                 </div>
                 <div class="grid grid-cols-2 gap-2 text-sm">
@@ -438,6 +596,7 @@ ob_start();
         desktopBody.innerHTML = filtered.map(r => `
             <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
                 <td class="px-4 py-3 text-sm text-slate-900 dark:text-white font-mono">${escapeHtml(r.return_id)}</td>
+                <td class="px-4 py-3 text-sm text-slate-600 dark:text-slate-300">${escapeHtml(r.business_name || '')}</td>
                 <td class="px-4 py-3 text-sm text-slate-900 dark:text-white">${escapeHtml(r.order_number)}</td>
                 <td class="px-4 py-3 text-sm text-slate-600 dark:text-slate-300">${escapeHtml(r.reason)}</td>
                 <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${statusBadgeClass(r.return_status)}">${t(r.return_status)}</span></td>
@@ -462,7 +621,6 @@ ob_start();
         
         // Attach event listeners to buttons
         document.querySelectorAll('.viewReturnBtn').forEach(btn => {
-            // Remove any existing listener to avoid duplicates
             btn.removeEventListener('click', btn._listener);
             const handler = (e) => {
                 e.stopPropagation();
@@ -505,12 +663,59 @@ ob_start();
     const viewModal = document.getElementById('viewReturnModal');
     const deleteModal = document.getElementById('deleteModal');
     
-    function openNewModal() { newModal.classList.remove('hidden'); document.body.classList.add('modal-open'); }
+    function openNewModal() { 
+        newModal.classList.remove('hidden'); 
+        document.body.classList.add('modal-open');
+        // Reset business search fields when opening modal
+        const newBusinessInput = document.getElementById('new_business_name_input');
+        const newBusinessHidden = document.getElementById('new_business_id_hidden');
+        if (newBusinessInput) {
+            newBusinessInput.value = '';
+            newBusinessHidden.value = '';
+        }
+        // Reset order dropdown
+        const orderSelect = document.getElementById('returnOrderId');
+        if (orderSelect) {
+            while (orderSelect.options.length > 0) {
+                orderSelect.remove(0);
+            }
+            const placeholderOption = document.createElement('option');
+            placeholderOption.value = '';
+            placeholderOption.textContent = 'Select order';
+            placeholderOption.setAttribute('data-i18n', 'select_order');
+            orderSelect.appendChild(placeholderOption);
+            orderSelect.disabled = true;
+        }
+        // Reset other fields
+        document.getElementById('returnReason').value = '';
+        document.getElementById('returnStatusSelect').value = 'requested';
+        document.getElementById('refundStatusSelect').value = 'pending';
+        document.getElementById('returnDateInput').value = '';
+        document.getElementById('orderLostNotes').value = '';
+    }
     function closeNewModal() { newModal.classList.add('hidden'); document.body.classList.remove('modal-open'); }
     
     function openEditModal(returnObj) {
         document.getElementById('editReturnId').value = returnObj.return_id;
-        document.getElementById('editOrderId').value = returnObj.order_id;
+        document.getElementById('editBusinessIdHidden').value = returnObj.business_id || '';
+        
+        // Set business name in edit modal
+        const editBusinessInput = document.getElementById('edit_business_name_input');
+        if (editBusinessInput) {
+            editBusinessInput.value = returnObj.business_name || '';
+        }
+        
+        // Populate orders for the business and set selected order
+        if (returnObj.business_id) {
+            populateOrderDropdown(returnObj.business_id, 'editOrderId');
+            setTimeout(() => {
+                const editOrderSelect = document.getElementById('editOrderId');
+                if (editOrderSelect) {
+                    editOrderSelect.value = returnObj.order_id;
+                }
+            }, 50);
+        }
+        
         document.getElementById('editReason').value = returnObj.reason;
         document.getElementById('editReturnStatus').value = returnObj.return_status;
         document.getElementById('editRefundStatus').value = returnObj.refund_status;
@@ -528,6 +733,7 @@ ob_start();
         contentDiv.innerHTML = `
            <div class="grid grid-cols-2 gap-4">
                 <div><p class="text-sm text-slate-500">${t('return_id_label')}</p><p class="font-medium text-slate-900 dark:text-white font-mono">${escapeHtml(returnObj.return_id)}</p></div>
+                <div><p class="text-sm text-slate-500">Business Name</p><p class="font-medium text-slate-900 dark:text-white">${escapeHtml(returnObj.business_name || '')}</p></div>
                 <div><p class="text-sm text-slate-500">${t('order_number_label')}</p><p class="font-medium text-slate-900 dark:text-white">${escapeHtml(returnObj.order_number)}</p></div>
                 <div><p class="text-sm text-slate-500 mb-1">${t('status')}</p><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${statusBadgeClass(returnObj.return_status)}">${t(returnObj.return_status)}</span></div>
                 <div><p class="text-sm text-slate-500 mb-1">${t('refund')}</p><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${refundBadgeClass(returnObj.refund_status)}">${t(returnObj.refund_status)}</span></div>
@@ -694,10 +900,16 @@ ob_start();
     if (submitReturnBtn) {
         submitReturnBtn.removeEventListener('click', submitReturnBtn._listener);
         const submitHandler = () => {
+            const businessId = document.getElementById('new_business_id_hidden')?.value || '';
             const order_id = document.getElementById('returnOrderId').value;
             const reason = document.getElementById('returnReason').value.trim();
-            if (!order_id || !reason) { alert('Please select order and provide a reason.'); return; }
+            
+            if (!businessId) { alert('Please select a business.'); return; }
+            if (!order_id) { alert('Please select an order.'); return; }
+            if (!reason) { alert('Please provide a reason for return.'); return; }
+            
             const form = {
+                business_id: businessId,
                 order_id: order_id,
                 reason: reason,
                 return_status: document.getElementById('returnStatusSelect').value,
@@ -708,7 +920,24 @@ ob_start();
             addNewReturn(form);
             closeNewModal();
             // reset form
-            document.getElementById('returnOrderId').value = '';
+            const newBusinessInput = document.getElementById('new_business_name_input');
+            const newBusinessHidden = document.getElementById('new_business_id_hidden');
+            if (newBusinessInput) {
+                newBusinessInput.value = '';
+                newBusinessHidden.value = '';
+            }
+            const orderSelect = document.getElementById('returnOrderId');
+            if (orderSelect) {
+                while (orderSelect.options.length > 0) {
+                    orderSelect.remove(0);
+                }
+                const placeholderOption = document.createElement('option');
+                placeholderOption.value = '';
+                placeholderOption.textContent = 'Select order';
+                placeholderOption.setAttribute('data-i18n', 'select_order');
+                orderSelect.appendChild(placeholderOption);
+                orderSelect.disabled = true;
+            }
             document.getElementById('returnReason').value = '';
             document.getElementById('returnStatusSelect').value = 'requested';
             document.getElementById('refundStatusSelect').value = 'pending';
@@ -725,10 +954,17 @@ ob_start();
         updateReturnBtn.removeEventListener('click', updateReturnBtn._listener);
         const updateHandler = () => {
             const returnId = document.getElementById('editReturnId').value;
+            const businessId = document.getElementById('editBusinessIdHidden')?.value || '';
+            const order_id = document.getElementById('editOrderId').value;
             const reason = document.getElementById('editReason').value.trim();
+            
+            if (!businessId) { alert('Please select a business.'); return; }
+            if (!order_id) { alert('Please select an order.'); return; }
             if (!reason) { alert('Please provide a reason for return.'); return; }
+            
             const form = {
-                order_id: document.getElementById('editOrderId').value,
+                business_id: businessId,
+                order_id: order_id,
                 reason: reason,
                 return_status: document.getElementById('editReturnStatus').value,
                 refund_status: document.getElementById('editRefundStatus').value,

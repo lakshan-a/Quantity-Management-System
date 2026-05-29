@@ -45,6 +45,7 @@ ob_start();
                     <thead class="bg-slate-50 dark:bg-slate-900/40">
                         <tr class="border-b border-slate-200 dark:border-slate-700">
                             <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="col_user_id">User ID</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="form_business_name">Business Name</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="col_user">User</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="col_phone">Phone</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="col_role">Role</th>
@@ -75,6 +76,17 @@ ob_start();
                 </button>
             </div>
             <div class="p-4 overflow-y-auto max-h-[calc(90vh-200px)] space-y-4">
+                <!-- Business Name Field -->
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_business_name">Business Name <span class="text-red-500">*</span></label>
+                    <div class="relative">
+                        <input type="text" id="business_name_input" autocomplete="off" placeholder="Search business name..." class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="hidden" id="business_id_hidden">
+                        <div id="businessSearchResults" class="absolute z-20 w-full mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg hidden max-h-60 overflow-y-auto"></div>
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1" data-i18n="business_helper">Start typing to search and select a business</p>
+                </div>
+                
                 <div>
                     <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_full_name">Full Name</label>
                     <input type="text" id="fullNameInput" data-i18n-placeholder="full_name_placeholder" placeholder="John Doe" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -192,10 +204,20 @@ ob_start();
 <script>
     // ---------- MOCK DATA (identical to React) ----------
     let users = [
-        { user_id: 'USE-2024-001', business_id: 'biz1', full_name: 'John Admin', email: 'admin@demo.com', phone: '+1234567890', role: 'admin', status: 'active', user_image: '', createdAt: new Date(2024, 0, 10), updatedAt: new Date() },
-        { user_id: 'USE-2024-002', business_id: 'biz1', full_name: 'Jane Staff', email: 'staff@demo.com', phone: '+1234567891', role: 'staff', status: 'active', user_image: '', createdAt: new Date(2024, 1, 5), updatedAt: new Date() },
-        { user_id: 'USE-2024-003', business_id: 'biz1', full_name: 'Mike Staff', email: 'mike@demo.com', phone: '+1234567892', role: 'staff', status: 'active', user_image: '', createdAt: new Date(2024, 2, 15), updatedAt: new Date() },
-        { user_id: 'USE-2024-004', business_id: 'biz1', full_name: 'Sarah Staff', email: 'sarah@demo.com', phone: '+1234567893', role: 'staff', status: 'inactive', user_image: '', createdAt: new Date(2024, 3, 20), updatedAt: new Date() }
+        { user_id: 'USE-2024-001', business_id: 'biz1', business_name: 'ABC Electronics', full_name: 'John Admin', email: 'admin@demo.com', phone: '+1234567890', role: 'admin', status: 'active', user_image: '', createdAt: new Date(2024, 0, 10), updatedAt: new Date() },
+        { user_id: 'USE-2024-002', business_id: 'biz1', business_name: 'ABC Electronics', full_name: 'Jane Staff', email: 'staff@demo.com', phone: '+1234567891', role: 'staff', status: 'active', user_image: '', createdAt: new Date(2024, 1, 5), updatedAt: new Date() },
+        { user_id: 'USE-2024-003', business_id: 'biz2', business_name: 'XYZ Retail', full_name: 'Mike Staff', email: 'mike@demo.com', phone: '+1234567892', role: 'staff', status: 'active', user_image: '', createdAt: new Date(2024, 2, 15), updatedAt: new Date() },
+        { user_id: 'USE-2024-004', business_id: 'biz2', business_name: 'XYZ Retail', full_name: 'Sarah Staff', email: 'sarah@demo.com', phone: '+1234567893', role: 'staff', status: 'inactive', user_image: '', createdAt: new Date(2024, 3, 20), updatedAt: new Date() }
+    ];
+
+    // Mock businesses data for search
+    let businessesData = [
+        { business_id: 'biz1', business_name: 'ABC Electronics', address: '123 Main St, New York, NY 10001' },
+        { business_id: 'biz2', business_name: 'XYZ Retail', address: '456 Oak Ave, Los Angeles, CA 90001' },
+        { business_id: 'biz3', business_name: 'Global Traders', address: '789 Pine Rd, Chicago, IL 60601' },
+        { business_id: 'biz4', business_name: 'Tech Solutions Inc.', address: '321 Maple Dr, Houston, TX 77001' },
+        { business_id: 'biz5', business_name: 'Home Goods Depot', address: '654 Cedar Ln, Phoenix, AZ 85001' },
+        { business_id: 'biz6', business_name: 'Fashion Hub', address: '987 Elm St, Philadelphia, PA 19101' },
     ];
 
     // Helper: generate new User ID
@@ -248,6 +270,11 @@ ob_start();
     const profilePreview = document.getElementById('profilePreview');
     const removeImageBtn = document.getElementById('removeImageBtn');
     
+    // Business search elements
+    const businessInput = document.getElementById('business_name_input');
+    const businessHidden = document.getElementById('business_id_hidden');
+    const searchResultsDiv = document.getElementById('businessSearchResults');
+    
     const openAddBtn = document.getElementById('openAddUserBtn');
     const closeModalBtn = document.getElementById('closeModalBtn');
     const modalCancelBtn = document.getElementById('modalCancelBtn');
@@ -268,6 +295,68 @@ ob_start();
     const deleteModalBackdrop = document.getElementById('deleteModalBackdrop');
     const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
     const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+
+    // Business search functionality
+    function performBusinessSearch() {
+        const searchTerm = businessInput.value.trim().toLowerCase();
+        
+        if (searchTerm === '') {
+            searchResultsDiv.classList.add('hidden');
+            return;
+        }
+        
+        const filteredBusinesses = businessesData.filter(business => 
+            business.business_name.toLowerCase().includes(searchTerm)
+        );
+        
+        if (filteredBusinesses.length === 0) {
+            searchResultsDiv.innerHTML = '<div class="p-3 text-sm text-slate-500 dark:text-slate-400 text-center">No businesses found</div>';
+            searchResultsDiv.classList.remove('hidden');
+            return;
+        }
+        
+        searchResultsDiv.innerHTML = filteredBusinesses.map(business => `
+            <div class="business-result-item px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer border-b border-slate-100 dark:border-slate-700 last:border-0 transition" data-business-id="${business.business_id}" data-business-name="${escapeHtml(business.business_name)}">
+                <div class="font-medium text-slate-800 dark:text-slate-200">${escapeHtml(business.business_name)}</div>
+                <div class="text-xs text-slate-500">ID: ${business.business_id}</div>
+                ${business.address ? `<div class="text-xs text-slate-400 mt-0.5">${escapeHtml(business.address)}</div>` : ''}
+            </div>
+        `).join('');
+        
+        searchResultsDiv.classList.remove('hidden');
+        
+        document.querySelectorAll('.business-result-item').forEach(item => {
+            item.removeEventListener('click', item._listener);
+            const handler = () => {
+                const businessId = item.getAttribute('data-business-id');
+                const businessName = item.getAttribute('data-business-name');
+                businessInput.value = businessName;
+                businessHidden.value = businessId;
+                searchResultsDiv.classList.add('hidden');
+            };
+            item.addEventListener('click', handler);
+            item._listener = handler;
+        });
+    }
+    
+    // Debounced search
+    let searchTimeout;
+    if (businessInput) {
+        businessInput.addEventListener('input', () => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(performBusinessSearch, 300);
+        });
+        
+        document.addEventListener('click', (e) => {
+            if (!businessInput.contains(e.target) && !searchResultsDiv.contains(e.target)) {
+                searchResultsDiv.classList.add('hidden');
+            }
+        });
+        
+        searchResultsDiv.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    }
 
     // Helper: format date
     function formatDate(date) {
@@ -292,7 +381,8 @@ ob_start();
         return users.filter(u => 
             u.full_name.toLowerCase().includes(query) || 
             u.email.toLowerCase().includes(query) ||
-            u.user_id.toLowerCase().includes(query)
+            u.user_id.toLowerCase().includes(query) ||
+            (u.business_name && u.business_name.toLowerCase().includes(query))
         );
     }
 
@@ -314,6 +404,10 @@ ob_start();
                 <div>
                     <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">${t('user_id_label')}</label>
                     <p class="text-sm font-mono text-slate-900 dark:text-white mt-1">${escapeHtml(user.user_id)}</p>
+                </div>
+                <div>
+                    <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">${t('form_business_name')}</label>
+                    <p class="text-sm text-slate-900 dark:text-white mt-1">${escapeHtml(user.business_name || '')}</p>
                 </div>
                 <div>
                     <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">${t('full_name_label')}</label>
@@ -398,6 +492,11 @@ ob_start();
     // Open add modal
     function openAddModal() {
         editingUser = null;
+        // Clear business field
+        if (businessInput) {
+            businessInput.value = '';
+            businessHidden.value = '';
+        }
         fullNameInput.value = '';
         emailInput.value = '';
         phoneInput.value = '';
@@ -414,6 +513,11 @@ ob_start();
     // Open edit modal
     function openEditModal(user) {
         editingUser = user;
+        // Populate business field
+        if (businessInput && user.business_id) {
+            businessInput.value = user.business_name || '';
+            businessHidden.value = user.business_id || '';
+        }
         fullNameInput.value = user.full_name;
         emailInput.value = user.email;
         phoneInput.value = user.phone;
@@ -443,12 +547,15 @@ ob_start();
 
     // Save user
     function saveUser() {
+        const businessId = businessHidden ? businessHidden.value : '';
+        const businessName = businessInput ? businessInput.value : '';
         const fullName = fullNameInput.value.trim();
         const email = emailInput.value.trim();
         const phone = phoneInput.value.trim();
         const role = roleSelect.value;
         const status = statusSelect.value;
         
+        if (!businessId) { alert('Please select a business.'); return; }
         if (!fullName) { alert('Full name is required'); return; }
         if (!email) { alert('Email is required'); return; }
         if (!phone) { alert('Phone number is required'); return; }
@@ -459,7 +566,8 @@ ob_start();
             const newId = generateUserId();
             const newUser = {
                 user_id: newId,
-                business_id: 'biz1',
+                business_id: businessId,
+                business_name: businessName,
                 full_name: fullName,
                 email: email,
                 phone: phone,
@@ -473,7 +581,7 @@ ob_start();
         } else {
             users = users.map(u => 
                 u.user_id === editingUser.user_id 
-                ? { ...u, full_name: fullName, email: email, phone: phone, role: role, status: status, user_image: currentImageData || '', updatedAt: new Date() }
+                ? { ...u, business_id: businessId, business_name: businessName, full_name: fullName, email: email, phone: phone, role: role, status: status, user_image: currentImageData || '', updatedAt: new Date() }
                 : u
             );
         }
@@ -513,6 +621,10 @@ ob_start();
                 </div>
                 <div class="grid grid-cols-2 gap-3 text-sm">
                     <div>
+                        <span class="text-slate-500 dark:text-slate-400 text-xs block">${t('business_name_label')}</span>
+                        <span class="text-slate-700 dark:text-slate-300">${escapeHtml(u.business_name || '')}</span>
+                    </div>
+                    <div>
                         <span class="text-slate-500 dark:text-slate-400 text-xs block">${t('phone_label')}</span>
                         <span class="text-slate-700 dark:text-slate-300">${escapeHtml(u.phone)}</span>
                     </div>
@@ -520,7 +632,7 @@ ob_start();
                         <span class="text-slate-500 dark:text-slate-400 text-xs block mb-1">${t('role_label')}</span>
                         <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${roleColors[u.role]}">${u.role === 'admin' ? t('admin') : t('staff')}</span>
                     </div>
-                    <div class="col-span-2">
+                    <div>
                         <span class="text-slate-500 dark:text-slate-400 text-xs block mb-1">${t('status_label')}</span>
                         <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${statusColors[u.status]}">${u.status === 'active' ? t('active') : t('inactive')}</span>
                     </div>
@@ -580,6 +692,7 @@ ob_start();
             tableBody.innerHTML = filtered.map(u => `
                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors">
                     <td class="px-4 py-3 text-sm text-slate-500 dark:text-slate-400 font-mono">${u.user_id}</td>
+                    <td class="px-4 py-3 text-sm text-slate-600 dark:text-slate-300">${escapeHtml(u.business_name || '')}</td>
                     <td class="px-4 py-3">
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 rounded-full flex items-center justify-center overflow-hidden bg-slate-100 dark:bg-slate-700">

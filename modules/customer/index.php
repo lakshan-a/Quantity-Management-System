@@ -121,6 +121,16 @@ ob_start();
             <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_city">City</label>
             <input type="text" id="city" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
+          <!-- Business Name Field (New Order From) -->
+          <div>
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_business_name">Business Name <span class="text-red-500">*</span></label>
+            <div class="relative">
+              <input type="text" id="business_name_input" autocomplete="off" placeholder="Search business name..." class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <input type="hidden" id="business_id_hidden">
+              <div id="businessSearchResults" class="absolute z-20 w-full mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg hidden max-h-60 overflow-y-auto"></div>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1" data-i18n="business_helper">Start typing to search and select a business</p>
+          </div>
           <div>
             <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_district">District</label>
             <input type="text" id="district" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -194,14 +204,24 @@ ob_start();
 </div>
 
 <script>
-  // ---------- MOCK DATA ----------
+// ---------- MOCK DATA ----------
   let customers = [
-    { customer_id: 'CUM-2024-001', business_id: 'biz1', full_name: 'John Smith', phone: '+1234567890', email: 'john@example.com', address: '123 Main St', city: 'New York', district: 'Manhattan', postal_code: '10001', notes: '', created_by: '1', createdAt: new Date(), updatedAt: new Date(), status: 'active', blocked_at: null },
-    { customer_id: 'CUM-2024-002', business_id: 'biz1', full_name: 'Sarah Johnson', phone: '+1234567891', email: 'sarah@example.com', address: '456 Oak Ave', city: 'Los Angeles', district: 'Downtown', postal_code: '90001', notes: '', created_by: '1', createdAt: new Date(), updatedAt: new Date(), status: 'active', blocked_at: null },
-    { customer_id: 'CUM-2024-003', business_id: 'biz1', full_name: 'Mike Brown', phone: '+1234567892', email: 'mike@example.com', address: '789 Pine Rd', city: 'Chicago', district: 'Loop', postal_code: '60601', notes: '', created_by: '1', createdAt: new Date(), updatedAt: new Date(), status: 'blocked', blocked_at: new Date('2025-01-15') },
-    { customer_id: 'CUM-2024-004', business_id: 'biz1', full_name: 'Emily Davis', phone: '+1234567893', email: 'emily@example.com', address: '321 Elm St', city: 'Houston', district: 'Midtown', postal_code: '77001', notes: '', created_by: '1', createdAt: new Date(), updatedAt: new Date(), status: 'active', blocked_at: null },
-    { customer_id: 'CUM-2024-005', business_id: 'biz1', full_name: 'Chris Wilson', phone: '+1234567894', email: 'chris@example.com', address: '654 Cedar Ln', city: 'Phoenix', district: 'Central', postal_code: '85001', notes: '', created_by: '1', createdAt: new Date(), updatedAt: new Date(), status: 'active', blocked_at: null }
+    { customer_id: 'CUM-2024-001', business_id: 'biz1', business_name: 'TechZone Electronics', full_name: 'John Smith', phone: '+1234567890', email: 'john@example.com', address: '123 Main St', city: 'New York', district: 'Manhattan', postal_code: '10001', notes: '', created_by: '1', createdAt: new Date(), updatedAt: new Date(), status: 'active', blocked_at: null },
+    { customer_id: 'CUM-2024-002', business_id: 'biz2', business_name: 'Fashion Hub', full_name: 'Sarah Johnson', phone: '+1234567891', email: 'sarah@example.com', address: '456 Oak Ave', city: 'Los Angeles', district: 'Downtown', postal_code: '90001', notes: '', created_by: '1', createdAt: new Date(), updatedAt: new Date(), status: 'active', blocked_at: null },
+    { customer_id: 'CUM-2024-003', business_id: 'biz1', business_name: 'TechZone Electronics', full_name: 'Mike Brown', phone: '+1234567892', email: 'mike@example.com', address: '789 Pine Rd', city: 'Chicago', district: 'Loop', postal_code: '60601', notes: '', created_by: '1', createdAt: new Date(), updatedAt: new Date(), status: 'blocked', blocked_at: new Date('2025-01-15') },
+    { customer_id: 'CUM-2024-004', business_id: 'biz3', business_name: 'Sports Direct', full_name: 'Emily Davis', phone: '+1234567893', email: 'emily@example.com', address: '321 Elm St', city: 'Houston', district: 'Midtown', postal_code: '77001', notes: '', created_by: '1', createdAt: new Date(), updatedAt: new Date(), status: 'active', blocked_at: null },
+    { customer_id: 'CUM-2024-005', business_id: 'biz1', business_name: 'TechZone Electronics', full_name: 'Chris Wilson', phone: '+1234567894', email: 'chris@example.com', address: '654 Cedar Ln', city: 'Phoenix', district: 'Central', postal_code: '85001', notes: '', created_by: '1', createdAt: new Date(), updatedAt: new Date(), status: 'active', blocked_at: null }
   ];
+
+  // Business data array (for "Business Name" field)
+  let businesses = [
+    { business_id: 'biz1', business_name: 'TechZone Electronics', address: '123 Tech Street, NY', phone: '555-1001' },
+    { business_id: 'biz2', business_name: 'Fashion Hub', address: '456 Style Ave, LA', phone: '555-1002' },
+    { business_id: 'biz3', business_name: 'Sports Direct', address: '789 Arena Rd, CHI', phone: '555-1003' },
+    { business_id: 'biz4', business_name: 'HomeGoods Plus', address: '321 Market St, HOU', phone: '555-1004' },
+    { business_id: 'biz5', business_name: 'Gourmet Foods', address: '555 Chef Lane, MIA', phone: '555-1005' }
+  ];
+
 
   // Helper: generate next customer ID (CUM-YYYY-XXX)
   function generateCustomerId() {
@@ -210,6 +230,67 @@ ob_start();
     const numbers = existingForYear.map(c => parseInt(c.customer_id.split('-')[2])).filter(n => !isNaN(n));
     const nextNum = numbers.length > 0 ? Math.max(...numbers) + 1 : 1;
     return `CUM-${year}-${String(nextNum).padStart(3, '0')}`;
+  }
+
+  // Business search functionality
+  let selectedBusinessId = null;
+  let selectedBusinessName = null;
+
+  function setupBusinessSearch() {
+    const businessInput = document.getElementById('business_name_input');
+    const searchResults = document.getElementById('businessSearchResults');
+    
+    if (!businessInput) return;
+    
+    businessInput.addEventListener('input', function() {
+      const query = this.value.trim().toLowerCase();
+      
+      if (query.length < 1) {
+        searchResults.classList.add('hidden');
+        return;
+      }
+      
+      const filtered = businesses.filter(b => 
+        b.business_name.toLowerCase().includes(query) || 
+        b.business_id.toLowerCase().includes(query)
+      );
+      
+      if (filtered.length === 0) {
+        searchResults.innerHTML = '<div class="px-4 py-3 text-sm text-slate-500">No businesses found</div>';
+        searchResults.classList.remove('hidden');
+        return;
+      }
+      
+      searchResults.innerHTML = filtered.map(b => `
+        <div class="business-result-item px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer border-b border-slate-100 dark:border-slate-700 last:border-0 transition" data-business-id="${b.business_id}" data-business-name="${escapeHtml(b.business_name)}">
+          <div class="font-medium text-slate-800 dark:text-slate-200">${escapeHtml(b.business_name)}</div>
+          <div class="text-xs text-slate-500">ID: ${b.business_id}</div>
+          ${b.address ? `<div class="text-xs text-slate-400 mt-0.5">${escapeHtml(b.address)}</div>` : ''}
+        </div>
+      `).join('');
+      
+      searchResults.classList.remove('hidden');
+      
+      // Add click handlers to results
+      document.querySelectorAll('.business-result-item').forEach(el => {
+        el.addEventListener('click', () => {
+          const bizId = el.dataset.businessId;
+          const bizName = el.dataset.businessName;
+          businessInput.value = bizName;
+          document.getElementById('business_id_hidden').value = bizId;
+          selectedBusinessId = bizId;
+          selectedBusinessName = bizName;
+          searchResults.classList.add('hidden');
+        });
+      });
+    });
+    
+    // Hide results when clicking outside
+    document.addEventListener('click', function(e) {
+      if (businessInput && !businessInput.contains(e.target) && searchResults && !searchResults.contains(e.target)) {
+        searchResults.classList.add('hidden');
+      }
+    });
   }
 
   let currentDeleteCustomerId = null;
@@ -347,9 +428,14 @@ ob_start();
     const container = document.getElementById('viewModalContent');
     const isBlocked = currentViewCustomer.status === 'blocked';
     
+    // Get business name for display
+    const business = businesses.find(b => b.business_id === currentViewCustomer.business_id);
+    const businessDisplay = business ? business.business_name : currentViewCustomer.business_name || '—';
+    
     container.innerHTML = `
       <div class="grid grid-cols-2 gap-4">
                 <div><p class="text-sm text-slate-500">${t('customer_id_label')}</p><p class="font-medium font-mono">${currentViewCustomer.customer_id}</p></div>
+                <div><p class="text-sm text-slate-500">Business Name</p><p class="font-medium">${escapeHtml(businessDisplay)}</p></div>
                 <div><p class="text-sm text-slate-500">${t('full_name_label')}</p><p class="font-medium">${escapeHtml(currentViewCustomer.full_name)}</p></div>
                 <div><p class="text-sm text-slate-500">${t('phone_label')}</p><p class="font-medium">${escapeHtml(currentViewCustomer.phone)}</p></div>
                 <div><p class="text-sm text-slate-500">${t('email_label')}</p><p class="font-medium">${escapeHtml(currentViewCustomer.email)}</p></div>
@@ -394,6 +480,15 @@ ob_start();
     editingCustomerId = editId;
     const modal = document.getElementById('customerModal');
     const title = document.getElementById('modalTitle');
+
+     // Reset business fields
+    const businessInput = document.getElementById('business_name_input');
+    const businessIdHidden = document.getElementById('business_id_hidden');
+    if (businessInput) businessInput.value = '';
+    if (businessIdHidden) businessIdHidden.value = '';
+    selectedBusinessId = null;
+    selectedBusinessName = null;
+
     if(editId) {
       const cust = customers.find(c => c.customer_id === editId);
       if(cust) {
@@ -407,6 +502,16 @@ ob_start();
         document.getElementById('postal_code').value = cust.postal_code || '';
         document.getElementById('address').value = cust.address || '';
         document.getElementById('notes').value = cust.notes || '';
+        // Populate business if exists
+        if (cust.business_id) {
+          const business = businesses.find(b => b.business_id === cust.business_id);
+          if (business) {
+            businessInput.value = business.business_name;
+            businessIdHidden.value = business.business_id;
+            selectedBusinessId = business.business_id;
+            selectedBusinessName = business.business_name;
+          }
+        }
       }
     } else {
       title.innerText = 'Add Customer';
@@ -431,7 +536,11 @@ ob_start();
     const full_name = document.getElementById('full_name').value.trim();
     const phone = document.getElementById('phone').value.trim();
     const email = document.getElementById('email').value.trim();
+     const businessId = document.getElementById('business_id_hidden').value;
+    const businessName = document.getElementById('business_name_input').value.trim();
+    
     if(!full_name || !phone || !email) { alert('Please fill in name, phone and email'); return; }
+    if(!businessId) { alert('Please search and select a business name'); return; }
     
     const formData = {
       full_name, phone, email,
@@ -440,6 +549,8 @@ ob_start();
       postal_code: document.getElementById('postal_code').value,
       address: document.getElementById('address').value,
       notes: document.getElementById('notes').value,
+       business_id: businessId,
+      business_name: businessName
     };
     
     if(editingCustomerId) {
@@ -495,6 +606,9 @@ ob_start();
   document.querySelectorAll('.closeViewModalBtn, #viewModalBackdrop').forEach(el => el?.addEventListener('click', () => document.getElementById('viewModal').classList.add('hidden')));
   document.getElementById('saveCustomerBtn').onclick = saveCustomer;
   document.getElementById('searchInput').addEventListener('input', renderCustomers);
+
+   // Initialize business search
+  setupBusinessSearch();
   
   // Initial render
   renderCustomers();

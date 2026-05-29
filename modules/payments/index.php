@@ -1,7 +1,7 @@
 <?php
 // ============================================
 // File: modules/payments/index.php
-// Description: Payments management
+// Description: Payments management with Business Name in table and view
 // ============================================
 require_once '../../middleware/check_auth.php';
 $pageTitle = 'Payments | Qty Management';
@@ -93,6 +93,7 @@ ob_start();
           <thead>
             <tr class="border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60">
               <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase" data-i18n="payment_id">Payment ID</th>
+              <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase" data-i18n="form_business_name">Business Name</th>
               <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase" data-i18n="order_number">Order Number</th>
               <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase" data-i18n="amount">Amount</th>
               <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase" data-i18n="method">Method</th>
@@ -153,12 +154,12 @@ ob_start();
   </div>
 
   <script>
-    // ----- MOCK DATA (identical to React mock)
+    // ----- MOCK DATA (with business name)
     let mockPayments = [
-      { payment_id: 'PAY-2024-001', business_id: 'biz1', order_id: '1', order_number: 'ORD-2024-001', amount: 185.97, payment_method: 'bank_transfer', payment_date: new Date('2024-01-15'), payment_status: 'verified', verified_by: '1', created_by: '1', createdAt: new Date('2024-01-15'), updatedAt: new Date('2024-01-15') },
-      { payment_id: 'PAY-2024-002', business_id: 'biz1', order_id: '2', order_number: 'ORD-2024-002', amount: 102.96, payment_method: 'cod', payment_date: new Date('2024-01-18'), payment_status: 'pending', created_by: '1', createdAt: new Date('2024-01-18'), updatedAt: new Date('2024-01-18') },
-      { payment_id: 'PAY-2024-003', business_id: 'biz1', order_id: '3', order_number: 'ORD-2024-003', amount: 240.98, payment_method: 'bank_transfer', payment_date: new Date('2024-01-20'), payment_status: 'verified', verified_by: '1', created_by: '1', createdAt: new Date('2024-01-20'), updatedAt: new Date('2024-01-20') },
-      { payment_id: 'PAY-2024-004', business_id: 'biz1', order_id: '4', order_number: 'ORD-2024-004', amount: 83.97, payment_method: 'cod', payment_date: new Date('2024-01-22'), payment_status: 'pending', created_by: '1', createdAt: new Date('2024-01-22'), updatedAt: new Date('2024-01-22') }
+      { payment_id: 'PAY-2024-001', business_id: 'biz1', business_name: 'ABC Electronics', order_id: '1', order_number: 'ORD-2024-001', amount: 185.97, payment_method: 'bank_transfer', payment_date: new Date('2024-01-15'), payment_status: 'verified', verified_by: '1', created_by: '1', createdAt: new Date('2024-01-15'), updatedAt: new Date('2024-01-15') },
+      { payment_id: 'PAY-2024-002', business_id: 'biz1', business_name: 'ABC Electronics', order_id: '2', order_number: 'ORD-2024-002', amount: 102.96, payment_method: 'cod', payment_date: new Date('2024-01-18'), payment_status: 'pending', created_by: '1', createdAt: new Date('2024-01-18'), updatedAt: new Date('2024-01-18') },
+      { payment_id: 'PAY-2024-003', business_id: 'biz2', business_name: 'XYZ Retail', order_id: '3', order_number: 'ORD-2024-003', amount: 240.98, payment_method: 'bank_transfer', payment_date: new Date('2024-01-20'), payment_status: 'verified', verified_by: '1', created_by: '1', createdAt: new Date('2024-01-20'), updatedAt: new Date('2024-01-20') },
+      { payment_id: 'PAY-2024-004', business_id: 'biz2', business_name: 'XYZ Retail', order_id: '4', order_number: 'ORD-2024-004', amount: 83.97, payment_method: 'cod', payment_date: new Date('2024-01-22'), payment_status: 'pending', created_by: '1', createdAt: new Date('2024-01-22'), updatedAt: new Date('2024-01-22') }
     ];
 
     let paymentsData = [...mockPayments];
@@ -225,7 +226,7 @@ ob_start();
       const statusFilter = document.getElementById('statusFilter').value;
       
       let filtered = paymentsData.filter(p => {
-        const matchesSearch = (p.order_number?.toLowerCase().includes(searchQuery) || p.payment_id.toLowerCase().includes(searchQuery));
+        const matchesSearch = (p.order_number?.toLowerCase().includes(searchQuery) || p.payment_id.toLowerCase().includes(searchQuery) || (p.business_name && p.business_name.toLowerCase().includes(searchQuery)));
         const matchesStatus = !statusFilter || p.payment_status === statusFilter;
         return matchesSearch && matchesStatus;
       });
@@ -245,10 +246,11 @@ ob_start();
       }
       emptyMsgDiv.classList.add('hidden');
       
-      // Desktop rows
+      // Desktop rows with business name column
       tableBody.innerHTML = filtered.map(p => `
         <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition">
           <td class="px-4 py-3 text-sm text-slate-500 font-mono">${p.payment_id}</td>
+          <td class="px-4 py-3 text-sm text-slate-600 dark:text-slate-300">${escapeHtml(p.business_name || '')}</td>
           <td class="px-4 py-3 text-sm text-slate-900 dark:text-white font-medium">${p.order_number}</td>
           <td class="px-4 py-3 text-sm text-slate-600 dark:text-slate-300">$${p.amount.toFixed(2)}</td>
           <td class="px-4 py-3">
@@ -259,7 +261,7 @@ ob_start();
               }
               <span class="capitalize">${p.payment_method.replace('_', ' ')}</span>
             </div>
-          </td>
+           </td>
           <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${getStatusBadgeClass(p.payment_status)}">${p.payment_status}</span></td>
           <td class="px-4 py-3 text-sm">${formatDate(p.payment_date)}</td>
           <td class="px-4 py-3">
@@ -277,15 +279,18 @@ ob_start();
                 </svg>
               </button>
             </div>
-          </td>
-        </tr>
+           </td>
+         </tr>
       `).join('');
       
-      // Mobile cards rendering
+      // Mobile cards rendering with business name
       mobileContainer.innerHTML = filtered.map(p => `
         <div class="p-4 space-y-3 border-b border-slate-200 dark:border-slate-700 last:border-b-0">
           <div class="flex items-center justify-between">
-            <div class="font-medium text-slate-900 dark:text-white">${p.order_number}</div>
+            <div>
+              <div class="font-medium text-slate-900 dark:text-white">${p.order_number}</div>
+              <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">${escapeHtml(p.business_name || '')}</div>
+            </div>
             <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300 font-mono">${p.payment_id}</span>
           </div>
           <div class="grid grid-cols-2 gap-2 text-sm">
@@ -313,25 +318,45 @@ ob_start();
       
       // Re-attach event listeners for view, verify, and delete (desktop + mobile)
       document.querySelectorAll('.view-btn, .view-mobile-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
+        btn.removeEventListener('click', btn._listener);
+        const handler = () => {
           const id = btn.getAttribute('data-payment-id');
           const payment = paymentsData.find(p => p.payment_id === id);
           if (payment) openModal(payment);
-        });
+        };
+        btn.addEventListener('click', handler);
+        btn._listener = handler;
       });
       
       document.querySelectorAll('.verify-btn, .verify-mobile-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
+        btn.removeEventListener('click', btn._listener);
+        const handler = () => {
           const id = btn.getAttribute('data-payment-id');
           handleVerify(id);
-        });
+        };
+        btn.addEventListener('click', handler);
+        btn._listener = handler;
       });
       
       document.querySelectorAll('.delete-btn, .delete-mobile-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
+        btn.removeEventListener('click', btn._listener);
+        const handler = () => {
           const id = btn.getAttribute('data-payment-id');
           handleDelete(id);
-        });
+        };
+        btn.addEventListener('click', handler);
+        btn._listener = handler;
+      });
+    }
+    
+    // Escape HTML helper
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/[&<>]/g, function(m) {
+        if (m === '&') return '&amp;';
+        if (m === '<') return '&lt;';
+        if (m === '>') return '&gt;';
+        return m;
       });
     }
     
@@ -367,6 +392,7 @@ ob_start();
           <span class="inline-flex items-center px-2.5 py-1 rounded-full text-sm font-medium ${statusColor}">${payment.payment_status}</span>
         </div>
         <div class="grid grid-cols-2 gap-4">
+          <div><p class="text-sm text-slate-500">Business Name</p><p class="font-medium">${escapeHtml(payment.business_name || '')}</p></div>
           <div><p class="text-sm text-slate-500">Order Number</p><p class="font-medium">${payment.order_number}</p></div>
           <div><p class="text-sm text-slate-500">Amount</p><p class="font-medium text-xl">$${payment.amount.toFixed(2)}</p></div>
           <div><p class="text-sm text-slate-500">Payment Method</p><p class="font-medium capitalize">${payment.payment_method.replace('_', ' ')}</p></div>
@@ -382,19 +408,25 @@ ob_start();
       // attach modal verify if present
       const modalVerifyBtn = document.getElementById('modalVerifyBtn');
       if (modalVerifyBtn) {
-        modalVerifyBtn.addEventListener('click', () => {
+        modalVerifyBtn.removeEventListener('click', modalVerifyBtn._listener);
+        const verifyHandler = () => {
           handleVerify(payment.payment_id);
           closeModal();
-        });
+        };
+        modalVerifyBtn.addEventListener('click', verifyHandler);
+        modalVerifyBtn._listener = verifyHandler;
       }
       
       // attach modal delete button
       const modalDeleteBtn = document.getElementById('modalDeleteBtn');
       if (modalDeleteBtn) {
-        modalDeleteBtn.addEventListener('click', () => {
+        modalDeleteBtn.removeEventListener('click', modalDeleteBtn._listener);
+        const deleteHandler = () => {
           closeModal();
           handleDelete(payment.payment_id);
-        });
+        };
+        modalDeleteBtn.addEventListener('click', deleteHandler);
+        modalDeleteBtn._listener = deleteHandler;
       }
     }
     
@@ -418,6 +450,19 @@ ob_start();
     document.getElementById('cancelDeleteBtn').addEventListener('click', closeDeleteModal);
     document.getElementById('confirmDeleteBtn').addEventListener('click', confirmDelete);
     document.getElementById('deleteModalBackdrop').addEventListener('click', closeDeleteModal);
+    
+    // Escape key handler
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const deleteModal = document.getElementById('deleteModal');
+        const viewModal = document.getElementById('viewModal');
+        if (deleteModal && !deleteModal.classList.contains('hidden')) {
+          closeDeleteModal();
+        } else if (viewModal && !viewModal.classList.contains('hidden')) {
+          closeModal();
+        }
+      }
+    });
     
     // Initial render
     renderPayments();

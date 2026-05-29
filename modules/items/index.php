@@ -1,7 +1,7 @@
 <?php
 // ============================================
 // File: modules/items/index.php
-// Description: Items/Products management
+// Description: Items/Products management with Business Search
 // ============================================
 require_once '../../middleware/check_auth.php';
 $pageTitle = 'Items | Qty Management';
@@ -122,6 +122,17 @@ ob_start();
             </div>
             <div class="p-4 overflow-y-auto max-h-[calc(80vh-140px)]">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Business Name Field -->
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_business_name">Business Name <span class="text-red-500">*</span></label>
+                        <div class="relative">
+                            <input type="text" id="business_name_input" autocomplete="off" placeholder="Search business name..." class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <input type="hidden" id="business_id_hidden">
+                            <div id="businessSearchResults" class="absolute z-20 w-full mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg hidden max-h-60 overflow-y-auto"></div>
+                        </div>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1" data-i18n="business_helper">Start typing to search and select a business</p>
+                    </div>
+                    
                     <div>
                         <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_item_code">Item Code <span class="text-red-500">*</span></label>
                         <input type="text" id="itemCode" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
@@ -320,11 +331,21 @@ ob_start();
 <script>
     // ---------- MOCK DATA ----------
     let items = [
-        { item_id: "1", business_id: "biz1", item_code: "ITM001", category_id: "1", wholesale_id: "1", item_name: "Wireless Headphones", size: [{name:"MD", quantity:150}], colors: ["Black","White"], cost_price: 45, selling_price: 89.99, status: "active", stock_quantity: 150, item_image: "", created_by: "1", createdAt: new Date(), updatedAt: new Date() },
-        { item_id: "2", business_id: "biz1", item_code: "ITM002", category_id: "2", wholesale_id: "1", item_name: "Cotton T-Shirt", size: [{name:"MD", quantity:200},{name:"LG", quantity:200},{name:"XL", quantity:100}], colors: ["Blue","Red","Green"], cost_price: 12, selling_price: 29.99, status: "active", stock_quantity: 500, item_image: "", created_by: "1", createdAt: new Date(), updatedAt: new Date() },
-        { item_id: "3", business_id: "biz1", item_code: "ITM003", category_id: "1", wholesale_id: "2", item_name: "Smart Watch", size: [{name:"One Size", quantity:8}], colors: ["Silver","Gold"], cost_price: 120, selling_price: 249.99, status: "active", stock_quantity: 8, item_image: "", created_by: "1", createdAt: new Date(), updatedAt: new Date() },
-        { item_id: "4", business_id: "biz1", item_code: "ITM004", category_id: "3", wholesale_id: "1", item_name: "Garden Tools Set", size: [{name:"Standard", quantity:0}], colors: ["Green"], cost_price: 35, selling_price: 79.99, status: "inactive", stock_quantity: 0, item_image: "", created_by: "1", createdAt: new Date(), updatedAt: new Date() },
-        { item_id: "5", business_id: "biz1", item_code: "ITM005", category_id: "4", wholesale_id: "2", item_name: "Yoga Mat", size: [{name:"6mm", quantity:200}], colors: ["Purple","Blue","Pink"], cost_price: 15, selling_price: 39.99, status: "active", stock_quantity: 200, item_image: "", created_by: "1", createdAt: new Date(), updatedAt: new Date() }
+        { item_id: "1", business_id: "biz1", business_name: "ABC Electronics", item_code: "ITM001", category_id: "1", wholesale_id: "1", item_name: "Wireless Headphones", size: [{name:"MD", quantity:150}], colors: ["Black","White"], cost_price: 45, selling_price: 89.99, status: "active", stock_quantity: 150, item_image: "", created_by: "1", createdAt: new Date(), updatedAt: new Date() },
+        { item_id: "2", business_id: "biz1", business_name: "ABC Electronics", item_code: "ITM002", category_id: "2", wholesale_id: "1", item_name: "Cotton T-Shirt", size: [{name:"MD", quantity:200},{name:"LG", quantity:200},{name:"XL", quantity:100}], colors: ["Blue","Red","Green"], cost_price: 12, selling_price: 29.99, status: "active", stock_quantity: 500, item_image: "", created_by: "1", createdAt: new Date(), updatedAt: new Date() },
+        { item_id: "3", business_id: "biz1", business_name: "ABC Electronics", item_code: "ITM003", category_id: "1", wholesale_id: "2", item_name: "Smart Watch", size: [{name:"One Size", quantity:8}], colors: ["Silver","Gold"], cost_price: 120, selling_price: 249.99, status: "active", stock_quantity: 8, item_image: "", created_by: "1", createdAt: new Date(), updatedAt: new Date() },
+        { item_id: "4", business_id: "biz2", business_name: "XYZ Retail", item_code: "ITM004", category_id: "3", wholesale_id: "1", item_name: "Garden Tools Set", size: [{name:"Standard", quantity:0}], colors: ["Green"], cost_price: 35, selling_price: 79.99, status: "inactive", stock_quantity: 0, item_image: "", created_by: "1", createdAt: new Date(), updatedAt: new Date() },
+        { item_id: "5", business_id: "biz2", business_name: "XYZ Retail", item_code: "ITM005", category_id: "4", wholesale_id: "2", item_name: "Yoga Mat", size: [{name:"6mm", quantity:200}], colors: ["Purple","Blue","Pink"], cost_price: 15, selling_price: 39.99, status: "active", stock_quantity: 200, item_image: "", created_by: "1", createdAt: new Date(), updatedAt: new Date() }
+    ];
+    
+    // Mock businesses data for search
+    let businessesData = [
+        { business_id: 'biz1', business_name: 'ABC Electronics', address: '123 Main St, New York, NY 10001' },
+        { business_id: 'biz2', business_name: 'XYZ Retail', address: '456 Oak Ave, Los Angeles, CA 90001' },
+        { business_id: 'biz3', business_name: 'Global Traders', address: '789 Pine Rd, Chicago, IL 60601' },
+        { business_id: 'biz4', business_name: 'Tech Solutions Inc.', address: '321 Maple Dr, Houston, TX 77001' },
+        { business_id: 'biz5', business_name: 'Home Goods Depot', address: '654 Cedar Ln, Phoenix, AZ 85001' },
+        { business_id: 'biz6', business_name: 'Fashion Hub', address: '987 Elm St, Philadelphia, PA 19101' },
     ];
     
     // Mock stock movements
@@ -371,6 +392,9 @@ ob_start();
     const resetFiltersBtn = document.getElementById('resetFiltersBtn');
 
     // Form fields
+    const businessInput = document.getElementById('business_name_input');
+    const businessHidden = document.getElementById('business_id_hidden');
+    const searchResultsDiv = document.getElementById('businessSearchResults');
     const itemCodeField = document.getElementById('itemCode');
     const itemNameField = document.getElementById('itemName');
     const categoryIdField = document.getElementById('categoryId');
@@ -396,6 +420,68 @@ ob_start();
     const productTypeSelect = document.getElementById('productTypeSelect');
     const newProductType = document.getElementById('newProductType');
     const addTypeBtn = document.getElementById('addTypeBtn');
+
+    // Business search functionality
+    function performBusinessSearch() {
+        const searchTerm = businessInput.value.trim().toLowerCase();
+        
+        if (searchTerm === '') {
+            searchResultsDiv.classList.add('hidden');
+            return;
+        }
+        
+        const filteredBusinesses = businessesData.filter(business => 
+            business.business_name.toLowerCase().includes(searchTerm)
+        );
+        
+        if (filteredBusinesses.length === 0) {
+            searchResultsDiv.innerHTML = '<div class="p-3 text-sm text-slate-500 dark:text-slate-400 text-center">No businesses found</div>';
+            searchResultsDiv.classList.remove('hidden');
+            return;
+        }
+        
+        searchResultsDiv.innerHTML = filteredBusinesses.map(business => `
+            <div class="business-result-item px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer border-b border-slate-100 dark:border-slate-700 last:border-0 transition" data-business-id="${business.business_id}" data-business-name="${escapeHtml(business.business_name)}">
+                <div class="font-medium text-slate-800 dark:text-slate-200">${escapeHtml(business.business_name)}</div>
+                <div class="text-xs text-slate-500">ID: ${business.business_id}</div>
+                ${business.address ? `<div class="text-xs text-slate-400 mt-0.5">${escapeHtml(business.address)}</div>` : ''}
+            </div>
+        `).join('');
+        
+        searchResultsDiv.classList.remove('hidden');
+        
+        document.querySelectorAll('.business-result-item').forEach(item => {
+            item.removeEventListener('click', item._listener);
+            const handler = () => {
+                const businessId = item.getAttribute('data-business-id');
+                const businessName = item.getAttribute('data-business-name');
+                businessInput.value = businessName;
+                businessHidden.value = businessId;
+                searchResultsDiv.classList.add('hidden');
+            };
+            item.addEventListener('click', handler);
+            item._listener = handler;
+        });
+    }
+    
+    // Debounced search
+    let searchTimeout;
+    if (businessInput) {
+        businessInput.addEventListener('input', () => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(performBusinessSearch, 300);
+        });
+        
+        document.addEventListener('click', (e) => {
+            if (!businessInput.contains(e.target) && !searchResultsDiv.contains(e.target)) {
+                searchResultsDiv.classList.add('hidden');
+            }
+        });
+        
+        searchResultsDiv.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    }
 
     // Function to render active sizes list
     function renderActiveSizesList() {
@@ -700,8 +786,8 @@ ob_start();
                             <svg class="w-4 h-4 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                         </button>
                     </div>
-                </td>
-              </tr>
+                 </td>
+               </tr>
         `).join('');
         attachActionEvents();
     }
@@ -780,6 +866,7 @@ ob_start();
                 ${item.item_image ? `<img src="${item.item_image}" class="w-full h-full object-cover">` : `<svg class="w-16 h-16 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>`}
             </div>
             <div class="grid grid-cols-2 gap-4">
+                <div class="col-span-2"><p class="text-sm text-slate-500">${t('form_business_name')}</p><p class="font-medium text-slate-900 dark:text-white">${escapeHtml(item.business_name || 'Unknown')}</p></div>
                 <div class="col-span-2 sm:col-span-1"><p class="text-sm text-slate-500">${t('item_code_label')}</p><p class="font-medium font-mono text-slate-900 dark:text-white">${item.item_code}</p></div>
                 <div class="col-span-2 sm:col-span-1"><p class="text-sm text-slate-500">${t('item_name_label')}</p><p class="font-medium text-slate-900 dark:text-white">${escapeHtml(item.item_name)}</p></div>
                 <div><p class="text-sm text-slate-500">${t('cost_price_label')}</p><p class="font-medium text-slate-900 dark:text-white">$${item.cost_price.toFixed(2)}</p></div>
@@ -807,6 +894,13 @@ ob_start();
     function openEditModal(item) {
         currentEditId = item.item_id;
         modalTitle.innerText = 'Edit Item';
+        
+        // Populate business field
+        if (businessInput && item.business_id) {
+            businessInput.value = item.business_name || '';
+            businessHidden.value = item.business_id || '';
+        }
+        
         itemCodeField.value = item.item_code;
         itemNameField.value = item.item_name;
         categoryIdField.value = item.category_id || '';
@@ -826,6 +920,13 @@ ob_start();
     function openAddModal() {
         currentEditId = null;
         modalTitle.innerText = 'Add Item';
+        
+        // Clear business field
+        if (businessInput) {
+            businessInput.value = '';
+            businessHidden.value = '';
+        }
+        
         itemCodeField.value = generateItemCode();
         itemNameField.value = '';
         categoryIdField.value = '';
@@ -869,7 +970,11 @@ ob_start();
     }
 
     function saveItem() {
+        const businessId = businessHidden ? businessHidden.value : '';
+        const businessName = businessInput ? businessInput.value : '';
         const name = itemNameField.value.trim();
+        
+        if (!businessId) { alert('Please select a business.'); return; }
         if (!name) { alert("Item name is required"); return; }
         
         // Get item code: if editing, keep existing; if adding, use generated value which should already be set
@@ -882,11 +987,13 @@ ob_start();
         const totalStock = activeSizes.reduce((sum, size) => sum + (size.quantity || 0), 0);
         
         const common = {
+            business_id: businessId,
+            business_name: businessName,
             item_code: itemCode,
             item_name: name,
             category_id: categoryIdField.value || null,
             wholesale_id: wholesaleIdField.value || null,
-            size: getSizesForSave(), // Store as array of objects
+            size: getSizesForSave(),
             colors: colorsField.value ? colorsField.value.split(',').map(c=>c.trim()).filter(Boolean) : [],
             cost_price: parseFloat(costPriceField.value) || 0,
             selling_price: parseFloat(sellingPriceField.value) || 0,
@@ -902,7 +1009,6 @@ ob_start();
             const newId = Date.now().toString();
             const newItem = { 
                 item_id: newId, 
-                business_id: 'biz1', 
                 ...common, 
                 created_by: '1', 
                 createdAt: new Date(), 

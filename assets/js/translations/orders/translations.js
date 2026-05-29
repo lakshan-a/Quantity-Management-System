@@ -96,6 +96,10 @@ const translations = {
       select_customer_placeholder: "Click to select or add customer",
       label_courier: "Courier",
       select_courier: "Select courier",
+      form_business_name: "Business Name",
+      business_helper: "Start typing to search and select a business",
+      search_business_placeholder: "Search business name...",
+      no_business_found:"No businesses found",
       label_order_items: "Order Items",
       add_item_btn: "Add Item",
       select_product: "Select product",
@@ -160,7 +164,8 @@ const translations = {
       please_select_courier: "Please select a courier",
       please_add_items: "Please add at least one item with valid quantity",
       customer_name_required: "Please enter customer full name",
-      customer_phone_required: "Please enter customer phone number"
+      customer_phone_required: "Please enter customer phone number",
+      
     },
     si: {
 
@@ -256,6 +261,10 @@ const translations = {
         'select_customer_placeholder': 'තෝරාගැනීමට හෝ එකතු කිරීමට ක්ලික් කරන්න',
         'label_courier': 'කුරියර්',
         'select_courier': 'කුරියර් තෝරන්න',
+        'form_business_name': 'ව්‍යාපාරයේ නම',
+        'business_helper': 'ව්‍යාපාරයක් සෙවීමට සහ තෝරා ගැනීමට ටයිප් කිරීම ආරම්භ කරන්න',
+        'search_business_placeholder': 'ව්‍යාපාරයේ නම සොයන්න...',
+        'no_business_found':'ව්‍යාපාර කිසිවක් හමු නොවීය',
         'label_order_items': 'ඇණවුම් අයිතම',
         'add_item_btn': 'අයිතමය එකතු කරන්න',
         'select_product': 'නිෂ්පාදනය තෝරන්න',
@@ -320,7 +329,8 @@ const translations = {
         'please_select_courier': 'කරුණාකර කුරියර් තෝරන්න',
         'please_add_items': 'කරුණාකර අවම වශයෙන් එක් අයිතමයක් වලංගු ප්‍රමාණයක් සමඟ එකතු කරන්න',
         'customer_name_required': 'කරුණාකර පාරිභෝගිකයාගේ සම්පූර්ණ නම ඇතුළත් කරන්න',
-        'customer_phone_required': 'කරුණාකර පාරිභෝගිකයාගේ දුරකථන අංකය ඇතුළත් කරන්න'
+        'customer_phone_required': 'කරුණාකර පාරිභෝගිකයාගේ දුරකථන අංකය ඇතුළත් කරන්න',
+        
         
     },
     ta: {
@@ -416,6 +426,10 @@ const translations = {
         'select_customer_placeholder': 'தேர்ந்தெடுக்க அல்லது சேர்க்க கிளிக் செய்யவும்',
         'label_courier': 'கூரியர்',
         'select_courier': 'கூரியரைத் தேர்ந்தெடுக்கவும்',
+        'form_business_name': 'வணிக பெயர்',
+        'business_helper': 'ஒரு வணிகத்தைத் தேட மற்றும் தேர்ந்தெடுக்க தட்டச்சு செய்யத் தொடங்குங்கள்',
+        'search_business_placeholder': 'வணிக பெயரைத் தேடுங்கள்...',
+        'no_business_found':'வணிகங்கள் எதுவும் கிடைக்கவில்லை',
         'label_order_items': 'ஆர்டர் பொருட்கள்',
         'add_item_btn': 'பொருளைச் சேர்',
         'select_product': 'தயாரிப்பைத் தேர்ந்தெடுக்கவும்',
@@ -480,7 +494,7 @@ const translations = {
         'please_select_courier': 'தயவுசெய்து கூரியரைத் தேர்ந்தெடுக்கவும்',
         'please_add_items': 'தயவுசெய்து குறைந்தது ஒரு பொருளைச் செல்லுபடியாகும் அளவுடன் சேர்க்கவும்',
         'customer_name_required': 'தயவுசெய்து வாடிக்கையாளரின் முழுப் பெயரை உள்ளிடவும்',
-        'customer_phone_required': 'தயவுசெய்து வாடிக்கையாளரின் தொலைபேசி எண்ணை உள்ளிடவும்'
+        'customer_phone_required': 'தயவுசெய்து வாடிக்கையாளரின் தொலைபேசி எண்ணை உள்ளிடவும்',
         
     }
 };

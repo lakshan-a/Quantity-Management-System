@@ -1,7 +1,7 @@
 <?php
 // ============================================
 // File: modules/categories/index.php
-// Description: Categories management
+// Description: Categories management with Business Search
 // ============================================
 require_once '../../middleware/check_auth.php';
 $pageTitle = 'Categories | Qty Management';
@@ -42,6 +42,7 @@ ob_start();
                     <thead class="bg-slate-50 dark:bg-slate-900/40">
                         <tr class="border-b border-slate-200 dark:border-slate-700">
                             <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="table_header_id">Category ID</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="form_business_name">Business Name</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="table_header_name">Category Name</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="table_header_created">Created</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="table_header_actions">Actions</th>
@@ -70,6 +71,17 @@ ob_start();
                 </button>
             </div>
             <div class="p-4 space-y-4">
+                <!-- Business Name Field -->
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_business_name">Business Name <span class="text-red-500">*</span></label>
+                    <div class="relative">
+                        <input type="text" id="business_name_input" autocomplete="off" placeholder="Search business name..." class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="hidden" id="business_id_hidden">
+                        <div id="businessSearchResults" class="absolute z-20 w-full mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg hidden max-h-60 overflow-y-auto"></div>
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1" data-i18n="business_helper">Start typing to search and select a business</p>
+                </div>
+                
                 <div>
                     <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_category_id">Category ID</label>
                     <input type="text" id="categoryIdInput" disabled class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-60 disabled:cursor-not-allowed font-mono">
@@ -115,13 +127,23 @@ ob_start();
 
     <script>
         // ---------- DATA MODEL ----------
-        // Mock categories identical to react mock
+        // Mock categories with business association
         let categories = [
-            { category_id: 'CG-2024-001', business_id: 'biz1', category_name: 'Electronics', created_by: '1', createdAt: new Date(2024, 1, 10), updatedAt: new Date() },
-            { category_id: 'CG-2024-002', business_id: 'biz1', category_name: 'Clothing', created_by: '1', createdAt: new Date(2024, 2, 5), updatedAt: new Date() },
-            { category_id: 'CG-2024-003', business_id: 'biz1', category_name: 'Home & Garden', created_by: '1', createdAt: new Date(2024, 3, 20), updatedAt: new Date() },
-            { category_id: 'CG-2024-004', business_id: 'biz1', category_name: 'Sports', created_by: '1', createdAt: new Date(2024, 4, 15), updatedAt: new Date() },
-            { category_id: 'CG-2024-005', business_id: 'biz1', category_name: 'Books', created_by: '1', createdAt: new Date(2024, 5, 1), updatedAt: new Date() }
+            { category_id: 'CG-2024-001', business_id: 'biz1', business_name: 'ABC Electronics', category_name: 'Electronics', created_by: '1', createdAt: new Date(2024, 1, 10), updatedAt: new Date() },
+            { category_id: 'CG-2024-002', business_id: 'biz1', business_name: 'ABC Electronics', category_name: 'Clothing', created_by: '1', createdAt: new Date(2024, 2, 5), updatedAt: new Date() },
+            { category_id: 'CG-2024-003', business_id: 'biz2', business_name: 'XYZ Retail', category_name: 'Home & Garden', created_by: '1', createdAt: new Date(2024, 3, 20), updatedAt: new Date() },
+            { category_id: 'CG-2024-004', business_id: 'biz2', business_name: 'XYZ Retail', category_name: 'Sports', created_by: '1', createdAt: new Date(2024, 4, 15), updatedAt: new Date() },
+            { category_id: 'CG-2024-005', business_id: 'biz3', business_name: 'Global Traders', category_name: 'Books', created_by: '1', createdAt: new Date(2024, 5, 1), updatedAt: new Date() }
+        ];
+
+        // Mock businesses data for search
+        let businessesData = [
+            { business_id: 'biz1', business_name: 'ABC Electronics', address: '123 Main St, New York, NY 10001' },
+            { business_id: 'biz2', business_name: 'XYZ Retail', address: '456 Oak Ave, Los Angeles, CA 90001' },
+            { business_id: 'biz3', business_name: 'Global Traders', address: '789 Pine Rd, Chicago, IL 60601' },
+            { business_id: 'biz4', business_name: 'Tech Solutions Inc.', address: '321 Maple Dr, Houston, TX 77001' },
+            { business_id: 'biz5', business_name: 'Home Goods Depot', address: '654 Cedar Ln, Phoenix, AZ 85001' },
+            { business_id: 'biz6', business_name: 'Fashion Hub', address: '987 Elm St, Philadelphia, PA 19101' },
         ];
 
         // Helper: generate new category ID based on current year and max sequence
@@ -158,11 +180,78 @@ ob_start();
         const modalBackdrop = document.getElementById('modalBackdrop');
         const modalTopDismiss = document.getElementById('modalTopDismiss');
         
+        // Business search elements
+        const businessInput = document.getElementById('business_name_input');
+        const businessHidden = document.getElementById('business_id_hidden');
+        const searchResultsDiv = document.getElementById('businessSearchResults');
+        
         // Delete modal elements
         const deleteModal = document.getElementById('deleteModal');
         const deleteModalBackdrop = document.getElementById('deleteModalBackdrop');
         const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
         const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+
+        // Business search functionality
+        function performBusinessSearch() {
+            const searchTerm = businessInput.value.trim().toLowerCase();
+            
+            if (searchTerm === '') {
+                searchResultsDiv.classList.add('hidden');
+                return;
+            }
+            
+            const filteredBusinesses = businessesData.filter(business => 
+                business.business_name.toLowerCase().includes(searchTerm)
+            );
+            
+            if (filteredBusinesses.length === 0) {
+                searchResultsDiv.innerHTML = '<div class="p-3 text-sm text-slate-500 dark:text-slate-400 text-center">No businesses found</div>';
+                searchResultsDiv.classList.remove('hidden');
+                return;
+            }
+            
+            searchResultsDiv.innerHTML = filteredBusinesses.map(business => `
+                <div class="business-result-item px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer border-b border-slate-100 dark:border-slate-700 last:border-0 transition" data-business-id="${business.business_id}" data-business-name="${escapeHtml(business.business_name)}">
+                    <div class="font-medium text-slate-800 dark:text-slate-200">${escapeHtml(business.business_name)}</div>
+                    <div class="text-xs text-slate-500">ID: ${business.business_id}</div>
+                    ${business.address ? `<div class="text-xs text-slate-400 mt-0.5">${escapeHtml(business.address)}</div>` : ''}
+                </div>
+            `).join('');
+            
+            searchResultsDiv.classList.remove('hidden');
+            
+            document.querySelectorAll('.business-result-item').forEach(item => {
+                item.removeEventListener('click', item._listener);
+                const handler = () => {
+                    const businessId = item.getAttribute('data-business-id');
+                    const businessName = item.getAttribute('data-business-name');
+                    businessInput.value = businessName;
+                    businessHidden.value = businessId;
+                    searchResultsDiv.classList.add('hidden');
+                };
+                item.addEventListener('click', handler);
+                item._listener = handler;
+            });
+        }
+        
+        // Debounced search
+        let searchTimeout;
+        if (businessInput) {
+            businessInput.addEventListener('input', () => {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(performBusinessSearch, 300);
+            });
+            
+            document.addEventListener('click', (e) => {
+                if (!businessInput.contains(e.target) && !searchResultsDiv.contains(e.target)) {
+                    searchResultsDiv.classList.add('hidden');
+                }
+            });
+            
+            searchResultsDiv.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+        }
 
         // Helper: format date to locale string
         function formatDate(date) {
@@ -176,7 +265,8 @@ ob_start();
             if (!query) return categories;
             return categories.filter(c => 
                 c.category_name.toLowerCase().includes(query) || 
-                c.category_id.toLowerCase().includes(query)
+                c.category_id.toLowerCase().includes(query) ||
+                (c.business_name && c.business_name.toLowerCase().includes(query))
             );
         }
 
@@ -198,7 +288,10 @@ ob_start();
             mobileContainer.innerHTML = filtered.map(cat => `
                 <div class="p-4 space-y-3" data-id="${cat.category_id}">
                     <div class="flex items-center justify-between">
-                        <div class="font-medium text-slate-900 dark:text-white">${escapeHtml(cat.category_name)}</div>
+                        <div>
+                            <div class="font-medium text-slate-900 dark:text-white">${escapeHtml(cat.category_name)}</div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">${escapeHtml(cat.business_name || '')}</div>
+                        </div>
                         <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300 font-mono">${cat.category_id}</span>
                     </div>
                     <div class="text-sm text-slate-500">${formatDate(cat.createdAt)}</div>
@@ -215,23 +308,30 @@ ob_start();
 
             // attach mobile event listeners
             document.querySelectorAll('.edit-mobile-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
+                btn.removeEventListener('click', btn._listener);
+                const handler = () => {
                     const id = btn.getAttribute('data-id');
                     const category = categories.find(c => c.category_id === id);
                     if (category) openEditModal(category);
-                });
+                };
+                btn.addEventListener('click', handler);
+                btn._listener = handler;
             });
             document.querySelectorAll('.delete-mobile-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
+                btn.removeEventListener('click', btn._listener);
+                const handler = () => {
                     const id = btn.getAttribute('data-id');
                     showDeleteModal(id);
-                });
+                };
+                btn.addEventListener('click', handler);
+                btn._listener = handler;
             });
 
             // ---------- RENDER DESKTOP TABLE ----------
             tableBody.innerHTML = filtered.map(cat => `
                 <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition">
                     <td class="px-4 py-3 text-sm text-slate-500 font-mono">${cat.category_id}</td>
+                    <td class="px-4 py-3 text-sm text-slate-600 dark:text-slate-300">${escapeHtml(cat.business_name || '')}</td>
                     <td class="px-4 py-3 text-sm text-slate-900 dark:text-white font-medium">${escapeHtml(cat.category_name)}</td>
                     <td class="px-4 py-3 text-sm text-slate-600 dark:text-slate-300">${formatDate(cat.createdAt)}</td>
                     <td class="px-4 py-3">
@@ -244,22 +344,28 @@ ob_start();
                             </button>
                         </div>
                     </td>
-                </tr>
+                 </tr>
             `).join('');
 
             // attach desktop edit/delete events
             document.querySelectorAll('.edit-table-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
+                btn.removeEventListener('click', btn._listener);
+                const handler = () => {
                     const id = btn.getAttribute('data-id');
                     const cat = categories.find(c => c.category_id === id);
                     if (cat) openEditModal(cat);
-                });
+                };
+                btn.addEventListener('click', handler);
+                btn._listener = handler;
             });
             document.querySelectorAll('.delete-table-btn').forEach(btn => {
-                btn.addEventListener('click', () => {
+                btn.removeEventListener('click', btn._listener);
+                const handler = () => {
                     const id = btn.getAttribute('data-id');
                     showDeleteModal(id);
-                });
+                };
+                btn.addEventListener('click', handler);
+                btn._listener = handler;
             });
         }
 
@@ -311,6 +417,10 @@ ob_start();
             const newId = generateCategoryId();
             categoryIdInput.value = newId;
             categoryNameInput.value = '';
+            if (businessInput) {
+                businessInput.value = '';
+                businessHidden.value = '';
+            }
             modalTitle.innerText = 'Add Category';
             modal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
@@ -321,6 +431,13 @@ ob_start();
             editingCategory = category;
             categoryIdInput.value = category.category_id;
             categoryNameInput.value = category.category_name;
+            
+            // Populate business field
+            if (businessInput && category.business_id) {
+                businessInput.value = category.business_name || '';
+                businessHidden.value = category.business_id || '';
+            }
+            
             modalTitle.innerText = 'Edit Category';
             modal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
@@ -334,7 +451,14 @@ ob_start();
 
         // Save category logic
         function saveCategory() {
+            const businessId = businessHidden ? businessHidden.value : '';
+            const businessName = businessInput ? businessInput.value : '';
             const name = categoryNameInput.value.trim();
+            
+            if (!businessId) {
+                alert('Please select a business.');
+                return;
+            }
             if (!name) {
                 alert('Category name is required');
                 return;
@@ -344,7 +468,7 @@ ob_start();
                 // update existing
                 categories = categories.map(c => 
                     c.category_id === editingCategory.category_id 
-                    ? { ...c, category_name: name, updatedAt: new Date() }
+                    ? { ...c, business_id: businessId, business_name: businessName, category_name: name, updatedAt: new Date() }
                     : c
                 );
             } else {
@@ -352,7 +476,8 @@ ob_start();
                 const newId = generateCategoryId(); // regenerate to be safe
                 const newCategory = {
                     category_id: newId,
-                    business_id: 'biz1',
+                    business_id: businessId,
+                    business_name: businessName,
                     category_name: name,
                     created_by: '1',
                     createdAt: new Date(),

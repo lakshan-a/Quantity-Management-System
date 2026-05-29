@@ -1,7 +1,7 @@
 <?php
 // ============================================
 // File: modules/wholesalers/index.php
-// Description: Wholesalers management
+// Description: Wholesalers management with Business Search
 // ============================================
 require_once '../../middleware/check_auth.php';
 $pageTitle = 'Wholesalers | Qty Management';
@@ -49,6 +49,7 @@ ob_start();
                     <thead>
                         <tr class="border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60">
                             <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="table_header_id">Wholesale ID</th>
+                            <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="form_business_name">Business Name</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="table_header_name">Name</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="table_header_email">Email</th>
                             <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider" data-i18n="table_header_phone">Phone</th>
@@ -82,6 +83,17 @@ ob_start();
             </div>
             <!-- Modal Body (scrollable) -->
             <div class="p-4 overflow-y-auto flex-1 custom-scroll space-y-4">
+                <!-- Business Name Field -->
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_business_name">Business Name <span class="text-red-500">*</span></label>
+                    <div class="relative">
+                        <input type="text" id="business_name_input" autocomplete="off" placeholder="Search business name..." class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="hidden" id="business_id_hidden">
+                        <div id="businessSearchResults" class="absolute z-20 w-full mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg hidden max-h-60 overflow-y-auto"></div>
+                    </div>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1" data-i18n="business_helper">Start typing to search and select a business</p>
+                </div>
+                
                 <div>
                     <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_wholesale_id">Wholesale ID</label>
                     <input type="text" id="wholesaleIdInput" disabled class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-60 disabled:cursor-not-allowed font-mono">
@@ -173,9 +185,19 @@ ob_start();
   <script>
     // ---------- DATA MODEL ----------
     let wholesales = [
-      { wholesale_id: 'WS-2024-001', business_id: 'biz1', wholesale_name: 'ABC Wholesale', phone: '+1234567890', email: 'abc@wholesale.com', address: '100 Industrial Blvd', category_id: '1', created_by: '1', createdAt: new Date(), updatedAt: new Date() },
-      { wholesale_id: 'WS-2024-002', business_id: 'biz1', wholesale_name: 'XYZ Distributors', phone: '+1234567891', email: 'xyz@dist.com', address: '200 Commerce St', category_id: '2', created_by: '1', createdAt: new Date(), updatedAt: new Date() },
-      { wholesale_id: 'WS-2024-003', business_id: 'biz1', wholesale_name: 'Global Supplies', phone: '+1234567892', email: 'global@supplies.com', address: '300 Trade Ave', category_id: '1', created_by: '1', createdAt: new Date(), updatedAt: new Date() }
+      { wholesale_id: 'WS-2024-001', business_id: 'biz1', business_name: 'ABC Electronics', wholesale_name: 'ABC Wholesale', phone: '+1234567890', email: 'abc@wholesale.com', address: '100 Industrial Blvd', category_id: '1', created_by: '1', createdAt: new Date(), updatedAt: new Date() },
+      { wholesale_id: 'WS-2024-002', business_id: 'biz1', business_name: 'ABC Electronics', wholesale_name: 'XYZ Distributors', phone: '+1234567891', email: 'xyz@dist.com', address: '200 Commerce St', category_id: '2', created_by: '1', createdAt: new Date(), updatedAt: new Date() },
+      { wholesale_id: 'WS-2024-003', business_id: 'biz2', business_name: 'XYZ Retail', wholesale_name: 'Global Supplies', phone: '+1234567892', email: 'global@supplies.com', address: '300 Trade Ave', category_id: '1', created_by: '1', createdAt: new Date(), updatedAt: new Date() }
+    ];
+
+    // Mock businesses data for search
+    let businessesData = [
+        { business_id: 'biz1', business_name: 'ABC Electronics', address: '123 Main St, New York, NY 10001' },
+        { business_id: 'biz2', business_name: 'XYZ Retail', address: '456 Oak Ave, Los Angeles, CA 90001' },
+        { business_id: 'biz3', business_name: 'Global Traders', address: '789 Pine Rd, Chicago, IL 60601' },
+        { business_id: 'biz4', business_name: 'Tech Solutions Inc.', address: '321 Maple Dr, Houston, TX 77001' },
+        { business_id: 'biz5', business_name: 'Home Goods Depot', address: '654 Cedar Ln, Phoenix, AZ 85001' },
+        { business_id: 'biz6', business_name: 'Fashion Hub', address: '987 Elm St, Philadelphia, PA 19101' },
     ];
 
     const categoryMap = { '1': 'Electronics', '2': 'Clothing', '3': 'Home & Garden', '4': 'Sports' };
@@ -199,6 +221,11 @@ ob_start();
     const tableBody = document.getElementById('tableBody');
     const mobileContainer = document.getElementById('mobileCardContainer');
     const emptyDesktopDiv = document.getElementById('emptyStateDesktop');
+    
+    // Business search elements
+    const businessInput = document.getElementById('business_name_input');
+    const businessHidden = document.getElementById('business_id_hidden');
+    const searchResultsDiv = document.getElementById('businessSearchResults');
     
     // Modal elements
     const formModal = document.getElementById('formModal');
@@ -231,13 +258,76 @@ ob_start();
     let currentEditId = null; // if null -> add mode
     let pendingDeleteId = null; // tracks wholesale to delete
 
+    // Business search functionality
+    function performBusinessSearch() {
+        const searchTerm = businessInput.value.trim().toLowerCase();
+        
+        if (searchTerm === '') {
+            searchResultsDiv.classList.add('hidden');
+            return;
+        }
+        
+        const filteredBusinesses = businessesData.filter(business => 
+            business.business_name.toLowerCase().includes(searchTerm)
+        );
+        
+        if (filteredBusinesses.length === 0) {
+            searchResultsDiv.innerHTML = '<div class="p-3 text-sm text-slate-500 dark:text-slate-400 text-center">No businesses found</div>';
+            searchResultsDiv.classList.remove('hidden');
+            return;
+        }
+        
+        searchResultsDiv.innerHTML = filteredBusinesses.map(business => `
+            <div class="business-result-item px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer border-b border-slate-100 dark:border-slate-700 last:border-0 transition" data-business-id="${business.business_id}" data-business-name="${escapeHtml(business.business_name)}">
+                <div class="font-medium text-slate-800 dark:text-slate-200">${escapeHtml(business.business_name)}</div>
+                <div class="text-xs text-slate-500">ID: ${business.business_id}</div>
+                ${business.address ? `<div class="text-xs text-slate-400 mt-0.5">${escapeHtml(business.address)}</div>` : ''}
+            </div>
+        `).join('');
+        
+        searchResultsDiv.classList.remove('hidden');
+        
+        document.querySelectorAll('.business-result-item').forEach(item => {
+            item.removeEventListener('click', item._listener);
+            const handler = () => {
+                const businessId = item.getAttribute('data-business-id');
+                const businessName = item.getAttribute('data-business-name');
+                businessInput.value = businessName;
+                businessHidden.value = businessId;
+                searchResultsDiv.classList.add('hidden');
+            };
+            item.addEventListener('click', handler);
+            item._listener = handler;
+        });
+    }
+    
+    // Debounced search
+    let searchTimeout;
+    if (businessInput) {
+        businessInput.addEventListener('input', () => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(performBusinessSearch, 300);
+        });
+        
+        document.addEventListener('click', (e) => {
+            if (!businessInput.contains(e.target) && !searchResultsDiv.contains(e.target)) {
+                searchResultsDiv.classList.add('hidden');
+            }
+        });
+        
+        searchResultsDiv.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    }
+
     // Helper: render both views
     function renderWholesales() {
       const query = searchInput.value.trim().toLowerCase();
       let filtered = wholesales.filter(w => 
         w.wholesale_name.toLowerCase().includes(query) ||
         w.email.toLowerCase().includes(query) ||
-        w.wholesale_id.toLowerCase().includes(query)
+        w.wholesale_id.toLowerCase().includes(query) ||
+        (w.business_name && w.business_name.toLowerCase().includes(query))
       );
       
       // Desktop table rendering
@@ -253,6 +343,7 @@ ob_start();
       tableBody.innerHTML = filtered.map(w => `
         <tr class="hover:bg-slate-50 dark:hover:bg-slate-700/50 transition">
           <td class="px-4 py-3 text-sm text-slate-500 font-mono">${escapeHtml(w.wholesale_id)}</td>
+          <td class="px-4 py-3 text-sm text-slate-600 dark:text-slate-300">${escapeHtml(w.business_name || '')}</td>
           <td class="px-4 py-3 text-sm text-slate-900 dark:text-white font-medium">${escapeHtml(w.wholesale_name)}</td>
           <td class="px-4 py-3 text-sm text-slate-600 dark:text-slate-300">${escapeHtml(w.email)}</td>
           <td class="px-4 py-3 text-sm text-slate-600 dark:text-slate-300">${escapeHtml(w.phone)}</td>
@@ -269,34 +360,37 @@ ob_start();
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
               </button>
             </div>
-          </td>
-         </tr>
+           </td>
+          </tr>
       `).join('');
       
       // Mobile Cards
       mobileContainer.innerHTML = filtered.map(w => `
         <div class="p-4 space-y-3 border-b border-slate-200 dark:border-slate-700">
-                <div class="flex items-center justify-between">
+            <div class="flex items-center justify-between">
+                <div>
                     <div class="font-medium text-slate-900 dark:text-white">${escapeHtml(w.wholesale_name)}</div>
-                    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300 font-mono">${escapeHtml(w.wholesale_id)}</span>
+                    <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">${escapeHtml(w.business_name || '')}</div>
                 </div>
-                <div class="grid grid-cols-2 gap-2 text-sm">
-                    <div><span class="text-slate-500 text-xs block">${t('email_label')}</span><span class="text-slate-700 dark:text-slate-300">${escapeHtml(w.email)}</span></div>
-                    <div><span class="text-slate-500 text-xs block">${t('phone_label')}</span><span class="text-slate-700 dark:text-slate-300">${escapeHtml(w.phone)}</span></div>
-                    <div class="col-span-2"><span class="text-slate-500 text-xs block">${t('address_label')}</span><span class="text-slate-700 dark:text-slate-300">${escapeHtml(w.address)}</span></div>
-                </div>
-                <div class="flex items-center gap-2 pt-2 border-t border-slate-100 dark:border-slate-700">
-                    <button data-view-mob='${w.wholesale_id}' class="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg" title="${t('view')}">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
-                    </button>
-                    <button data-edit-mob='${w.wholesale_id}' class="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg" title="${t('edit')}">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
-                    </button>
-                    <button data-delete-mob='${w.wholesale_id}' class="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg" title="${t('delete')}">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                    </button>
-                </div>
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300 font-mono">${escapeHtml(w.wholesale_id)}</span>
             </div>
+            <div class="grid grid-cols-2 gap-2 text-sm">
+                <div><span class="text-slate-500 text-xs block">${t('email_label')}</span><span class="text-slate-700 dark:text-slate-300">${escapeHtml(w.email)}</span></div>
+                <div><span class="text-slate-500 text-xs block">${t('phone_label')}</span><span class="text-slate-700 dark:text-slate-300">${escapeHtml(w.phone)}</span></div>
+                <div class="col-span-2"><span class="text-slate-500 text-xs block">${t('address_label')}</span><span class="text-slate-700 dark:text-slate-300">${escapeHtml(w.address)}</span></div>
+            </div>
+            <div class="flex items-center gap-2 pt-2 border-t border-slate-100 dark:border-slate-700">
+                <button data-view-mob='${w.wholesale_id}' class="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg" title="${t('view')}">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
+                </button>
+                <button data-edit-mob='${w.wholesale_id}' class="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg" title="${t('edit')}">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                </button>
+                <button data-delete-mob='${w.wholesale_id}' class="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg" title="${t('delete')}">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                </button>
+            </div>
+        </div>
       `).join('');
       
       // attach event listeners dynamically
@@ -370,6 +464,7 @@ ob_start();
       viewContent.innerHTML = `
          <div class="grid grid-cols-2 gap-4">
                 <div><p class="text-sm text-slate-500">${t('wholesale_id_label')}</p><p class="font-medium text-slate-900 dark:text-white font-mono">${escapeHtml(wholesale.wholesale_id)}</p></div>
+                <div><p class="text-sm text-slate-500">${t('form_business_name')}</p><p class="font-medium text-slate-900 dark:text-white">${escapeHtml(wholesale.business_name || '')}</p></div>
                 <div><p class="text-sm text-slate-500">${t('name_label')}</p><p class="font-medium text-slate-900 dark:text-white">${escapeHtml(wholesale.wholesale_name)}</p></div>
                 <div><p class="text-sm text-slate-500">${t('phone_label')}</p><p class="font-medium text-slate-900 dark:text-white">${escapeHtml(wholesale.phone)}</p></div>
                 <div><p class="text-sm text-slate-500">${t('email_label')}</p><p class="font-medium text-slate-900 dark:text-white">${escapeHtml(wholesale.email)}</p></div>
@@ -387,6 +482,13 @@ ob_start();
         currentEditId = id;
         modalTitle.innerText = 'Edit Wholesale';
         wholesaleIdInput.value = wholesale.wholesale_id;
+        
+        // Populate business field
+        if (businessInput && wholesale.business_id) {
+          businessInput.value = wholesale.business_name || '';
+          businessHidden.value = wholesale.business_id || '';
+        }
+        
         wholesaleName.value = wholesale.wholesale_name;
         wholesalePhone.value = wholesale.phone;
         wholesaleEmail.value = wholesale.email;
@@ -411,6 +513,13 @@ ob_start();
       modalTitle.innerText = 'Add Wholesale';
       const newId = generateWholesaleId();
       wholesaleIdInput.value = newId;
+      
+      // Clear business field
+      if (businessInput) {
+        businessInput.value = '';
+        businessHidden.value = '';
+      }
+      
       wholesaleName.value = '';
       wholesalePhone.value = '';
       wholesaleEmail.value = '';
@@ -419,22 +528,29 @@ ob_start();
     }
     
     function handleSave() {
+      const businessId = businessHidden ? businessHidden.value : '';
+      const businessName = businessInput ? businessInput.value : '';
       const name = wholesaleName.value.trim();
+      
+      if (!businessId) { alert('Please select a business.'); return; }
       if (!name) { alert('Wholesale Name is required'); return; }
+      
       const formData = {
+        business_id: businessId,
+        business_name: businessName,
         wholesale_name: name,
         phone: wholesalePhone.value,
         email: wholesaleEmail.value,
         address: wholesaleAddress.value,
         category_id: wholesaleCategory.value,
       };
+      
       if (currentEditId) {
         wholesales = wholesales.map(w => w.wholesale_id === currentEditId ? { ...w, ...formData, updatedAt: new Date() } : w);
       } else {
         const newId = generateWholesaleId();
         const newWholesale = {
           wholesale_id: newId,
-          business_id: 'biz1',
           ...formData,
           created_by: '1',
           createdAt: new Date(),

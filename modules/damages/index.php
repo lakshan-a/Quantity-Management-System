@@ -55,12 +55,11 @@ ob_start();
                 <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                 </svg>
-                <input type="text" id="searchInput" data-i18n-placeholder="search_placeholder" placeholder="Search by item, reason, or reporter..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input type="text" id="searchInput" data-i18n-placeholder="search_placeholder" placeholder="Search by business, item, reason, or reporter..." class="w-full pl-10 pr-4 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
             <div class="flex gap-3">
                 <!-- Filter Dropdown -->
                 <div class="flex flex-col lg:flex-row gap-3">
-            <!-- Filter selects: original classes kept, but add better shrink/wrapping and ensure consistent width on all screens -->
             <div class="flex flex-col sm:flex-row gap-2 flex-1">
                 <select id="filterItemSelect" class="w-full sm:flex-1 px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
                     <option value="" data-i18n="all_items">All Items</option>
@@ -101,6 +100,7 @@ ob_start();
         <table class="w-full">
           <thead>
             <tr class="border-b border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-900/50">
+              <!-- <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase" data-i18n="business">Business</th> -->
               <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase" data-i18n="item">Item</th>
               <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase" data-i18n="item_code">Item Code</th>
               <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase" data-i18n="quantity">Quantity</th>
@@ -132,6 +132,18 @@ ob_start();
         </div>
         <div class="p-4 space-y-4">
           <input type="hidden" id="editDamageId" value="">
+          
+          <!-- Business Name Field -->
+          <div>
+            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_business_name">Business Name <span class="text-red-500">*</span></label>
+            <div class="relative">
+              <input type="text" id="business_name_input" autocomplete="off" placeholder="Search business name..." class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+              <input type="hidden" id="business_id_hidden">
+              <div id="businessSearchResults" class="absolute z-20 w-full mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg hidden max-h-60 overflow-y-auto"></div>
+            </div>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-1" data-i18n="business_helper">Start typing to search and select a business</p>
+          </div>
+          
           <div>
             <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="item">Item *</label>
             <select id="modalItemSelect" class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
@@ -214,6 +226,10 @@ ob_start();
             </div>
           </div>
           <div class="grid grid-cols-2 gap-4">
+            <div class="col-span-2">
+              <label class="text-xs text-slate-500 block mb-1" data-i18n="business">Business Name</label>
+              <p class="text-slate-900 dark:text-white font-medium" id="viewBusinessName">-</p>
+            </div>
             <div>
               <label class="text-xs text-slate-500 block mb-1" data-i18n="item_code">Item Code</label>
               <p class="text-slate-900 dark:text-white font-mono" id="viewItemCode">-</p>
@@ -249,6 +265,7 @@ ob_start();
       {
         damage_id: '1',
         business_id: 'biz1',
+        business_name: 'ABC Electronics',
         item_id: '1',
         item_name: 'Wireless Headphones',
         quantity: 3,
@@ -261,6 +278,7 @@ ob_start();
       {
         damage_id: '2',
         business_id: 'biz1',
+        business_name: 'ABC Electronics',
         item_id: '2',
         item_name: 'Cotton T-Shirt',
         quantity: 5,
@@ -273,6 +291,7 @@ ob_start();
       {
         damage_id: '3',
         business_id: 'biz1',
+        business_name: 'ABC Electronics',
         item_id: '3',
         item_name: 'Smart Watch',
         quantity: 1,
@@ -284,7 +303,8 @@ ob_start();
       },
       {
         damage_id: '4',
-        business_id: 'biz1',
+        business_id: 'biz2',
+        business_name: 'XYZ Retail',
         item_id: '1',
         item_name: 'Wireless Headphones',
         quantity: 2,
@@ -294,6 +314,16 @@ ob_start();
         createdAt: new Date(2025, 2, 1),
         updatedAt: new Date(),
       }
+    ];
+
+    // Mock businesses data for search
+    let businessesData = [
+        { business_id: 'biz1', business_name: 'ABC Electronics', address: '123 Main St, New York, NY 10001' },
+        { business_id: 'biz2', business_name: 'XYZ Retail', address: '456 Oak Ave, Los Angeles, CA 90001' },
+        { business_id: 'biz3', business_name: 'Global Traders', address: '789 Pine Rd, Chicago, IL 60601' },
+        { business_id: 'biz4', business_name: 'Tech Solutions Inc.', address: '321 Maple Dr, Houston, TX 77001' },
+        { business_id: 'biz5', business_name: 'Home Goods Depot', address: '654 Cedar Ln, Phoenix, AZ 85001' },
+        { business_id: 'biz6', business_name: 'Fashion Hub', address: '987 Elm St, Philadelphia, PA 19101' },
     ];
 
     const itemOptions = [
@@ -337,7 +367,8 @@ ob_start();
         filtered = filtered.filter(d => 
           (d.item_name && d.item_name.toLowerCase().includes(lowerQuery)) ||
           (d.reason && d.reason.toLowerCase().includes(lowerQuery)) ||
-          (d.reported_by && d.reported_by.toLowerCase().includes(lowerQuery))
+          (d.reported_by && d.reported_by.toLowerCase().includes(lowerQuery)) ||
+          (d.business_name && d.business_name.toLowerCase().includes(lowerQuery))
         );
       }
       
@@ -395,6 +426,72 @@ ob_start();
       document.getElementById('avgQuantity').innerText = avgQuantity;
     }
 
+    // Business search functionality
+    const businessInput = document.getElementById('business_name_input');
+    const businessHidden = document.getElementById('business_id_hidden');
+    const searchResultsDiv = document.getElementById('businessSearchResults');
+    
+    function performBusinessSearch() {
+        const searchTerm = businessInput.value.trim().toLowerCase();
+        
+        if (searchTerm === '') {
+            searchResultsDiv.classList.add('hidden');
+            return;
+        }
+        
+        const filteredBusinesses = businessesData.filter(business => 
+            business.business_name.toLowerCase().includes(searchTerm)
+        );
+        
+        if (filteredBusinesses.length === 0) {
+            searchResultsDiv.innerHTML = '<div class="p-3 text-sm text-slate-500 dark:text-slate-400 text-center">No businesses found</div>';
+            searchResultsDiv.classList.remove('hidden');
+            return;
+        }
+        
+        searchResultsDiv.innerHTML = filteredBusinesses.map(business => `
+            <div class="business-result-item px-4 py-3 hover:bg-slate-100 dark:hover:bg-slate-700 cursor-pointer border-b border-slate-100 dark:border-slate-700 last:border-0 transition" data-business-id="${business.business_id}" data-business-name="${escapeHtml(business.business_name)}">
+                <div class="font-medium text-slate-800 dark:text-slate-200">${escapeHtml(business.business_name)}</div>
+                <div class="text-xs text-slate-500">ID: ${business.business_id}</div>
+                ${business.address ? `<div class="text-xs text-slate-400 mt-0.5">${escapeHtml(business.address)}</div>` : ''}
+            </div>
+        `).join('');
+        
+        searchResultsDiv.classList.remove('hidden');
+        
+        document.querySelectorAll('.business-result-item').forEach(item => {
+            item.removeEventListener('click', item._listener);
+            const handler = () => {
+                const businessId = item.getAttribute('data-business-id');
+                const businessName = item.getAttribute('data-business-name');
+                businessInput.value = businessName;
+                businessHidden.value = businessId;
+                searchResultsDiv.classList.add('hidden');
+            };
+            item.addEventListener('click', handler);
+            item._listener = handler;
+        });
+    }
+    
+    // Debounced search
+    let searchTimeout;
+    if (businessInput) {
+        businessInput.addEventListener('input', () => {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(performBusinessSearch, 300);
+        });
+        
+        document.addEventListener('click', (e) => {
+            if (!businessInput.contains(e.target) && !searchResultsDiv.contains(e.target)) {
+                searchResultsDiv.classList.add('hidden');
+            }
+        });
+        
+        searchResultsDiv.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+    }
+
     // Update UI: both table, mobile cards, total count, empty message
     function renderUI() {
       const filtered = getFilteredDamages();
@@ -409,7 +506,7 @@ ob_start();
         mobileContainer.innerHTML = '';
         emptyMsgDiv.classList.remove('hidden');
         const emptyRow = document.createElement('tr');
-        emptyRow.innerHTML = `<td colspan="7" class="px-4 py-8 text-center text-slate-500">${window.translate ? window.translate('no_records_found') : 'No damaged records found.'}</td>`;
+        emptyRow.innerHTML = `<td colspan="8" class="px-4 py-8 text-center text-slate-500">${window.translate ? window.translate('no_records_found') : 'No damaged records found.'}</td>`;
         tableBody.appendChild(emptyRow);
         mobileContainer.innerHTML = `<div class="p-8 text-center text-slate-500">${window.translate ? window.translate('no_records_found') : 'No damaged records found.'}</div>`;
         return;
@@ -422,6 +519,7 @@ ob_start();
         const row = document.createElement('tr');
         row.className = 'hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors';
         row.innerHTML = `
+        
           <td class="px-4 py-3">
             <div class="flex items-center gap-3">
               <div class="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
@@ -454,6 +552,7 @@ ob_start();
 
       // Attach event listeners to buttons
       document.querySelectorAll('.view-btn').forEach(btn => {
+        btn.removeEventListener('click', btn._listener);
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
           const id = btn.getAttribute('data-id');
@@ -461,6 +560,7 @@ ob_start();
         });
       });
       document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.removeEventListener('click', btn._listener);
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
           const id = btn.getAttribute('data-id');
@@ -468,6 +568,7 @@ ob_start();
         });
       });
       document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.removeEventListener('click', btn._listener);
         btn.addEventListener('click', (e) => {
           e.stopPropagation();
           const id = btn.getAttribute('data-id');
@@ -484,10 +585,13 @@ ob_start();
         card.innerHTML = `
           <div class="flex items-center justify-between">
             <div class="flex items-center gap-3">
-              <div class="w-10 h-10 rounded-lg bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-red-600 dark:text-red-400"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+              <div class="w-10 h-10 rounded-lg bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="text-blue-600 dark:text-blue-400"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
               </div>
-              <span class="font-medium text-slate-900 dark:text-white">${escapeHtml(d.item_name)}</span>
+              <div>
+                <div class="font-medium text-slate-900 dark:text-white">${escapeHtml(d.business_name || 'Unknown')}</div>
+                <div class="text-xs text-slate-500 dark:text-slate-400">${escapeHtml(d.item_name)}</div>
+              </div>
             </div>
             <div class="flex gap-1">
               <button class="mobile-view-btn p-2 text-blue-600 dark:text-blue-400" data-id="${d.damage_id}">
@@ -514,12 +618,15 @@ ob_start();
 
       // Attach mobile button events
       document.querySelectorAll('.mobile-view-btn').forEach(btn => {
+        btn.removeEventListener('click', btn._listener);
         btn.addEventListener('click', () => viewDamage(btn.getAttribute('data-id')));
       });
       document.querySelectorAll('.mobile-edit-btn').forEach(btn => {
+        btn.removeEventListener('click', btn._listener);
         btn.addEventListener('click', () => editDamage(btn.getAttribute('data-id')));
       });
       document.querySelectorAll('.mobile-delete-btn').forEach(btn => {
+        btn.removeEventListener('click', btn._listener);
         btn.addEventListener('click', () => openDeleteModal(btn.getAttribute('data-id'), btn.getAttribute('data-name')));
       });
     }
@@ -540,6 +647,7 @@ ob_start();
       const damage = damages.find(d => d.damage_id === id);
       if (!damage) return;
       
+      document.getElementById('viewBusinessName').innerText = damage.business_name || 'Unknown';
       document.getElementById('viewItemName').innerText = damage.item_name || 'Unknown';
       document.getElementById('viewItemCode').innerText = getItemCode(damage.item_id);
       document.getElementById('viewQuantity').innerText = damage.quantity;
@@ -559,6 +667,12 @@ ob_start();
       document.getElementById('modalTitle').innerText = window.translate ? window.translate('edit_damage_title') : 'Edit Damage Report';
       document.getElementById('modalSaveBtn').innerHTML = window.translate ? window.translate('update') : 'Update Damage';
       document.getElementById('editDamageId').value = damage.damage_id;
+      
+      // Populate business field
+      if (businessInput && damage.business_id) {
+        businessInput.value = damage.business_name || '';
+        businessHidden.value = damage.business_id || '';
+      }
       
       // Populate form
       document.getElementById('modalItemSelect').value = damage.item_id;
@@ -612,6 +726,10 @@ ob_start();
       document.getElementById('modalTitle').innerText = window.translate ? window.translate('report_damage_title') : 'Report Damage';
       document.getElementById('modalSaveBtn').innerHTML = window.translate ? window.translate('save') : 'Report Damage';
       document.getElementById('editDamageId').value = '';
+      if (businessInput) {
+        businessInput.value = '';
+        businessHidden.value = '';
+      }
       modalItemSelect.value = '';
       modalQuantity.value = '';
       modalReason.value = '';
@@ -644,12 +762,18 @@ ob_start();
     });
 
     function saveDamage() {
+      const businessId = businessHidden ? businessHidden.value : '';
+      const businessName = businessInput ? businessInput.value : '';
       const itemId = modalItemSelect.value;
       const quantityRaw = modalQuantity.value;
       const reason = modalReason.value.trim();
       const reportedBy = modalReportedBy.value.trim();
       const editId = document.getElementById('editDamageId').value;
 
+      if (!businessId) {
+        alert(window.translate ? window.translate('business_required') : 'Please select a business');
+        return;
+      }
       if (!itemId) {
         alert(window.translate ? window.translate('item_required') : 'Please select an item');
         return;
@@ -676,6 +800,8 @@ ob_start();
         if (index !== -1) {
           damages[index] = {
             ...damages[index],
+            business_id: businessId,
+            business_name: businessName,
             item_id: itemId,
             item_name: selectedItem ? selectedItem.label : 'Unknown Item',
             quantity: quantity,
@@ -688,7 +814,8 @@ ob_start();
         // Create new damage record
         const newDamage = {
           damage_id: Date.now().toString(),
-          business_id: 'biz1',
+          business_id: businessId,
+          business_name: businessName,
           item_id: itemId,
           item_name: selectedItem ? selectedItem.label : 'Unknown Item',
           quantity: quantity,
