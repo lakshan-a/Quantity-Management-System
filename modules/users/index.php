@@ -80,7 +80,7 @@ ob_start();
                 <div>
                     <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5" data-i18n="form_business_name">Business Name <span class="text-red-500">*</span></label>
                     <div class="relative">
-                        <input type="text" id="business_name_input" autocomplete="off" placeholder="Search business name..." class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input type="text" id="business_name_input" autocomplete="off" data-i18n-placeholder="search_business_placeholder" placeholder="Search business name..." class="w-full px-3 py-2 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <input type="hidden" id="business_id_hidden">
                         <div id="businessSearchResults" class="absolute z-20 w-full mt-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg hidden max-h-60 overflow-y-auto"></div>
                     </div>
@@ -296,6 +296,36 @@ ob_start();
     const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
     const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
 
+    // Translation helper for dynamic content
+    function getTranslation(key) {
+        if (typeof window.t === 'function') {
+            return window.t(key);
+        }
+        // Fallback translations for business fields if global t() is not available
+        const fallbackTranslations = {
+            'form_business_name': 'Business Name',
+            'business_helper': 'Start typing to search and select a business',
+            'search_business_placeholder': 'Search business name...',
+            'no_business_found': 'No businesses found',
+            'admin': 'Admin',
+            'staff': 'Staff',
+            'active': 'Active',
+            'inactive': 'Inactive',
+            'view_details': 'View Details',
+            'edit_user': 'Edit User',
+            'delete_user': 'Delete User',
+            'user_id_label': 'User ID',
+            'full_name_label': 'Full Name',
+            'email_label': 'Email',
+            'phone_label': 'Phone',
+            'role_label': 'Role',
+            'status_label': 'Status',
+            'created_at_label': 'Created At',
+            'business_name_label': 'Business Name'
+        };
+        return fallbackTranslations[key] || key;
+    }
+
     // Business search functionality
     function performBusinessSearch() {
         const searchTerm = businessInput.value.trim().toLowerCase();
@@ -310,7 +340,7 @@ ob_start();
         );
         
         if (filteredBusinesses.length === 0) {
-            searchResultsDiv.innerHTML = '<div class="p-3 text-sm text-slate-500 dark:text-slate-400 text-center">No businesses found</div>';
+            searchResultsDiv.innerHTML = `<div class="p-3 text-sm text-slate-500 dark:text-slate-400 text-center">${getTranslation('no_business_found')}</div>`;
             searchResultsDiv.classList.remove('hidden');
             return;
         }
@@ -356,6 +386,23 @@ ob_start();
         searchResultsDiv.addEventListener('click', (e) => {
             e.stopPropagation();
         });
+        
+        // Update placeholder when language changes
+        if (typeof window !== 'undefined') {
+            window.addEventListener('languageChanged', () => {
+                if (businessInput) {
+                    businessInput.placeholder = getTranslation('search_business_placeholder');
+                }
+                const helperText = document.querySelector('#userModal .text-xs.text-slate-500');
+                if (helperText && helperText.getAttribute('data-i18n') === 'business_helper') {
+                    helperText.textContent = getTranslation('business_helper');
+                }
+                const businessLabel = document.querySelector('#userModal label[data-i18n="form_business_name"]');
+                if (businessLabel) {
+                    businessLabel.innerHTML = `${getTranslation('form_business_name')} <span class="text-red-500">*</span>`;
+                }
+            });
+        }
     }
 
     // Helper: format date
@@ -388,8 +435,8 @@ ob_start();
 
     // View user details
     function handleView(user) {
-        const roleHtml = `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${roleColors[user.role]}">${user.role === 'admin' ? t('admin') : t('staff')}</span>`;
-        const statusHtml = `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${statusColors[user.status]}">${user.status === 'active' ? t('active') : t('inactive')}</span>`;
+        const roleHtml = `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${roleColors[user.role]}">${user.role === 'admin' ? getTranslation('admin') : getTranslation('staff')}</span>`;
+        const statusHtml = `<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${statusColors[user.status]}">${user.status === 'active' ? getTranslation('active') : getTranslation('inactive')}</span>`;
         const imageHtml = user.user_image && user.user_image !== '' 
             ? `<img src="${user.user_image}" alt="${escapeHtml(user.full_name)}" class="w-24 h-24 rounded-full object-cover border-2 border-slate-200 dark:border-slate-700 mx-auto">`
             : `<div class="w-24 h-24 rounded-full bg-slate-100 dark:bg-slate-700 flex items-center justify-center mx-auto border-2 border-slate-200 dark:border-slate-700">
@@ -402,35 +449,35 @@ ob_start();
             </div>
             <div class="space-y-3">
                 <div>
-                    <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">${t('user_id_label')}</label>
+                    <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">${getTranslation('user_id_label')}</label>
                     <p class="text-sm font-mono text-slate-900 dark:text-white mt-1">${escapeHtml(user.user_id)}</p>
                 </div>
                 <div>
-                    <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">${t('form_business_name')}</label>
+                    <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">${getTranslation('form_business_name')}</label>
                     <p class="text-sm text-slate-900 dark:text-white mt-1">${escapeHtml(user.business_name || '')}</p>
                 </div>
                 <div>
-                    <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">${t('full_name_label')}</label>
+                    <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">${getTranslation('full_name_label')}</label>
                     <p class="text-sm text-slate-900 dark:text-white mt-1">${escapeHtml(user.full_name)}</p>
                 </div>
                 <div>
-                    <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">${t('email_label')}</label>
+                    <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">${getTranslation('email_label')}</label>
                     <p class="text-sm text-slate-900 dark:text-white mt-1">${escapeHtml(user.email)}</p>
                 </div>
                 <div>
-                    <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">${t('phone_label')}</label>
+                    <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">${getTranslation('phone_label')}</label>
                     <p class="text-sm text-slate-900 dark:text-white mt-1">${escapeHtml(user.phone)}</p>
                 </div>
                 <div>
-                    <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">${t('role_label')}</label>
+                    <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">${getTranslation('role_label')}</label>
                     <p class="text-sm mt-1">${roleHtml}</p>
                 </div>
                 <div>
-                    <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">${t('status_label')}</label>
+                    <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">${getTranslation('status_label')}</label>
                     <p class="text-sm mt-1">${statusHtml}</p>
                 </div>
                 <div>
-                    <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">${t('created_at_label')}</label>
+                    <label class="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase">${getTranslation('created_at_label')}</label>
                     <p class="text-sm text-slate-900 dark:text-white mt-1">${formatDate(user.createdAt)}</p>
                 </div>
             </div>
@@ -484,10 +531,14 @@ ob_start();
         if (imageUploadInput) imageUploadInput.value = '';
     }
 
-    imageUploadInput.addEventListener('change', (e) => {
-        if (e.target.files && e.target.files[0]) handleImageUpload(e.target.files[0]);
-    });
-    removeImageBtn.addEventListener('click', handleRemoveImage);
+    if (imageUploadInput) {
+        imageUploadInput.addEventListener('change', (e) => {
+            if (e.target.files && e.target.files[0]) handleImageUpload(e.target.files[0]);
+        });
+    }
+    if (removeImageBtn) {
+        removeImageBtn.addEventListener('click', handleRemoveImage);
+    }
 
     // Open add modal
     function openAddModal() {
@@ -504,7 +555,7 @@ ob_start();
         statusSelect.value = 'active';
         passwordInput.value = '';
         handleRemoveImage();
-        modalTitle.innerText = 'Add User';
+        modalTitle.innerText = getTranslation('add_user_title');
         passwordFieldContainer.style.display = 'block';
         modal.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
@@ -533,7 +584,7 @@ ob_start();
             handleRemoveImage();
         }
         passwordFieldContainer.style.display = 'none';
-        modalTitle.innerText = 'Edit User';
+        modalTitle.innerText = getTranslation('edit_user_title');
         modal.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
     }
@@ -555,14 +606,14 @@ ob_start();
         const role = roleSelect.value;
         const status = statusSelect.value;
         
-        if (!businessId) { alert('Please select a business.'); return; }
-        if (!fullName) { alert('Full name is required'); return; }
-        if (!email) { alert('Email is required'); return; }
-        if (!phone) { alert('Phone number is required'); return; }
+        if (!businessId) { alert(getTranslation('form_business_name') + ' is required.'); return; }
+        if (!fullName) { alert(getTranslation('full_name_required')); return; }
+        if (!email) { alert(getTranslation('email_required')); return; }
+        if (!phone) { alert(getTranslation('phone_required')); return; }
         
         if (!editingUser) {
             const password = passwordInput.value;
-            if (!password) { alert('Password is required for new users'); return; }
+            if (!password) { alert(getTranslation('password_required')); return; }
             const newId = generateUserId();
             const newUser = {
                 user_id: newId,
@@ -595,64 +646,66 @@ ob_start();
         const hasItems = filtered.length > 0;
         
         if (!hasItems) {
-            mobileContainer.innerHTML = '';
-            tableBody.innerHTML = '';
-            emptyMessageDiv.classList.remove('hidden');
+            if (mobileContainer) mobileContainer.innerHTML = '';
+            if (tableBody) tableBody.innerHTML = '';
+            if (emptyMessageDiv) emptyMessageDiv.classList.remove('hidden');
             return;
         }
-        emptyMessageDiv.classList.add('hidden');
+        if (emptyMessageDiv) emptyMessageDiv.classList.add('hidden');
         
         // Mobile Cards - Fixed rendering with proper structure
-        mobileContainer.innerHTML = filtered.map(u => `
-            <div class="p-4 space-y-3 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors" data-id="${u.user_id}">
-                <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 rounded-full flex items-center justify-center overflow-hidden flex-shrink-0 bg-slate-100 dark:bg-slate-700">
-                        ${u.user_image ? `<img src="${u.user_image}" alt="${escapeHtml(u.full_name)}" class="w-full h-full object-cover">` : 
-                            (u.role === 'admin' ? 
-                                `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600 dark:text-blue-400"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>` :
-                                `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-600 dark:text-emerald-400"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`)
-                        }
+        if (mobileContainer) {
+            mobileContainer.innerHTML = filtered.map(u => `
+                <div class="p-4 space-y-3 hover:bg-slate-50 dark:hover:bg-slate-700/50 transition-colors" data-id="${u.user_id}">
+                    <div class="flex items-center gap-3">
+                        <div class="w-12 h-12 rounded-full flex items-center justify-center overflow-hidden flex-shrink-0 bg-slate-100 dark:bg-slate-700">
+                            ${u.user_image ? `<img src="${u.user_image}" alt="${escapeHtml(u.full_name)}" class="w-full h-full object-cover">` : 
+                                (u.role === 'admin' ? 
+                                    `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600 dark:text-blue-400"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>` :
+                                    `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-600 dark:text-emerald-400"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`)
+                            }
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <p class="font-semibold text-slate-900 dark:text-white truncate">${escapeHtml(u.full_name)}</p>
+                            <p class="text-sm text-slate-500 dark:text-slate-400 truncate">${escapeHtml(u.email)}</p>
+                            <p class="text-xs text-slate-400 font-mono mt-1">${u.user_id}</p>
+                        </div>
                     </div>
-                    <div class="flex-1 min-w-0">
-                        <p class="font-semibold text-slate-900 dark:text-white truncate">${escapeHtml(u.full_name)}</p>
-                        <p class="text-sm text-slate-500 dark:text-slate-400 truncate">${escapeHtml(u.email)}</p>
-                        <p class="text-xs text-slate-400 font-mono mt-1">${u.user_id}</p>
+                    <div class="grid grid-cols-2 gap-3 text-sm">
+                        <div>
+                            <span class="text-slate-500 dark:text-slate-400 text-xs block">${getTranslation('business_name_label')}</span>
+                            <span class="text-slate-700 dark:text-slate-300">${escapeHtml(u.business_name || '')}</span>
+                        </div>
+                        <div>
+                            <span class="text-slate-500 dark:text-slate-400 text-xs block">${getTranslation('phone_label')}</span>
+                            <span class="text-slate-700 dark:text-slate-300">${escapeHtml(u.phone)}</span>
+                        </div>
+                        <div>
+                            <span class="text-slate-500 dark:text-slate-400 text-xs block mb-1">${getTranslation('role_label')}</span>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${roleColors[u.role]}">${u.role === 'admin' ? getTranslation('admin') : getTranslation('staff')}</span>
+                        </div>
+                        <div>
+                            <span class="text-slate-500 dark:text-slate-400 text-xs block mb-1">${getTranslation('status_label')}</span>
+                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${statusColors[u.status]}">${u.status === 'active' ? getTranslation('active') : getTranslation('inactive')}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100 dark:border-slate-700">
+                        <button class="view-mobile-btn p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" data-id="${u.user_id}" title="${getTranslation('view_details')}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                            <span class="sr-only">View</span>
+                        </button>
+                        <button class="edit-mobile-btn p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" data-id="${u.user_id}" title="${getTranslation('edit_user')}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3l4 4L7 21H3v-4L17 3z"/><path d="m15 5 4 4"/></svg>
+                            <span class="sr-only">Edit</span>
+                        </button>
+                        <button class="delete-mobile-btn p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors" data-id="${u.user_id}" title="${getTranslation('delete_user')}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M10 11v5M14 11v5"/></svg>
+                            <span class="sr-only">Delete</span>
+                        </button>
                     </div>
                 </div>
-                <div class="grid grid-cols-2 gap-3 text-sm">
-                    <div>
-                        <span class="text-slate-500 dark:text-slate-400 text-xs block">${t('business_name_label')}</span>
-                        <span class="text-slate-700 dark:text-slate-300">${escapeHtml(u.business_name || '')}</span>
-                    </div>
-                    <div>
-                        <span class="text-slate-500 dark:text-slate-400 text-xs block">${t('phone_label')}</span>
-                        <span class="text-slate-700 dark:text-slate-300">${escapeHtml(u.phone)}</span>
-                    </div>
-                    <div>
-                        <span class="text-slate-500 dark:text-slate-400 text-xs block mb-1">${t('role_label')}</span>
-                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${roleColors[u.role]}">${u.role === 'admin' ? t('admin') : t('staff')}</span>
-                    </div>
-                    <div>
-                        <span class="text-slate-500 dark:text-slate-400 text-xs block mb-1">${t('status_label')}</span>
-                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${statusColors[u.status]}">${u.status === 'active' ? t('active') : t('inactive')}</span>
-                    </div>
-                </div>
-                <div class="flex items-center justify-end gap-2 pt-3 border-t border-slate-100 dark:border-slate-700">
-                    <button class="view-mobile-btn p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" data-id="${u.user_id}" title="${t('view_details')}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-                        <span class="sr-only">View</span>
-                    </button>
-                    <button class="edit-mobile-btn p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" data-id="${u.user_id}" title="${t('edit_user')}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3l4 4L7 21H3v-4L17 3z"/><path d="m15 5 4 4"/></svg>
-                        <span class="sr-only">Edit</span>
-                    </button>
-                    <button class="delete-mobile-btn p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors" data-id="${u.user_id}" title="${t('delete_user')}">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M10 11v5M14 11v5"/></svg>
-                        <span class="sr-only">Delete</span>
-                    </button>
-                </div>
-            </div>
-        `).join('');
+            `).join('');
+        }
         
         // Attach mobile button events with proper event handlers
         document.querySelectorAll('.view-mobile-btn').forEach(btn => {
@@ -709,19 +762,19 @@ ob_start();
                         </div>
                     </td>
                     <td class="px-4 py-3 text-sm text-slate-700 dark:text-slate-300">${escapeHtml(u.phone)}</td>
-                    <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${roleColors[u.role]}">${u.role === 'admin' ? 'Admin' : 'Staff'}</span></td>
-                    <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${statusColors[u.status]}">${u.status === 'active' ? 'Active' : 'Inactive'}</span></td>
+                    <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${roleColors[u.role]}">${u.role === 'admin' ? getTranslation('admin') : getTranslation('staff')}</span></td>
+                    <td class="px-4 py-3"><span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${statusColors[u.status]}">${u.status === 'active' ? getTranslation('active') : getTranslation('inactive')}</span></td>
                     <td class="px-4 py-3">
                         <div class="flex items-center gap-2">
-                            <button class="view-table-btn p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" data-id="${u.user_id}" title="View Details">
+                            <button class="view-table-btn p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" data-id="${u.user_id}" title="${getTranslation('view_details')}">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                                 <span class="sr-only">View</span>
                             </button>
-                            <button class="edit-table-btn p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" data-id="${u.user_id}" title="Edit User">
+                            <button class="edit-table-btn p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg transition-colors" data-id="${u.user_id}" title="${getTranslation('edit_user')}">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3l4 4L7 21H3v-4L17 3z"/><path d="m15 5 4 4"/></svg>
                                 <span class="sr-only">Edit</span>
                             </button>
-                            <button class="delete-table-btn p-2 hover:bg-red-100 dark:hover:bg-red-900/20 rounded-lg transition-colors" data-id="${u.user_id}" title="Delete User">
+                            <button class="delete-table-btn p-2 hover:bg-red-100 dark:hover:bg-red-900/20 rounded-lg transition-colors" data-id="${u.user_id}" title="${getTranslation('delete_user')}">
                                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M10 11v5M14 11v5"/></svg>
                                 <span class="sr-only">Delete</span>
                             </button>

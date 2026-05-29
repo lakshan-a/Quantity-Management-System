@@ -124,7 +124,11 @@ const translations = {
         'password_required': 'Password is required for new users',
         'full_name_required': 'Full name is required',
         'email_required': 'Email is required',
-        'phone_required': 'Phone number is required'
+        'phone_required': 'Phone number is required',
+        'form_business_name': 'Business Name',
+'business_helper': 'Start typing to search and select a business',
+'search_business_placeholder': 'Search business name...',
+'no_business_found': 'No businesses found',
     },
     si: {
 
@@ -248,7 +252,11 @@ const translations = {
         'password_required': 'නව පරිශීලකයින් සඳහා මුරපදය අවශ්‍ය වේ',
         'full_name_required': 'සම්පූර්ණ නම අවශ්‍ය වේ',
         'email_required': 'විද්‍යුත් තැපෑල අවශ්‍ය වේ',
-        'phone_required': 'දුරකථන අංකය අවශ්‍ය වේ'
+        'phone_required': 'දුරකථන අංකය අවශ්‍ය වේ',
+        'form_business_name': 'ව්‍යාපාරයේ නම',
+'business_helper': 'ව්‍යාපාරයක් සෙවීමට සහ තෝරා ගැනීමට ටයිප් කිරීම ආරම්භ කරන්න',
+'search_business_placeholder': 'ව්‍යාපාරයේ නම සොයන්න...',
+'no_business_found': 'ව්‍යාපාර කිසිවක් හමු නොවීය',
         
     },
     ta: {
@@ -372,7 +380,11 @@ const translations = {
         'password_required': 'புதிய பயனர்களுக்கு கடவுச்சொல் தேவை',
         'full_name_required': 'முழு பெயர் தேவை',
         'email_required': 'மின்னஞ்சல் தேவை',
-        'phone_required': 'தொலைபேசி எண் தேவை'
+        'phone_required': 'தொலைபேசி எண் தேவை',
+        'form_business_name': 'வணிக பெயர்',
+'business_helper': 'ஒரு வணிகத்தைத் தேட மற்றும் தேர்ந்தெடுக்க தட்டச்சு செய்யத் தொடங்குங்கள்',
+'search_business_placeholder': 'வணிக பெயரைத் தேடுங்கள்...',
+'no_business_found': 'வணிகங்கள் எதுவும் கிடைக்கவில்லை',
         
     }
 };
